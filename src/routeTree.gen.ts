@@ -10,12 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReflectionRouteImport } from './routes/reflection'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as FoldersRouteImport } from './routes/folders'
 import { Route as IndexRouteImport } from './routes/index'
 
 const ReflectionRoute = ReflectionRouteImport.update({
   id: '/reflection',
   path: '/reflection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FoldersRoute = FoldersRouteImport.update({
@@ -32,30 +44,38 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/folders': typeof FoldersRoute
+  '/insights': typeof InsightsRoute
+  '/profile': typeof ProfileRoute
   '/reflection': typeof ReflectionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/folders': typeof FoldersRoute
+  '/insights': typeof InsightsRoute
+  '/profile': typeof ProfileRoute
   '/reflection': typeof ReflectionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/folders': typeof FoldersRoute
+  '/insights': typeof InsightsRoute
+  '/profile': typeof ProfileRoute
   '/reflection': typeof ReflectionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/folders' | '/reflection'
+  fullPaths: '/' | '/folders' | '/insights' | '/profile' | '/reflection'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/folders' | '/reflection'
-  id: '__root__' | '/' | '/folders' | '/reflection'
+  to: '/' | '/folders' | '/insights' | '/profile' | '/reflection'
+  id: '__root__' | '/' | '/folders' | '/insights' | '/profile' | '/reflection'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FoldersRoute: typeof FoldersRoute
+  InsightsRoute: typeof InsightsRoute
+  ProfileRoute: typeof ProfileRoute
   ReflectionRoute: typeof ReflectionRoute
 }
 
@@ -66,6 +86,20 @@ declare module '@tanstack/react-router' {
       path: '/reflection'
       fullPath: '/reflection'
       preLoaderRoute: typeof ReflectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/folders': {
@@ -88,6 +122,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FoldersRoute: FoldersRoute,
+  InsightsRoute: InsightsRoute,
+  ProfileRoute: ProfileRoute,
   ReflectionRoute: ReflectionRoute,
 }
 export const routeTree = rootRouteImport
