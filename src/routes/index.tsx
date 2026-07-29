@@ -132,14 +132,15 @@ function Index() {
         )}
       </div>
 
-      <button
-        onClick={() => setSheet(true)}
-        aria-label="Buat baru"
-        className="press fixed bottom-20 left-1/2 z-40 grid h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/30 animate-pop"
-        style={{ marginLeft: "170px" }}
-      >
-        <Plus className="h-6 w-6" />
-      </button>
+      <div className="pointer-events-none fixed inset-x-0 bottom-20 z-40 mx-auto flex max-w-[520px] justify-end px-4">
+        <button
+          onClick={() => setSheet(true)}
+          aria-label="Buat baru"
+          className="press pointer-events-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/30 animate-pop"
+        >
+          <Plus className="h-6 w-6" />
+        </button>
+      </div>
 
       <QuickCreateSheet open={sheet} onClose={() => setSheet(false)} onCreate={create} />
       {editing && <NoteEditor note={editing} onClose={() => setEditing(null)} />}
