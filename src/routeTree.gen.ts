@@ -9,8 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ReflectionRouteImport } from './routes/reflection'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as FoldersRouteImport } from './routes/folders'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ReflectionRoute = ReflectionRouteImport.update({
+  id: '/reflection',
+  path: '/reflection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoldersRoute = FoldersRouteImport.update({
+  id: '/folders',
+  path: '/folders',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +43,72 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/folders': typeof FoldersRoute
+  '/insights': typeof InsightsRoute
+  '/profile': typeof ProfileRoute
+  '/reflection': typeof ReflectionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/folders': typeof FoldersRoute
+  '/insights': typeof InsightsRoute
+  '/profile': typeof ProfileRoute
+  '/reflection': typeof ReflectionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/folders': typeof FoldersRoute
+  '/insights': typeof InsightsRoute
+  '/profile': typeof ProfileRoute
+  '/reflection': typeof ReflectionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/folders' | '/insights' | '/profile' | '/reflection'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/folders' | '/insights' | '/profile' | '/reflection'
+  id: '__root__' | '/' | '/folders' | '/insights' | '/profile' | '/reflection'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FoldersRoute: typeof FoldersRoute
+  InsightsRoute: typeof InsightsRoute
+  ProfileRoute: typeof ProfileRoute
+  ReflectionRoute: typeof ReflectionRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reflection': {
+      id: '/reflection'
+      path: '/reflection'
+      fullPath: '/reflection'
+      preLoaderRoute: typeof ReflectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/folders': {
+      id: '/folders'
+      path: '/folders'
+      fullPath: '/folders'
+      preLoaderRoute: typeof FoldersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +121,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FoldersRoute: FoldersRoute,
+  InsightsRoute: InsightsRoute,
+  ProfileRoute: ProfileRoute,
+  ReflectionRoute: ReflectionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
