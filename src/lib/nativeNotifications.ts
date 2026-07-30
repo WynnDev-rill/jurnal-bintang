@@ -14,7 +14,6 @@ async function ensurePermission() {
 
 export async function setDailyReminder(enabled: boolean) {
   if (!Capacitor.isNativePlatform()) return { supported: false, enabled: false };
-
   await LocalNotifications.cancel({ notifications: [{ id: DAILY_ID }] });
   if (!enabled) return { supported: true, enabled: false };
 
@@ -28,18 +27,14 @@ export async function setDailyReminder(enabled: boolean) {
         title: "Waktunya menulis",
         body: "Luangkan beberapa menit untuk mencatat harimu di Aster Journal.",
         schedule: { on: { hour: 20, minute: 0 }, repeats: true, allowWhileIdle: true },
-        smallIcon: "ic_stat_aster",
-        iconColor: "#6AA7E8",
       },
     ],
   });
-
   return { supported: true, enabled: true };
 }
 
 export async function setWeeklyDigest(enabled: boolean) {
   if (!Capacitor.isNativePlatform()) return { supported: false, enabled: false };
-
   await LocalNotifications.cancel({ notifications: [{ id: WEEKLY_ID }] });
   if (!enabled) return { supported: true, enabled: false };
 
@@ -53,12 +48,9 @@ export async function setWeeklyDigest(enabled: boolean) {
         title: "Ringkasan mingguan Aster",
         body: "Lihat kembali catatan, refleksi, dan pola harimu minggu ini.",
         schedule: { on: { weekday: 1, hour: 19, minute: 0 }, repeats: true, allowWhileIdle: true },
-        smallIcon: "ic_stat_aster",
-        iconColor: "#6AA7E8",
       },
     ],
   });
-
   return { supported: true, enabled: true };
 }
 
@@ -72,10 +64,8 @@ export async function sendNotificationPreview() {
       {
         id: Date.now() % 100000,
         title: "Aster Journal",
-        body: "Notifikasi aktif. Pengingatmu akan tampil menggunakan identitas Aster Journal.",
+        body: "Notifikasi aktif. Pengingatmu akan tampil dengan ikon aplikasi Aster Journal.",
         schedule: { at: new Date(Date.now() + 1200) },
-        smallIcon: "ic_stat_aster",
-        iconColor: "#6AA7E8",
       },
     ],
   });
