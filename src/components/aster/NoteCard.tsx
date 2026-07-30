@@ -110,7 +110,7 @@ export function NoteTile({ note, onOpen }: { note: Note; onOpen: (n: Note) => vo
           )}
         </div>
       ) : (
-        <p className="mt-2 line-clamp-4 flex-1 text-[12.5px] leading-relaxed text-muted-foreground">
+        <p className="mt-2 line-clamp-4 min-h-0 flex-1 overflow-hidden text-[12.5px] leading-relaxed text-muted-foreground">
           {note.body}
         </p>
       )}
