@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Flame, NotebookPen, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Screen, SectionTitle } from "@/components/aster/Screen";
 import { TopBar } from "@/components/aster/TopBar";
 import { MOODS, formatDate, useStore } from "@/lib/store";
@@ -95,19 +95,55 @@ function InsightsPage() {
     <Screen>
       <TopBar title="Insight" subtitle="Ringkasan perjalanan menulismu · By Wynn" />
 
-      <div className="grid grid-cols-3 gap-2 px-4 pt-4 stagger">
+      <div className="grid grid-cols-3 gap-2.5 px-4 stagger">
         {[
-          { label: "Catatan Dibuat", value: stats.notes, Icon: NotebookPen },
-          { label: "Streak Jurnal", value: `${stats.streak} hari`, Icon: Flame },
-          { label: "Refleksi", value: stats.refl, Icon: Sparkles },
-        ].map((s) => (
-          <div key={s.label} className="soft-card rounded-2xl p-3 text-center">
-            <s.Icon className="mx-auto h-4 w-4 text-primary" />
-            <p className="mt-1.5 font-display text-xl">{s.value}</p>
-            <p className="text-[10px] leading-tight text-muted-foreground">{s.label}</p>
+          {
+            label: "Catatan Dibuat",
+            value: String(stats.notes),
+            sub: "Total",
+            emoji: "📝",
+            tint: "tile-blue",
+          },
+          {
+            label: "Streak Jurnal",
+            value: String(stats.streak),
+            sub: "Hari berturut",
+            emoji: "🔥",
+            tint: "tile-amber",
+          },
+          {
+            label: "Refleksi",
+            value: String(stats.refl),
+            sub: "Tersimpan",
+            emoji: "💜",
+            tint: "tile-violet",
+          },
+        ].map((s, i) => (
+          <div
+            key={s.label}
+            className={`soft-card relative overflow-hidden rounded-2xl p-3 ${s.tint}`}
+          >
+            <p className="text-[11px] font-medium leading-tight text-muted-foreground">{s.label}</p>
+            <p
+              className="mt-1 font-display text-[26px] leading-none tracking-tight-display animate-count"
+              style={{ animationDelay: `${i * 90}ms` }}
+            >
+              {s.value}
+            </p>
+            <div className="mt-1.5 flex items-end justify-between">
+              <p className="text-[10px] leading-tight text-muted-foreground">{s.sub}</p>
+              <span
+                className="emoji text-[15px] animate-sparkle"
+                style={{ animationDelay: `${i * 0.4}s` }}
+                aria-hidden="true"
+              >
+                {s.emoji}
+              </span>
+            </div>
           </div>
         ))}
       </div>
+
 
       <SectionTitle>Aktivitas 7 Hari</SectionTitle>
       <div className="mx-4 soft-card rounded-2xl p-4">

@@ -58,13 +58,56 @@ export type AsterState = {
   profile: Profile;
 };
 
-export const MOODS: { key: MoodKey; label: string; emoji: string }[] = [
-  { key: "great", label: "Hebat", emoji: "😄" },
-  { key: "good", label: "Baik", emoji: "🙂" },
-  { key: "okay", label: "Biasa", emoji: "😐" },
-  { key: "meh", label: "Kurang", emoji: "😕" },
-  { key: "hard", label: "Berat", emoji: "😢" },
+export const MOODS: {
+  key: MoodKey;
+  label: string;
+  emoji: string;
+  tint: string;
+  ring: string;
+  text: string;
+}[] = [
+  {
+    key: "great",
+    label: "Hebat",
+    emoji: "🌞",
+    tint: "bg-amber-100/70 dark:bg-amber-400/15",
+    ring: "ring-amber-300 dark:ring-amber-400/60",
+    text: "text-amber-600 dark:text-amber-300",
+  },
+  {
+    key: "good",
+    label: "Baik",
+    emoji: "😊",
+    tint: "bg-emerald-100/70 dark:bg-emerald-400/15",
+    ring: "ring-emerald-300 dark:ring-emerald-400/60",
+    text: "text-emerald-600 dark:text-emerald-300",
+  },
+  {
+    key: "okay",
+    label: "Biasa",
+    emoji: "😌",
+    tint: "bg-sky-100/70 dark:bg-sky-400/15",
+    ring: "ring-sky-300 dark:ring-sky-400/60",
+    text: "text-sky-600 dark:text-sky-300",
+  },
+  {
+    key: "meh",
+    label: "Kurang",
+    emoji: "😕",
+    tint: "bg-violet-100/70 dark:bg-violet-400/15",
+    ring: "ring-violet-300 dark:ring-violet-400/60",
+    text: "text-violet-600 dark:text-violet-300",
+  },
+  {
+    key: "hard",
+    label: "Berat",
+    emoji: "😔",
+    tint: "bg-rose-100/70 dark:bg-rose-400/15",
+    ring: "ring-rose-300 dark:ring-rose-400/60",
+    text: "text-rose-600 dark:text-rose-300",
+  },
 ];
+
 
 export const PROMPTS: string[] = [
   "Apa hal kecil yang membuatku bersyukur hari ini?",

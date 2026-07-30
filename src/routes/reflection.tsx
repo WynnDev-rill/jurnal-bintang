@@ -107,22 +107,27 @@ function ReflectionPage() {
 
       <SectionTitle>Bagaimana perasaanmu?</SectionTitle>
       <div className="grid grid-cols-5 gap-2 px-4 stagger">
-        {MOODS.map((m) => (
-          <button
-            key={m.key}
-            onClick={() => setMoodToday(m.key)}
-            className={`press flex flex-col items-center gap-1 rounded-2xl border py-3 transition-colors ${
-              todayMood === m.key
-                ? "border-primary bg-primary/10"
-                : "border-border bg-card"
-            }`}
-          >
-            <span className="text-2xl transition-transform duration-300 hover:scale-110">
-              {m.emoji}
-            </span>
-            <span className="text-[10px] text-muted-foreground">{m.label}</span>
-          </button>
-        ))}
+        {MOODS.map((m, i) => {
+          const active = todayMood === m.key;
+          return (
+            <button
+              key={m.key}
+              onClick={() => setMoodToday(m.key)}
+              aria-pressed={active}
+              style={{ animationDelay: `${i * 50}ms` }}
+              className={`press flex flex-col items-center gap-1.5 rounded-2xl py-3 ring-2 transition-all duration-300 ${m.tint} ${
+                active ? `${m.ring} scale-[1.04] shadow-md` : "ring-transparent"
+              }`}
+            >
+              <span
+                className={`emoji text-[22px] transition-transform duration-300 ${active ? "animate-wiggle" : ""}`}
+              >
+                {m.emoji}
+              </span>
+              <span className={`text-[10.5px] font-semibold ${m.text}`}>{m.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       <SectionTitle
@@ -157,7 +162,7 @@ function ReflectionPage() {
               </div>
               <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{r.body}</p>
               <div className="mt-3 flex items-center gap-2 text-[11px] text-muted-foreground">
-                <span>{MOODS.find((m) => m.key === r.mood)?.emoji ?? "•"}</span>
+                <span className="emoji">{MOODS.find((m) => m.key === r.mood)?.emoji ?? "•"}</span>
                 <span>{relativeDate(r.createdAt)}</span>
               </div>
             </div>
@@ -203,11 +208,12 @@ function ReflectionPage() {
                 <button
                   key={m.key}
                   onClick={() => setMood(m.key)}
-                  className={`press rounded-xl border py-2 text-xl ${
-                    mood === m.key ? "border-primary bg-primary/10" : "border-border"
+                  aria-label={m.label}
+                  className={`press rounded-xl py-2 ring-2 transition-all duration-300 ${m.tint} ${
+                    mood === m.key ? `${m.ring} scale-105` : "ring-transparent"
                   }`}
                 >
-                  {m.emoji}
+                  <span className="emoji text-[20px]">{m.emoji}</span>
                 </button>
               ))}
             </div>

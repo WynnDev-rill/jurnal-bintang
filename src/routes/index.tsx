@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Bell, Plus, Search } from "lucide-react";
-import { Screen, SectionTitle } from "@/components/aster/Screen";
+import { CheckSquare, FileText, LayoutGrid, NotebookPen, Plus, Search, Star, X } from "lucide-react";
+import { LinkAction, Screen, SectionTitle } from "@/components/aster/Screen";
 import { TopBar } from "@/components/aster/TopBar";
-import { NoteCard } from "@/components/aster/NoteCard";
+import { NoteRow, NoteTile } from "@/components/aster/NoteCard";
 import { NoteEditor } from "@/components/aster/NoteEditor";
 import { QuickCreateSheet } from "@/components/aster/QuickCreateSheet";
 import { useStore, type Note, type NoteType } from "@/lib/store";
@@ -28,11 +28,11 @@ export const Route = createFileRoute("/")({
 });
 
 const FILTERS = [
-  { key: "all", label: "Semua" },
-  { key: "note", label: "Catatan" },
-  { key: "checklist", label: "Tugas" },
-  { key: "journal", label: "Jurnal" },
-  { key: "favorite", label: "Favorit" },
+  { key: "all", label: "Semua", Icon: LayoutGrid },
+  { key: "note", label: "Catatan", Icon: FileText },
+  { key: "checklist", label: "Tugas", Icon: CheckSquare },
+  { key: "journal", label: "Jurnal", Icon: NotebookPen },
+  { key: "favorite", label: "Favorit", Icon: Star },
 ] as const;
 
 function Index() {
@@ -41,10 +41,13 @@ function Index() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["key"]>("all");
   const [editing, setEditing] = useState<Note | null>(null);
   const [sheet, setSheet] = useState(false);
+  const [expandPinned, setExpandPinned] = useState(false);
+  const [expandRecent, setExpandRecent] = useState(false);
+  const [sortAsc, setSortAsc] = useState(false);
 
   const filtered = useMemo(() => {
     const term = q.trim().toLowerCase();
-    return state.notes.filter((n) => {
+    const list = state.notes.filter((n) => {
       const matchQ =
         !term ||
         n.title.toLowerCase().includes(term) ||
@@ -55,10 +58,17 @@ function Index() {
         filter === "all" ? true : filter === "favorite" ? n.favorite : n.type === filter;
       return matchQ && matchF;
     });
-  }, [state.notes, q, filter]);
+    return list.sort((a, b) =>
+      sortAsc
+        ? +new Date(a.updatedAt) - +new Date(b.updatedAt)
+        : +new Date(b.updatedAt) - +new Date(a.updatedAt),
+    );
+  }, [state.notes, q, filter, sortAsc]);
 
   const pinned = filtered.filter((n) => n.pinned);
   const recent = filtered.filter((n) => !n.pinned);
+  const shownPinned = expandPinned ? pinned : pinned.slice(0, 2);
+  const shownRecent = expandRecent ? recent : recent.slice(0, 6);
 
   const create = (type: NoteType) => {
     const n = addNote({
@@ -74,56 +84,83 @@ function Index() {
     <Screen>
       <TopBar
         subtitle="Ruang tenang untuk pikiranmu"
-        right={
-          <button className="press grid h-9 w-9 place-items-center rounded-full bg-muted text-muted-foreground">
-            <Bell className="h-[18px] w-[18px]" />
-          </button>
-        }
+        onSort={() => setSortAsc((s) => !s)}
       />
 
-      <div className="px-4 pt-4 animate-fade-up">
-        <div className="flex items-center gap-2 rounded-2xl bg-muted px-3.5 py-2.5">
-          <Search className="h-4 w-4 text-muted-foreground" />
+      <div className="px-4 animate-fade-up">
+        <div className="flex items-center gap-2.5 rounded-2xl bg-muted px-4 py-3 transition-shadow duration-300 focus-within:shadow-md focus-within:ring-2 focus-within:ring-primary/25">
+          <Search className="h-[18px] w-[18px] shrink-0 text-muted-foreground" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Cari catatan, tugas, jurnal…"
-            className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+            placeholder="Cari catatan…"
+            aria-label="Cari catatan"
+            className="w-full bg-transparent text-[14px] outline-none placeholder:text-muted-foreground"
           />
+          {q && (
+            <button onClick={() => setQ("")} aria-label="Bersihkan" className="press animate-pop">
+              <X className="h-4 w-4 text-muted-foreground" />
+            </button>
+          )}
         </div>
       </div>
 
       <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto px-4 pb-1">
-        {FILTERS.map((f) => (
-          <button
-            key={f.key}
-            onClick={() => setFilter(f.key)}
-            className={`press shrink-0 rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors ${
-              filter === f.key
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "bg-muted text-muted-foreground"
-            }`}
-          >
-            {f.label}
-          </button>
-        ))}
+        {FILTERS.map((f, i) => {
+          const active = filter === f.key;
+          return (
+            <button
+              key={f.key}
+              onClick={() => setFilter(f.key)}
+              style={{ animationDelay: `${i * 45}ms` }}
+              className={`press flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-[7px] text-[13px] font-medium transition-all duration-300 animate-fade-up ${
+                active
+                  ? "border-primary bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                  : "border-border bg-card text-foreground/75 hover:bg-muted"
+              }`}
+            >
+              <f.Icon className={`h-[15px] w-[15px] ${active ? "" : "text-muted-foreground"}`} />
+              {f.label}
+            </button>
+          );
+        })}
       </div>
 
       {pinned.length > 0 && (
         <>
-          <SectionTitle>Disematkan</SectionTitle>
-          <div className="space-y-3 px-4 stagger">
-            {pinned.map((n) => (
-              <NoteCard key={n.id} note={n} onOpen={setEditing} />
+          <SectionTitle
+            action={
+              pinned.length > 2 ? (
+                <LinkAction onClick={() => setExpandPinned((v) => !v)}>
+                  {expandPinned ? "Ringkas" : "Lihat semua"}
+                </LinkAction>
+              ) : undefined
+            }
+          >
+            <span className="inline-flex items-center gap-1.5">Disematkan</span>
+          </SectionTitle>
+          <div className="grid grid-cols-2 gap-3 px-4 stagger">
+            {shownPinned.map((n) => (
+              <NoteTile key={n.id} note={n} onOpen={setEditing} />
             ))}
           </div>
         </>
       )}
 
-      <SectionTitle>Catatan Terbaru</SectionTitle>
-      <div className="space-y-3 px-4 stagger">
-        {recent.map((n) => (
-          <NoteCard key={n.id} note={n} onOpen={setEditing} />
+      <SectionTitle
+        action={
+          recent.length > 6 ? (
+            <LinkAction onClick={() => setExpandRecent((v) => !v)}>
+              {expandRecent ? "Ringkas" : "Lihat semua"}
+            </LinkAction>
+          ) : undefined
+        }
+      >
+        Catatan Terbaru
+      </SectionTitle>
+      <div className="space-y-2.5 px-4 stagger">
+        {shownRecent.map((n) => (
+          <NoteRow key={n.id} note={n} onOpen={setEditing} />
         ))}
         {filtered.length === 0 && (
           <p className="rounded-2xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground animate-fade-up">
@@ -132,11 +169,11 @@ function Index() {
         )}
       </div>
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-20 z-40 mx-auto flex max-w-[520px] justify-end px-4">
+      <div className="pointer-events-none fixed inset-x-0 bottom-24 z-40 mx-auto flex max-w-[520px] justify-end px-4">
         <button
           onClick={() => setSheet(true)}
           aria-label="Buat baru"
-          className="press pointer-events-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/30 animate-pop"
+          className="press-lg pointer-events-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/35 animate-bounce-in hover:rotate-90 hover:scale-105 transition-transform duration-300"
         >
           <Plus className="h-6 w-6" />
         </button>
