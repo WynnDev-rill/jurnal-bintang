@@ -1,4 +1,4 @@
-name: Build Jurnal Bintang APK
+name: Build Aster Journal APK
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: jurnal-bintang-android-${{ github.ref }}
+  group: aster-journal-android-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -25,7 +25,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -33,27 +32,33 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Install web dependencies
-        run: npm install
+      - name: Install dependencies
+        run: |
+          npm install --legacy-peer-deps
+          npm install --no-save --legacy-peer-deps @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
 
-      - name: Install Capacitor build tools
-        run: npm install --no-save @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
-
-      - name: Prepare remote web shell
+      - name: Prepare web shell
         run: |
           mkdir -p dist
           cat > dist/index.html <<'HTML'
           <!doctype html>
           <html lang="id">
-            <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jurnal Bintang</title></head>
-            <body><p>Membuka Jurnal Bintang…</p></body>
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width,initial-scale=1">
+              <title>Aster Journal</title>
+            </head>
+            <body><p>Membuka Aster Journal…</p></body>
           </html>
           HTML
 
       - name: Create Android project
-        run: npx cap add android
+        run: |
+          rm -rf android
+          npx cap add android
+          chmod +x android/gradlew
 
-      - name: Configure app version and launcher icon
+      - name: Configure app, version and launcher icon
         env:
           VERSION_CODE: ${{ github.run_number }}
         run: |
@@ -63,7 +68,7 @@ jobs:
 
           gradle = Path('android/app/build.gradle')
           text = gradle.read_text()
-          code = 1000 + int(os.environ['VERSION_CODE'])
+          code = 2000 + int(os.environ['VERSION_CODE'])
           text = re.sub(r'versionCode\s+\d+', f'versionCode {code}', text)
           text = re.sub(r'versionName\s+"[^"]+"', f'versionName "1.0.{code}"', text)
           gradle.write_text(text)
@@ -81,10 +86,20 @@ jobs:
           RES=android/app/src/main/res
           mkdir -p "$RES/drawable" "$RES/mipmap-anydpi-v26" "$RES/mipmap-anydpi" "$RES/values"
 
+          cat > "$RES/values/strings.xml" <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+            <string name="app_name">Aster Journal</string>
+            <string name="title_activity_main">Aster Journal</string>
+            <string name="package_name">com.wynn.jurnalbintang</string>
+            <string name="custom_url_scheme">com.wynn.jurnalbintang</string>
+          </resources>
+          XML
+
           cat > "$RES/values/icon_colors.xml" <<'XML'
           <?xml version="1.0" encoding="utf-8"?>
           <resources>
-            <color name="jurnal_icon_background">#78A5F5</color>
+            <color name="aster_icon_background">#78A5F5</color>
           </resources>
           XML
 
@@ -93,18 +108,18 @@ jobs:
           <vector xmlns:android="http://schemas.android.com/apk/res/android"
               android:width="108dp" android:height="108dp"
               android:viewportWidth="108" android:viewportHeight="108">
-            <group android:pivotX="54" android:pivotY="54">
-              <group android:rotation="0" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
-              <group android:rotation="45" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
-              <group android:rotation="90" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
-              <group android:rotation="135" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
-              <group android:rotation="180" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
-              <group android:rotation="225" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
-              <group android:rotation="270" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
-              <group android:rotation="315" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
-              <path android:fillColor="#FFFFFFFF" android:pathData="M54,47 L57,51 L61,54 L57,57 L54,61 L51,57 L47,54 L51,51 Z"/>
-              <path android:fillColor="#FFFFFFFF" android:pathData="M78,30 L79.5,33 L82.5,34.5 L79.5,36 L78,39 L76.5,36 L73.5,34.5 L76.5,33 Z"/>
-              <path android:fillColor="#FFFFFFFF" android:pathData="M31,76 L32.5,79 L35.5,80.5 L32.5,82 L31,85 L29.5,82 L26.5,80.5 L29.5,79 Z"/>
+            <group android:pivotX="54" android:pivotY="54" android:scaleX="0.82" android:scaleY="0.82">
+              <group android:rotation="0" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
+              <group android:rotation="45" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
+              <group android:rotation="90" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
+              <group android:rotation="135" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
+              <group android:rotation="180" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
+              <group android:rotation="225" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
+              <group android:rotation="270" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
+              <group android:rotation="315" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
+              <path android:fillColor="#FFFFFFFF" android:pathData="M54,46 L58,51 L63,54 L58,57 L54,63 L50,57 L45,54 L50,51 Z"/>
+              <path android:fillColor="#FFFFFFFF" android:pathData="M78,31 L79.5,34 L82.5,35.5 L79.5,37 L78,40 L76.5,37 L73.5,35.5 L76.5,34 Z"/>
+              <path android:fillColor="#FFFFFFFF" android:pathData="M31,75 L32.5,78 L35.5,79.5 L32.5,81 L31,84 L29.5,81 L26.5,79.5 L29.5,78 Z"/>
             </group>
           </vector>
           XML
@@ -112,7 +127,7 @@ jobs:
           cat > "$RES/drawable/ic_launcher_legacy.xml" <<'XML'
           <?xml version="1.0" encoding="utf-8"?>
           <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-            <item android:drawable="@color/jurnal_icon_background" />
+            <item android:drawable="@color/aster_icon_background" />
             <item android:drawable="@drawable/ic_launcher_foreground" />
           </layer-list>
           XML
@@ -120,11 +135,10 @@ jobs:
           cat > "$RES/mipmap-anydpi-v26/ic_launcher.xml" <<'XML'
           <?xml version="1.0" encoding="utf-8"?>
           <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-            <background android:drawable="@color/jurnal_icon_background" />
+            <background android:drawable="@color/aster_icon_background" />
             <foreground android:drawable="@drawable/ic_launcher_foreground" />
           </adaptive-icon>
           XML
-
           cp "$RES/mipmap-anydpi-v26/ic_launcher.xml" "$RES/mipmap-anydpi-v26/ic_launcher_round.xml"
 
           cat > "$RES/mipmap-anydpi/ic_launcher.xml" <<'XML'
@@ -137,10 +151,7 @@ jobs:
 
       - name: Decode stable signing key
         run: |
-          cat > /tmp/jurnal-bintang-release.jks.b64 <<'KEY'
-          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
-          KEY
-          base64 -d /tmp/jurnal-bintang-release.jks.b64 > /tmp/jurnal-bintang-release.jks
+          echo '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' | base64 -d > /tmp/aster-journal-release.jks
 
       - name: Build release APK
         working-directory: android
@@ -148,26 +159,26 @@ jobs:
 
       - name: Sign and verify APK
         env:
-          STORE_PASS: WynnJurnalBintang2026
-          KEY_ALIAS: jurnalbintang
+          STORE_PASS: WynnAsterJournal2026
+          KEY_ALIAS: asterjournal
         run: |
-          UNSIGNED=$(find android/app/build/outputs/apk/release -name '*unsigned.apk' -o -name 'app-release.apk' | head -n 1)
+          UNSIGNED=$(find android/app/build/outputs/apk/release \( -name '*unsigned.apk' -o -name 'app-release.apk' \) | head -n 1)
           test -n "$UNSIGNED"
           BUILD_TOOLS=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)
-          "$BUILD_TOOLS/zipalign" -f -p 4 "$UNSIGNED" Jurnal-Bintang-aligned.apk
+          "$BUILD_TOOLS/zipalign" -f -p 4 "$UNSIGNED" Aster-Journal-aligned.apk
           "$BUILD_TOOLS/apksigner" sign \
-            --ks /tmp/jurnal-bintang-release.jks \
+            --ks /tmp/aster-journal-release.jks \
             --ks-key-alias "$KEY_ALIAS" \
             --ks-pass "pass:$STORE_PASS" \
             --key-pass "pass:$STORE_PASS" \
-            --out Jurnal-Bintang.apk \
-            Jurnal-Bintang-aligned.apk
-          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs Jurnal-Bintang.apk
+            --out Aster-Journal.apk \
+            Aster-Journal-aligned.apk
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs Aster-Journal.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Jurnal-Bintang-APK
-          path: Jurnal-Bintang.apk
+          name: Aster-Journal-APK
+          path: Aster-Journal.apk
           if-no-files-found: error
           retention-days: 30
