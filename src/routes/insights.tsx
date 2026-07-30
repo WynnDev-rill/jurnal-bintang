@@ -97,53 +97,20 @@ function InsightsPage() {
 
       <div className="grid grid-cols-3 gap-2.5 px-4 stagger">
         {[
-          {
-            label: "Catatan Dibuat",
-            value: String(stats.notes),
-            sub: "Total",
-            emoji: "📝",
-            tint: "tile-blue",
-          },
-          {
-            label: "Streak Jurnal",
-            value: String(stats.streak),
-            sub: "Hari berturut",
-            emoji: "🔥",
-            tint: "tile-amber",
-          },
-          {
-            label: "Refleksi",
-            value: String(stats.refl),
-            sub: "Tersimpan",
-            emoji: "💜",
-            tint: "tile-violet",
-          },
-        ].map((s, i) => (
-          <div
-            key={s.label}
-            className={`soft-card relative overflow-hidden rounded-2xl p-3 ${s.tint}`}
-          >
+          { label: "Catatan Dibuat", value: String(stats.notes), sub: "Total", emoji: "📝", tint: "tile-blue" },
+          { label: "Streak Jurnal", value: String(stats.streak), sub: "Hari berturut", emoji: "🔥", tint: "tile-amber" },
+          { label: "Refleksi", value: String(stats.refl), sub: "Tersimpan", emoji: "💜", tint: "tile-violet" },
+        ].map((s) => (
+          <div key={s.label} className={`soft-card relative overflow-hidden rounded-2xl p-3 ${s.tint}`}>
             <p className="text-[11px] font-medium leading-tight text-muted-foreground">{s.label}</p>
-            <p
-              className="mt-1 font-display text-[26px] leading-none tracking-tight-display animate-count"
-              style={{ animationDelay: `${i * 90}ms` }}
-            >
-              {s.value}
-            </p>
+            <p className="mt-1 font-display text-[26px] leading-none tracking-tight-display">{s.value}</p>
             <div className="mt-1.5 flex items-end justify-between">
               <p className="text-[10px] leading-tight text-muted-foreground">{s.sub}</p>
-              <span
-                className="emoji text-[15px] animate-sparkle"
-                style={{ animationDelay: `${i * 0.4}s` }}
-                aria-hidden="true"
-              >
-                {s.emoji}
-              </span>
+              <span className="emoji text-[15px]" aria-hidden="true">{s.emoji}</span>
             </div>
           </div>
         ))}
       </div>
-
 
       <SectionTitle>Aktivitas 7 Hari</SectionTitle>
       <div className="mx-4 soft-card rounded-2xl p-4">
@@ -151,13 +118,7 @@ function InsightsPage() {
           {week.map((w, i) => (
             <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
               <div className="flex h-24 w-full items-end">
-                <div
-                  className="w-full rounded-t-lg bg-primary/85 animate-grow"
-                  style={{
-                    height: `${Math.max(6, (w.count / maxWeek) * 100)}%`,
-                    animationDelay: `${i * 60}ms`,
-                  }}
-                />
+                <div className="w-full rounded-t-lg bg-primary/85 animate-grow" style={{ height: `${Math.max(6, (w.count / maxWeek) * 100)}%`, animationDelay: `${i * 60}ms` }} />
               </div>
               <span className="text-[10px] text-muted-foreground">{w.label}</span>
             </div>
@@ -168,96 +129,34 @@ function InsightsPage() {
       <SectionTitle>Kalender Aktivitas</SectionTitle>
       <div className="mx-4 soft-card rounded-2xl p-4">
         <div className="flex items-center justify-between">
-          <button
-            onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() - 1, 1))}
-            className="press grid h-8 w-8 place-items-center rounded-full bg-muted"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <p className="font-display text-[15px]">
-            {cursor.toLocaleDateString("id-ID", { month: "long", year: "numeric" })}
-          </p>
-          <button
-            onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1))}
-            className="press grid h-8 w-8 place-items-center rounded-full bg-muted"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
+          <button onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() - 1, 1))} className="press grid h-8 w-8 place-items-center rounded-full bg-muted"><ChevronLeft className="h-4 w-4" /></button>
+          <p className="font-display text-[15px]">{cursor.toLocaleDateString("id-ID", { month: "long", year: "numeric" })}</p>
+          <button onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1))} className="press grid h-8 w-8 place-items-center rounded-full bg-muted"><ChevronRight className="h-4 w-4" /></button>
         </div>
         <div className="mt-3 grid grid-cols-7 gap-1 text-center text-[10px] text-muted-foreground">
-          {["S", "S", "R", "K", "J", "S", "M"].map((d, i) => (
-            <span key={i}>{d}</span>
-          ))}
+          {["S", "S", "R", "K", "J", "S", "M"].map((d, i) => <span key={i}>{d}</span>)}
         </div>
         <div className="mt-1 grid grid-cols-7 gap-1">
-          {grid.map((d, i) =>
-            d ? (
-              (() => {
-                const info = dayData(d);
-                const isSel = dayKey(d) === dayKey(selected);
-                const intensity = Math.min(1, info.total / 3);
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setSelected(d)}
-                    className={`press relative aspect-square rounded-lg text-[11px] transition-all ${
-                      isSel ? "ring-2 ring-primary" : ""
-                    }`}
-                    style={{
-                      backgroundColor: info.total
-                        ? `color-mix(in oklch, var(--color-primary) ${12 + intensity * 55}%, transparent)`
-                        : "var(--color-muted)",
-                      color: intensity > 0.6 ? "var(--color-primary-foreground)" : undefined,
-                    }}
-                  >
-                    {d.getDate()}
-                  </button>
-                );
-              })()
-            ) : (
-              <span key={i} />
-            ),
-          )}
+          {grid.map((d, i) => d ? (() => {
+            const info = dayData(d);
+            const isSel = dayKey(d) === dayKey(selected);
+            const intensity = Math.min(1, info.total / 3);
+            return <button key={i} onClick={() => setSelected(d)} className={`press relative aspect-square rounded-lg text-[11px] transition-all ${isSel ? "ring-2 ring-primary" : ""}`} style={{ backgroundColor: info.total ? `color-mix(in oklch, var(--color-primary) ${12 + intensity * 55}%, transparent)` : "var(--color-muted)", color: intensity > 0.6 ? "var(--color-primary-foreground)" : undefined }}>{d.getDate()}</button>;
+          })() : <span key={i} />)}
         </div>
       </div>
 
       <SectionTitle>Ringkasan {formatDate(selected.toISOString())}</SectionTitle>
       <div className="mx-4 soft-card rounded-2xl p-4 animate-fade-up" key={selected.toDateString()}>
         <div className="grid grid-cols-3 gap-2 text-center">
-          <div>
-            <p className="font-display text-xl">{sel.notes.length}</p>
-            <p className="text-[10px] text-muted-foreground">Catatan</p>
-          </div>
-          <div>
-            <p className="font-display text-xl">{sel.refls.filter((r) => r.body).length}</p>
-            <p className="text-[10px] text-muted-foreground">Refleksi</p>
-          </div>
-          <div>
-            <p className="text-xl">
-              {MOODS.find((m) => m.key === sel.refls.find((r) => r.mood)?.mood)?.emoji ?? "—"}
-            </p>
-            <p className="text-[10px] text-muted-foreground">Mood</p>
-          </div>
+          <div><p className="font-display text-xl">{sel.notes.length}</p><p className="text-[10px] text-muted-foreground">Catatan</p></div>
+          <div><p className="font-display text-xl">{sel.refls.filter((r) => r.body).length}</p><p className="text-[10px] text-muted-foreground">Refleksi</p></div>
+          <div><p className="text-xl">{MOODS.find((m) => m.key === sel.refls.find((r) => r.mood)?.mood)?.emoji ?? "—"}</p><p className="text-[10px] text-muted-foreground">Mood</p></div>
         </div>
         <div className="mt-3 space-y-1.5">
-          {sel.notes.slice(0, 4).map((n) => (
-            <p key={n.id} className="truncate rounded-lg bg-muted px-3 py-2 text-[12px]">
-              📝 {n.title || "Tanpa Judul"}
-            </p>
-          ))}
-          {sel.refls
-            .filter((r) => r.body)
-            .slice(0, 3)
-            .map((r) => (
-              <p key={r.id} className="truncate rounded-lg bg-muted px-3 py-2 text-[12px]">
-                ✨ {r.prompt}
-              </p>
-            ))}
-          {sel.total === 0 && (
-            <p className="py-4 text-center text-[12px] text-muted-foreground">
-              Tidak ada aktivitas pada tanggal ini.
-            </p>
-          )}
+          {sel.notes.slice(0, 4).map((n) => <p key={n.id} className="truncate rounded-lg bg-muted px-3 py-2 text-[12px]">📝 {n.title || "Tanpa Judul"}</p>)}
+          {sel.refls.filter((r) => r.body).slice(0, 3).map((r) => <p key={r.id} className="truncate rounded-lg bg-muted px-3 py-2 text-[12px]">✨ {r.prompt}</p>)}
+          {sel.total === 0 && <p className="py-4 text-center text-[12px] text-muted-foreground">Tidak ada aktivitas pada tanggal ini.</p>}
         </div>
       </div>
 
@@ -265,28 +164,13 @@ function InsightsPage() {
       <div className="mx-4 soft-card space-y-2 rounded-2xl p-4">
         {MOODS.map((m) => {
           const c = moodCount.get(m.key) ?? 0;
-          return (
-            <div key={m.key} className="flex items-center gap-3">
-              <span className="w-6 text-lg">{m.emoji}</span>
-              <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full rounded-full bg-primary transition-all duration-700"
-                  style={{ width: `${(c / moodTotal) * 100}%` }}
-                />
-              </div>
-              <span className="w-6 text-right text-[11px] text-muted-foreground">{c}</span>
-            </div>
-          );
+          return <div key={m.key} className="flex items-center gap-3"><span className="w-6 text-lg">{m.emoji}</span><div className="h-2 flex-1 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary transition-all duration-700" style={{ width: `${(c / moodTotal) * 100}%` }} /></div><span className="w-6 text-right text-[11px] text-muted-foreground">{c}</span></div>;
         })}
       </div>
 
       <SectionTitle>Tag Teratas</SectionTitle>
       <div className="flex flex-wrap gap-2 px-4 stagger">
-        {tags.map(([t, c]) => (
-          <span key={t} className="rounded-full bg-primary/10 px-3 py-1.5 text-xs text-primary">
-            #{t} · {c}
-          </span>
-        ))}
+        {tags.map(([t, c]) => <span key={t} className="rounded-full bg-primary/10 px-3 py-1.5 text-xs text-primary">#{t} · {c}</span>)}
         {tags.length === 0 && <p className="text-sm text-muted-foreground">Belum ada tag.</p>}
       </div>
     </Screen>
