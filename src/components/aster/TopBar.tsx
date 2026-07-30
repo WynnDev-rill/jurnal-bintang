@@ -17,7 +17,7 @@ export function TopBar({
   onSort?: () => void;
 }) {
   return (
-    <header className="sticky top-0 z-30 bg-background/80 px-4 pb-3 pt-3.5 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-border/45 bg-background/88 px-4 pb-3 pt-[calc(env(safe-area-inset-top)+14px)] shadow-[0_10px_30px_rgba(7,13,24,0.08)] backdrop-blur-xl">
       <div className="flex items-center gap-2.5">
         <span className="grid h-8 w-8 shrink-0 place-items-center text-primary animate-bounce-in">
           <AsterMark className="h-7 w-7" />
