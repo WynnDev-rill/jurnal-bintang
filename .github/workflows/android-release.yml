@@ -37,6 +37,9 @@ jobs:
           npm install --legacy-peer-deps
           npm install --no-save --legacy-peer-deps @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
 
+      - name: Install Pillow
+        run: python3 -m pip install --upgrade pillow
+
       - name: Prepare web shell
         run: |
           mkdir -p dist
@@ -64,7 +67,8 @@ jobs:
         run: |
           python3 <<'PY'
           from pathlib import Path
-          import os, re
+          import os
+          import re
 
           gradle = Path('android/app/build.gradle')
           text = gradle.read_text()
@@ -84,7 +88,9 @@ jobs:
           PY
 
           RES=android/app/src/main/res
-          mkdir -p "$RES/drawable" "$RES/mipmap-anydpi-v26" "$RES/mipmap-anydpi" "$RES/values"
+          mkdir -p "$RES/values" "$RES/mipmap-mdpi" "$RES/mipmap-hdpi" "$RES/mipmap-xhdpi" "$RES/mipmap-xxhdpi" "$RES/mipmap-xxxhdpi"
+          rm -f "$RES/mipmap-anydpi-v26/ic_launcher.xml" "$RES/mipmap-anydpi-v26/ic_launcher_round.xml" "$RES/mipmap-anydpi/ic_launcher.xml" "$RES/mipmap-anydpi/ic_launcher_round.xml"
+          rm -f "$RES/drawable/ic_launcher_foreground.xml" "$RES/drawable/ic_launcher_legacy.xml"
 
           cat > "$RES/values/strings.xml" <<'XML'
           <?xml version="1.0" encoding="utf-8"?>
@@ -96,58 +102,74 @@ jobs:
           </resources>
           XML
 
-          cat > "$RES/values/icon_colors.xml" <<'XML'
-          <?xml version="1.0" encoding="utf-8"?>
-          <resources>
-            <color name="aster_icon_background">#78A5F5</color>
-          </resources>
-          XML
+          python3 <<'PY'
+          from collections import deque
+          from pathlib import Path
+          from PIL import Image
 
-          cat > "$RES/drawable/ic_launcher_foreground.xml" <<'XML'
-          <?xml version="1.0" encoding="utf-8"?>
-          <vector xmlns:android="http://schemas.android.com/apk/res/android"
-              android:width="108dp" android:height="108dp"
-              android:viewportWidth="108" android:viewportHeight="108">
-            <group android:pivotX="54" android:pivotY="54" android:scaleX="0.82" android:scaleY="0.82">
-              <group android:rotation="0" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
-              <group android:rotation="45" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
-              <group android:rotation="90" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
-              <group android:rotation="135" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
-              <group android:rotation="180" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
-              <group android:rotation="225" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
-              <group android:rotation="270" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
-              <group android:rotation="315" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,24 C47,31 47,43 54,52 C61,43 61,31 54,24 Z"/></group>
-              <path android:fillColor="#FFFFFFFF" android:pathData="M54,46 L58,51 L63,54 L58,57 L54,63 L50,57 L45,54 L50,51 Z"/>
-              <path android:fillColor="#FFFFFFFF" android:pathData="M78,31 L79.5,34 L82.5,35.5 L79.5,37 L78,40 L76.5,37 L73.5,35.5 L76.5,34 Z"/>
-              <path android:fillColor="#FFFFFFFF" android:pathData="M31,75 L32.5,78 L35.5,79.5 L32.5,81 L31,84 L29.5,81 L26.5,79.5 L29.5,78 Z"/>
-            </group>
-          </vector>
-          XML
+          source_path = Path('aster-journal-icon-source.jpg')
+          if not source_path.exists():
+              raise SystemExit('aster-journal-icon-source.jpg tidak ditemukan di root repository.')
 
-          cat > "$RES/drawable/ic_launcher_legacy.xml" <<'XML'
-          <?xml version="1.0" encoding="utf-8"?>
-          <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-            <item android:drawable="@color/aster_icon_background" />
-            <item android:drawable="@drawable/ic_launcher_foreground" />
-          </layer-list>
-          XML
+          img = Image.open(source_path).convert('RGBA')
+          side = min(img.width, img.height)
+          left = (img.width - side) // 2
+          top = (img.height - side) // 2
+          img = img.crop((left, top, left + side, top + side))
 
-          cat > "$RES/mipmap-anydpi-v26/ic_launcher.xml" <<'XML'
-          <?xml version="1.0" encoding="utf-8"?>
-          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-            <background android:drawable="@color/aster_icon_background" />
-            <foreground android:drawable="@drawable/ic_launcher_foreground" />
-          </adaptive-icon>
-          XML
-          cp "$RES/mipmap-anydpi-v26/ic_launcher.xml" "$RES/mipmap-anydpi-v26/ic_launcher_round.xml"
+          pixels = img.load()
+          width, height = img.size
 
-          cat > "$RES/mipmap-anydpi/ic_launcher.xml" <<'XML'
-          <?xml version="1.0" encoding="utf-8"?>
-          <inset xmlns:android="http://schemas.android.com/apk/res/android"
-              android:drawable="@drawable/ic_launcher_legacy"
-              android:inset="0dp" />
-          XML
-          cp "$RES/mipmap-anydpi/ic_launcher.xml" "$RES/mipmap-anydpi/ic_launcher_round.xml"
+          def near_white(pixel):
+              r, g, b, a = pixel
+              return a > 0 and r >= 246 and g >= 246 and b >= 246
+
+          queue = deque()
+          visited = set()
+          for x in range(width):
+              queue.append((x, 0))
+              queue.append((x, height - 1))
+          for y in range(height):
+              queue.append((0, y))
+              queue.append((width - 1, y))
+
+          while queue:
+              x, y = queue.popleft()
+              if not (0 <= x < width and 0 <= y < height):
+                  continue
+              if (x, y) in visited:
+                  continue
+              visited.add((x, y))
+              if not near_white(pixels[x, y]):
+                  continue
+              pixels[x, y] = (255, 255, 255, 0)
+              queue.extend(((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)))
+
+          bbox = img.getbbox()
+          if bbox:
+              img = img.crop(bbox)
+
+          canvas = Image.new('RGBA', (1024, 1024), (0, 0, 0, 0))
+          padding = 72
+          target = 1024 - padding * 2
+          img.thumbnail((target, target), Image.Resampling.LANCZOS)
+          offset_x = (1024 - img.width) // 2
+          offset_y = (1024 - img.height) // 2
+          canvas.alpha_composite(img, (offset_x, offset_y))
+
+          densities = {
+              'mipmap-mdpi': 48,
+              'mipmap-hdpi': 72,
+              'mipmap-xhdpi': 96,
+              'mipmap-xxhdpi': 144,
+              'mipmap-xxxhdpi': 192,
+          }
+          res_root = Path('android/app/src/main/res')
+          for folder, size in densities.items():
+              out = canvas.resize((size, size), Image.Resampling.LANCZOS)
+              out.save(res_root / folder / 'ic_launcher.png', format='PNG', optimize=True)
+              out.save(res_root / folder / 'ic_launcher_round.png', format='PNG', optimize=True)
+          PY
 
       - name: Decode stable signing key
         run: |
