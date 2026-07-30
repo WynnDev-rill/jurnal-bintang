@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.wynn.jurnalbintang",
-  appName: "Jurnal Bintang",
+  appName: "Aster Journal",
   webDir: "dist",
   server: {
     url: "https://jurnal-bintang.vercel.app",
