@@ -1,0 +1,173 @@
+name: Build Jurnal Bintang APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jurnal-bintang-android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install web dependencies
+        run: npm install
+
+      - name: Install Capacitor build tools
+        run: npm install --no-save @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
+
+      - name: Prepare remote web shell
+        run: |
+          mkdir -p dist
+          cat > dist/index.html <<'HTML'
+          <!doctype html>
+          <html lang="id">
+            <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jurnal Bintang</title></head>
+            <body><p>Membuka Jurnal Bintang…</p></body>
+          </html>
+          HTML
+
+      - name: Create Android project
+        run: npx cap add android
+
+      - name: Configure app version and launcher icon
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import os, re
+
+          gradle = Path('android/app/build.gradle')
+          text = gradle.read_text()
+          code = 1000 + int(os.environ['VERSION_CODE'])
+          text = re.sub(r'versionCode\s+\d+', f'versionCode {code}', text)
+          text = re.sub(r'versionName\s+"[^"]+"', f'versionName "1.0.{code}"', text)
+          gradle.write_text(text)
+
+          manifest = Path('android/app/src/main/AndroidManifest.xml')
+          text = manifest.read_text()
+          text = re.sub(r'android:icon="[^"]+"', 'android:icon="@mipmap/ic_launcher"', text)
+          if 'android:roundIcon=' in text:
+              text = re.sub(r'android:roundIcon="[^"]+"', 'android:roundIcon="@mipmap/ic_launcher_round"', text)
+          else:
+              text = text.replace('<application', '<application android:roundIcon="@mipmap/ic_launcher_round"', 1)
+          manifest.write_text(text)
+          PY
+
+          RES=android/app/src/main/res
+          mkdir -p "$RES/drawable" "$RES/mipmap-anydpi-v26" "$RES/mipmap-anydpi" "$RES/values"
+
+          cat > "$RES/values/icon_colors.xml" <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+            <color name="jurnal_icon_background">#78A5F5</color>
+          </resources>
+          XML
+
+          cat > "$RES/drawable/ic_launcher_foreground.xml" <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="108dp" android:height="108dp"
+              android:viewportWidth="108" android:viewportHeight="108">
+            <group android:pivotX="54" android:pivotY="54">
+              <group android:rotation="0" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
+              <group android:rotation="45" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
+              <group android:rotation="90" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
+              <group android:rotation="135" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
+              <group android:rotation="180" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
+              <group android:rotation="225" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
+              <group android:rotation="270" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFFFFFFF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
+              <group android:rotation="315" android:pivotX="54" android:pivotY="54"><path android:fillColor="#FFF5F8FF" android:pathData="M54,25 C49,32 49,43 54,52 C59,43 59,32 54,25 Z"/></group>
+              <path android:fillColor="#FFFFFFFF" android:pathData="M54,47 L57,51 L61,54 L57,57 L54,61 L51,57 L47,54 L51,51 Z"/>
+              <path android:fillColor="#FFFFFFFF" android:pathData="M78,30 L79.5,33 L82.5,34.5 L79.5,36 L78,39 L76.5,36 L73.5,34.5 L76.5,33 Z"/>
+              <path android:fillColor="#FFFFFFFF" android:pathData="M31,76 L32.5,79 L35.5,80.5 L32.5,82 L31,85 L29.5,82 L26.5,80.5 L29.5,79 Z"/>
+            </group>
+          </vector>
+          XML
+
+          cat > "$RES/drawable/ic_launcher_legacy.xml" <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <item android:drawable="@color/jurnal_icon_background" />
+            <item android:drawable="@drawable/ic_launcher_foreground" />
+          </layer-list>
+          XML
+
+          cat > "$RES/mipmap-anydpi-v26/ic_launcher.xml" <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+            <background android:drawable="@color/jurnal_icon_background" />
+            <foreground android:drawable="@drawable/ic_launcher_foreground" />
+          </adaptive-icon>
+          XML
+
+          cp "$RES/mipmap-anydpi-v26/ic_launcher.xml" "$RES/mipmap-anydpi-v26/ic_launcher_round.xml"
+
+          cat > "$RES/mipmap-anydpi/ic_launcher.xml" <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <inset xmlns:android="http://schemas.android.com/apk/res/android"
+              android:drawable="@drawable/ic_launcher_legacy"
+              android:inset="0dp" />
+          XML
+          cp "$RES/mipmap-anydpi/ic_launcher.xml" "$RES/mipmap-anydpi/ic_launcher_round.xml"
+
+      - name: Decode stable signing key
+        run: |
+          cat > /tmp/jurnal-bintang-release.jks.b64 <<'KEY'
+          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
+          KEY
+          base64 -d /tmp/jurnal-bintang-release.jks.b64 > /tmp/jurnal-bintang-release.jks
+
+      - name: Build release APK
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Sign and verify APK
+        env:
+          STORE_PASS: WynnJurnalBintang2026
+          KEY_ALIAS: jurnalbintang
+        run: |
+          UNSIGNED=$(find android/app/build/outputs/apk/release -name '*unsigned.apk' -o -name 'app-release.apk' | head -n 1)
+          test -n "$UNSIGNED"
+          BUILD_TOOLS=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)
+          "$BUILD_TOOLS/zipalign" -f -p 4 "$UNSIGNED" Jurnal-Bintang-aligned.apk
+          "$BUILD_TOOLS/apksigner" sign \
+            --ks /tmp/jurnal-bintang-release.jks \
+            --ks-key-alias "$KEY_ALIAS" \
+            --ks-pass "pass:$STORE_PASS" \
+            --key-pass "pass:$STORE_PASS" \
+            --out Jurnal-Bintang.apk \
+            Jurnal-Bintang-aligned.apk
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs Jurnal-Bintang.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jurnal-Bintang-APK
+          path: Jurnal-Bintang.apk
+          if-no-files-found: error
+          retention-days: 30
