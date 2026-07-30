@@ -3,7 +3,7 @@ import { BottomNav } from "./BottomNav";
 
 export function Screen({ children }: { children: ReactNode }) {
   return (
-    <div className="relative mx-auto min-h-screen w-full max-w-[520px] overflow-x-hidden bg-background pb-28">
+    <div className="relative mx-auto min-h-[100svh] w-full max-w-[520px] overflow-x-hidden bg-background pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
       {children}
       <BottomNav />
     </div>
