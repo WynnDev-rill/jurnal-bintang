@@ -89,49 +89,48 @@ function Index() {
 
   return (
     <Screen>
-      <TopBar
-        subtitle="Ruang tenang untuk pikiranmu"
-        onSort={() => setSortAsc((s) => !s)}
-      />
+      <TopBar subtitle="Ruang tenang untuk pikiranmu" onSort={() => setSortAsc((s) => !s)} />
 
-      <div className="px-4 animate-fade-up">
-        <div className="flex items-center gap-2.5 rounded-2xl bg-muted px-4 py-3 transition-shadow duration-300 focus-within:shadow-md focus-within:ring-2 focus-within:ring-primary/25">
-          <Search className="h-[18px] w-[18px] shrink-0 text-muted-foreground" />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Cari catatan…"
-            aria-label="Cari catatan"
-            className="w-full bg-transparent text-[14px] outline-none placeholder:text-muted-foreground"
-          />
-          {q && (
-            <button onClick={() => setQ("")} aria-label="Bersihkan" className="press animate-pop">
-              <X className="h-4 w-4 text-muted-foreground" />
-            </button>
-          )}
+      <section className="sticky top-[calc(env(safe-area-inset-top)+76px)] z-20 border-b border-border/45 bg-background/94 pb-3 pt-1 shadow-[0_10px_24px_rgba(7,13,24,0.08)] backdrop-blur-xl">
+        <div className="px-4 animate-fade-up">
+          <div className="flex items-center gap-2.5 rounded-2xl bg-muted px-4 py-3 transition-shadow duration-300 focus-within:shadow-md focus-within:ring-2 focus-within:ring-primary/25">
+            <Search className="h-[18px] w-[18px] shrink-0 text-muted-foreground" />
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Cari catatan…"
+              aria-label="Cari catatan"
+              className="w-full bg-transparent text-[14px] outline-none placeholder:text-muted-foreground"
+            />
+            {q && (
+              <button onClick={() => setQ("")} aria-label="Bersihkan" className="press animate-pop">
+                <X className="h-4 w-4 text-muted-foreground" />
+              </button>
+            )}
+          </div>
         </div>
-      </div>
 
-      <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto px-4 pb-1">
-        {FILTERS.map((f, i) => {
-          const active = filter === f.key;
-          return (
-            <button
-              key={f.key}
-              onClick={() => setFilter(f.key)}
-              style={{ animationDelay: `${i * 45}ms` }}
-              className={`press flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-[7px] text-[13px] font-medium transition-all duration-300 animate-fade-up ${
-                active
-                  ? "border-primary bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                  : "border-border bg-card text-foreground/75 hover:bg-muted"
-              }`}
-            >
-              <f.Icon className={`h-[15px] w-[15px] ${active ? "" : "text-muted-foreground"}`} />
-              {f.label}
-            </button>
-          );
-        })}
-      </div>
+        <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto px-4 pb-1">
+          {FILTERS.map((f, i) => {
+            const active = filter === f.key;
+            return (
+              <button
+                key={f.key}
+                onClick={() => setFilter(f.key)}
+                style={{ animationDelay: `${i * 45}ms` }}
+                className={`press flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-[7px] text-[13px] font-medium transition-all duration-300 animate-fade-up ${
+                  active
+                    ? "border-primary bg-primary text-primary-foreground shadow-md shadow-primary/25"
+                    : "border-border bg-card text-foreground/75 hover:bg-muted"
+                }`}
+              >
+                <f.Icon className={`h-[15px] w-[15px] ${active ? "" : "text-muted-foreground"}`} />
+                {f.label}
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
       {pinned.length > 0 && (
         <>
@@ -176,11 +175,11 @@ function Index() {
         )}
       </div>
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-24 z-40 mx-auto flex max-w-[520px] justify-end px-4">
+      <div className="pointer-events-none fixed inset-x-0 bottom-[calc(6.75rem+env(safe-area-inset-bottom))] z-50 mx-auto flex max-w-[520px] justify-end px-5">
         <button
           onClick={() => setSheet(true)}
           aria-label="Buat baru"
-          className="press-lg pointer-events-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/35 animate-bounce-in hover:rotate-90 hover:scale-105 transition-transform duration-300"
+          className="press-lg pointer-events-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/35 animate-bounce-in transition-transform duration-300 hover:rotate-90 hover:scale-105"
         >
           <Plus className="h-6 w-6" />
         </button>
