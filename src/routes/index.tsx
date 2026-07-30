@@ -40,25 +40,26 @@ function Index() {
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["key"]>("all");
   const [editing, setEditing] = useState<Note | null>(null);
+  const [editingNew, setEditingNew] = useState(false);
   const [sheet, setSheet] = useState(false);
   const [expandPinned, setExpandPinned] = useState(false);
   const [expandRecent, setExpandRecent] = useState(false);
   const [sortAsc, setSortAsc] = useState(false);
 
   const filtered = useMemo(() => {
-    const term = q.trim().toLowerCase();
+    const term = q.trim().toLocaleLowerCase("id-ID");
     const list = state.notes.filter((n) => {
       const matchQ =
         !term ||
-        n.title.toLowerCase().includes(term) ||
-        n.body.toLowerCase().includes(term) ||
-        n.tags.some((t) => t.includes(term)) ||
-        n.items.some((i) => i.text.toLowerCase().includes(term));
+        n.title.toLocaleLowerCase("id-ID").includes(term) ||
+        n.body.toLocaleLowerCase("id-ID").includes(term) ||
+        n.tags.some((t) => t.toLocaleLowerCase("id-ID").includes(term)) ||
+        n.items.some((i) => i.text.toLocaleLowerCase("id-ID").includes(term));
       const matchF =
         filter === "all" ? true : filter === "favorite" ? n.favorite : n.type === filter;
       return matchQ && matchF;
     });
-    return list.sort((a, b) =>
+    return [...list].sort((a, b) =>
       sortAsc
         ? +new Date(a.updatedAt) - +new Date(b.updatedAt)
         : +new Date(b.updatedAt) - +new Date(a.updatedAt),
@@ -70,13 +71,19 @@ function Index() {
   const shownPinned = expandPinned ? pinned : pinned.slice(0, 2);
   const shownRecent = expandRecent ? recent : recent.slice(0, 6);
 
+  const openExisting = (note: Note) => {
+    setEditingNew(false);
+    setEditing(note);
+  };
+
   const create = (type: NoteType) => {
     const n = addNote({
       type,
       title: "",
-      items: type === "checklist" ? [{ id: "i1", text: "", done: false }] : [],
+      items: type === "checklist" ? [{ id: crypto.randomUUID(), text: "", done: false }] : [],
     });
     setSheet(false);
+    setEditingNew(true);
     setEditing(n);
   };
 
@@ -141,7 +148,7 @@ function Index() {
           </SectionTitle>
           <div className="grid grid-cols-2 gap-3 px-4 stagger">
             {shownPinned.map((n) => (
-              <NoteTile key={n.id} note={n} onOpen={setEditing} />
+              <NoteTile key={n.id} note={n} onOpen={openExisting} />
             ))}
           </div>
         </>
@@ -160,7 +167,7 @@ function Index() {
       </SectionTitle>
       <div className="space-y-2.5 px-4 stagger">
         {shownRecent.map((n) => (
-          <NoteRow key={n.id} note={n} onOpen={setEditing} />
+          <NoteRow key={n.id} note={n} onOpen={openExisting} />
         ))}
         {filtered.length === 0 && (
           <p className="rounded-2xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground animate-fade-up">
@@ -180,7 +187,16 @@ function Index() {
       </div>
 
       <QuickCreateSheet open={sheet} onClose={() => setSheet(false)} onCreate={create} />
-      {editing && <NoteEditor note={editing} onClose={() => setEditing(null)} />}
+      {editing && (
+        <NoteEditor
+          note={editing}
+          isNew={editingNew}
+          onClose={() => {
+            setEditing(null);
+            setEditingNew(false);
+          }}
+        />
+      )}
     </Screen>
   );
 }
