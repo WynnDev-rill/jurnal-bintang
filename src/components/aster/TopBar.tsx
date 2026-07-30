@@ -1,5 +1,7 @@
 import { Bell, SlidersHorizontal } from "lucide-react";
+import { toast } from "sonner";
 import { AsterMark } from "./Logo";
+import { sendNotificationPreview } from "@/lib/nativeNotifications";
 
 export function TopBar({
   title = "Aster Journal",
@@ -8,6 +10,7 @@ export function TopBar({
   showWatermark = true,
   showDefaultActions = true,
   onSort,
+  sticky = true,
 }: {
   title?: string;
   subtitle?: string;
@@ -15,9 +18,27 @@ export function TopBar({
   showWatermark?: boolean;
   showDefaultActions?: boolean;
   onSort?: () => void;
+  sticky?: boolean;
 }) {
+  const testNotification = async () => {
+    try {
+      const result = await sendNotificationPreview();
+      if (!result.supported) {
+        toast.info("Notifikasi native tersedia pada APK Android.");
+      } else if (result.denied) {
+        toast.error("Izin notifikasi ditolak. Aktifkan dari pengaturan aplikasi.");
+      } else {
+        toast.success("Notifikasi percobaan dijadwalkan.");
+      }
+    } catch {
+      toast.error("Notifikasi belum dapat dijalankan pada perangkat ini.");
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-30 border-b border-border/45 bg-background/88 px-4 pb-3 pt-[calc(env(safe-area-inset-top)+14px)] shadow-[0_10px_30px_rgba(7,13,24,0.08)] backdrop-blur-xl">
+    <header
+      className={`${sticky ? "sticky top-0 z-30" : "relative z-10"} border-b border-border/45 bg-background/88 px-4 pb-3 pt-[calc(env(safe-area-inset-top)+14px)] shadow-[0_10px_30px_rgba(7,13,24,0.08)] backdrop-blur-xl`}
+    >
       <div className="flex items-center gap-2.5">
         <span className="grid h-8 w-8 shrink-0 place-items-center text-primary animate-bounce-in">
           <AsterMark className="h-7 w-7" />
@@ -48,11 +69,12 @@ export function TopBar({
               <SlidersHorizontal className="h-[19px] w-[19px]" />
             </button>
             <button
+              onClick={testNotification}
               aria-label="Notifikasi"
               className="press relative grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:bg-muted"
             >
               <Bell className="h-[19px] w-[19px]" />
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary ring-2 ring-background animate-sparkle" />
+              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary ring-2 ring-background" />
             </button>
           </div>
         )}
