@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Flame, NotebookPen, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Screen, SectionTitle } from "@/components/aster/Screen";
 import { TopBar } from "@/components/aster/TopBar";
 import { MOODS, formatDate, useStore } from "@/lib/store";
