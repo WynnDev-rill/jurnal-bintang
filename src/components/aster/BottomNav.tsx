@@ -13,19 +13,19 @@ export function BottomNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-[520px] border-t border-border/70 bg-background/92 pb-[calc(env(safe-area-inset-bottom)+6px)] shadow-[0_-10px_30px_rgba(7,13,24,0.10)] backdrop-blur-xl">
-      <ul className="flex items-stretch pt-1">
+    <nav className="z-40 shrink-0 border-t border-border/70 bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl">
+      <ul className="flex items-stretch px-1 pb-1 pt-1.5">
         {items.map(({ to, label, Icon }) => {
           const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
           return (
             <li key={to} className="flex-1">
               <Link
                 to={to}
-                className="press relative flex flex-col items-center gap-1 py-2 text-[10px] font-medium"
+                className="press relative flex flex-col items-center gap-1 py-1 text-[10px] font-medium"
               >
                 <span
-                  className={`grid h-8 w-14 place-items-center rounded-full transition-all duration-300 ${
-                    active ? "bg-primary/12 text-primary" : "text-muted-foreground"
+                  className={`grid h-7 w-14 place-items-center rounded-full transition-all duration-300 ${
+                    active ? "bg-primary/10 text-primary" : "text-muted-foreground"
                   }`}
                 >
                   <Icon
