@@ -10,7 +10,6 @@ export function TopBar({
   showWatermark = true,
   showDefaultActions = true,
   onSort,
-  sticky = true,
 }: {
   title?: string;
   subtitle?: string;
@@ -18,6 +17,7 @@ export function TopBar({
   showWatermark?: boolean;
   showDefaultActions?: boolean;
   onSort?: () => void;
+  /** kept for compatibility; the shell handles stickiness now */
   sticky?: boolean;
 }) {
   const testNotification = async () => {
@@ -36,48 +36,48 @@ export function TopBar({
   };
 
   return (
-    <header
-      className={`${sticky ? "sticky top-0 z-30" : "relative z-10"} border-b border-border/45 bg-background/88 px-4 pb-3 pt-[calc(env(safe-area-inset-top)+14px)] shadow-[0_10px_30px_rgba(7,13,24,0.08)] backdrop-blur-xl`}
-    >
-      <div className="flex items-center gap-2.5">
-        <span className="grid h-8 w-8 shrink-0 place-items-center text-primary animate-bounce-in">
-          <AsterMark className="h-7 w-7" />
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-baseline gap-1.5">
-            <h1 className="truncate font-display text-[22px] leading-tight tracking-tight-display text-foreground">
-              {title}
-            </h1>
-            {showWatermark && (
-              <span className="shrink-0 font-display text-[10px] italic text-muted-foreground/70">
-                by Wynn
-              </span>
-            )}
+    <header className="relative z-30 shrink-0 bg-card px-4 pb-3 pt-[calc(env(safe-area-inset-top)+14px)]">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2.5">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary">
+            <AsterMark className="h-6 w-6" />
+          </span>
+          <div className="min-w-0">
+            <div className="flex items-baseline gap-1.5">
+              <h1 className="truncate font-display text-[21px] leading-tight tracking-tight-display text-foreground">
+                {title}
+              </h1>
+              {showWatermark && (
+                <span className="shrink-0 font-display text-[10px] italic text-muted-foreground/70">
+                  by Wynn
+                </span>
+              )}
+            </div>
+            {subtitle && <p className="truncate text-[11.5px] text-muted-foreground">{subtitle}</p>}
           </div>
-          {subtitle && <p className="truncate text-[11px] text-muted-foreground">{subtitle}</p>}
         </div>
 
-        {right}
-
-        {showDefaultActions && (
-          <div className="flex shrink-0 items-center gap-1">
-            <button
-              onClick={onSort}
-              aria-label="Urutkan"
-              className="press grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:bg-muted"
-            >
-              <SlidersHorizontal className="h-[19px] w-[19px]" />
-            </button>
-            <button
-              onClick={testNotification}
-              aria-label="Notifikasi"
-              className="press relative grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:bg-muted"
-            >
-              <Bell className="h-[19px] w-[19px]" />
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary ring-2 ring-background" />
-            </button>
-          </div>
-        )}
+        <div className="flex shrink-0 items-center gap-1">
+          {right}
+          {showDefaultActions && (
+            <>
+              <button
+                onClick={onSort}
+                aria-label="Urutkan"
+                className="press grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:bg-muted"
+              >
+                <SlidersHorizontal className="h-[19px] w-[19px]" />
+              </button>
+              <button
+                onClick={testNotification}
+                aria-label="Notifikasi"
+                className="press grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:bg-muted"
+              >
+                <Bell className="h-[19px] w-[19px]" />
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );
