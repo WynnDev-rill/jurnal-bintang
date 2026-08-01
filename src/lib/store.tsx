@@ -206,18 +206,19 @@ const StoreContext = createContext<Ctx | null>(null);
 const COLORS = ["#7aa7ff", "#f0a868", "#8fd8b0", "#d8a8e8", "#f2a5a5", "#9fd0e8"];
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AsterState>(() => seed());
+  const [state, setState] = useState<AsterState>(() => emptyState());
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setState({ ...seed(), ...(JSON.parse(raw) as AsterState) });
+      if (raw) setState(migrate(raw));
     } catch {
       /* ignore */
     }
     setReady(true);
   }, []);
+
 
   useEffect(() => {
     if (!ready) return;
