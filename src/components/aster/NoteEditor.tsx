@@ -119,7 +119,7 @@ export function NoteEditor({
 
   return (
     <div className="fixed inset-0 z-50 mx-auto flex max-w-[520px] flex-col bg-background animate-slide-up">
-      <header className="flex items-center gap-2 border-b border-border px-3 py-3">
+      <header className="flex shrink-0 items-center gap-2 border-b border-border bg-card px-3 pb-3 pt-[calc(env(safe-area-inset-top)+12px)]">
         <button
           onClick={closeEditor}
           aria-label="Tutup editor"
