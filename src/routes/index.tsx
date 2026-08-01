@@ -1,11 +1,22 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckSquare, FileText, LayoutGrid, NotebookPen, Plus, Search, Star, X } from "lucide-react";
-import { LinkAction, Screen, SectionTitle } from "@/components/aster/Screen";
+import {
+  CheckSquare,
+  FileText,
+  LayoutGrid,
+  List,
+  NotebookPen,
+  Plus,
+  Search,
+  Star,
+  X,
+} from "lucide-react";
+import { EmptyState, Screen, Scroll, SectionTitle } from "@/components/aster/Screen";
 import { TopBar } from "@/components/aster/TopBar";
 import { NoteRow, NoteTile } from "@/components/aster/NoteCard";
 import { NoteEditor } from "@/components/aster/NoteEditor";
 import { QuickCreateSheet } from "@/components/aster/QuickCreateSheet";
+import { AsterFlower } from "@/components/aster/Logo";
 import { useStore, type Note, type NoteType } from "@/lib/store";
 
 export const Route = createFileRoute("/")({
@@ -15,13 +26,15 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Aster Journal: aplikasi catatan, checklist, jurnal, refleksi, dan insight harian dengan tampilan lembut dan animasi halus.",
+          "Aster Journal: aplikasi catatan, checklist, jurnal, refleksi, dan insight harian dengan tampilan putih-biru yang tenang.",
       },
       { property: "og:title", content: "Aster Journal — Catatan & Refleksi Harian" },
       {
         property: "og:description",
         content: "Tulis catatan, checklist, dan jurnal harian. Lacak mood dan lihat insight.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
@@ -45,6 +58,7 @@ function Index() {
   const [expandPinned, setExpandPinned] = useState(false);
   const [expandRecent, setExpandRecent] = useState(false);
   const [sortAsc, setSortAsc] = useState(false);
+  const [view, setView] = useState<"list" | "grid">("list");
 
   const filtered = useMemo(() => {
     const term = q.trim().toLocaleLowerCase("id-ID");
@@ -69,7 +83,8 @@ function Index() {
   const pinned = filtered.filter((n) => n.pinned);
   const recent = filtered.filter((n) => !n.pinned);
   const shownPinned = expandPinned ? pinned : pinned.slice(0, 2);
-  const shownRecent = expandRecent ? recent : recent.slice(0, 6);
+  const shownRecent = expandRecent ? recent : recent.slice(0, 12);
+  const hasNotes = state.notes.length > 0;
 
   const openExisting = (note: Note) => {
     setEditingNew(false);
@@ -91,9 +106,9 @@ function Index() {
     <Screen>
       <TopBar subtitle="Ruang tenang untuk pikiranmu" onSort={() => setSortAsc((s) => !s)} />
 
-      <section className="sticky top-[calc(env(safe-area-inset-top)+76px)] z-20 border-b border-border/45 bg-background/94 pb-3 pt-1 shadow-[0_10px_24px_rgba(7,13,24,0.08)] backdrop-blur-xl">
-        <div className="px-4 animate-fade-up">
-          <div className="flex items-center gap-2.5 rounded-2xl bg-muted px-4 py-3 transition-shadow duration-300 focus-within:shadow-md focus-within:ring-2 focus-within:ring-primary/25">
+      <section className="shrink-0 border-b border-border/60 bg-card pb-3">
+        <div className="px-4">
+          <div className="flex items-center gap-2.5 rounded-full border border-border bg-secondary/60 px-4 py-3 transition-shadow duration-300 focus-within:border-primary/40 focus-within:bg-card focus-within:ring-2 focus-within:ring-primary/15">
             <Search className="h-[18px] w-[18px] shrink-0 text-muted-foreground" />
             <input
               value={q}
@@ -110,18 +125,18 @@ function Index() {
           </div>
         </div>
 
-        <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto px-4 pb-1">
+        <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto px-4">
           {FILTERS.map((f, i) => {
             const active = filter === f.key;
             return (
               <button
                 key={f.key}
                 onClick={() => setFilter(f.key)}
-                style={{ animationDelay: `${i * 45}ms` }}
+                style={{ animationDelay: `${i * 40}ms` }}
                 className={`press flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-[7px] text-[13px] font-medium transition-all duration-300 animate-fade-up ${
                   active
-                    ? "border-primary bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                    : "border-border bg-card text-foreground/75 hover:bg-muted"
+                    ? "border-primary bg-primary text-primary-foreground shadow-sm shadow-primary/25"
+                    : "border-border bg-card text-foreground/70 hover:bg-muted"
                 }`}
               >
                 <f.Icon className={`h-[15px] w-[15px] ${active ? "" : "text-muted-foreground"}`} />
@@ -132,58 +147,124 @@ function Index() {
         </div>
       </section>
 
-      {pinned.length > 0 && (
-        <>
-          <SectionTitle
-            action={
-              pinned.length > 2 ? (
-                <LinkAction onClick={() => setExpandPinned((v) => !v)}>
-                  {expandPinned ? "Ringkas" : "Lihat semua"}
-                </LinkAction>
-              ) : undefined
-            }
-          >
-            <span className="inline-flex items-center gap-1.5">Disematkan</span>
-          </SectionTitle>
-          <div className="grid grid-cols-2 gap-3 px-4 stagger">
-            {shownPinned.map((n) => (
-              <NoteTile key={n.id} note={n} onOpen={openExisting} />
-            ))}
+      <Scroll>
+        {!hasNotes ? (
+          <div className="px-4 pt-8">
+            <EmptyState
+              icon={<AsterFlower className="h-9 w-9" />}
+              title="Belum ada catatan"
+              description="Mulai dengan satu catatan, checklist, atau jurnal singkat. Semuanya tersimpan di perangkatmu."
+              action={
+                <button
+                  onClick={() => setSheet(true)}
+                  className="press rounded-full bg-primary px-5 py-2.5 text-[13px] font-semibold text-primary-foreground shadow-lg shadow-primary/25"
+                >
+                  Buat catatan pertama
+                </button>
+              }
+            />
           </div>
-        </>
-      )}
+        ) : filtered.length === 0 ? (
+          <div className="px-4 pt-8">
+            <EmptyState
+              compact
+              icon={<Search className="h-7 w-7" />}
+              title="Tidak ada yang cocok"
+              description="Coba kata kunci lain atau ubah filter yang sedang aktif."
+            />
+          </div>
+        ) : (
+          <>
+            {pinned.length > 0 && (
+              <>
+                <SectionTitle
+                  tight
+                  action={
+                    pinned.length > 2 ? (
+                      <button
+                        onClick={() => setExpandPinned((v) => !v)}
+                        className="press text-[12.5px] font-semibold text-primary"
+                      >
+                        {expandPinned ? "Ringkas" : "Lihat semua"}
+                      </button>
+                    ) : undefined
+                  }
+                >
+                  Disematkan
+                </SectionTitle>
+                <div className="grid grid-cols-2 gap-3 px-4 stagger">
+                  {shownPinned.map((n) => (
+                    <NoteTile key={n.id} note={n} onOpen={openExisting} />
+                  ))}
+                </div>
+              </>
+            )}
 
-      <SectionTitle
-        action={
-          recent.length > 6 ? (
-            <LinkAction onClick={() => setExpandRecent((v) => !v)}>
-              {expandRecent ? "Ringkas" : "Lihat semua"}
-            </LinkAction>
-          ) : undefined
-        }
-      >
-        Catatan Terbaru
-      </SectionTitle>
-      <div className="space-y-2.5 px-4 stagger">
-        {shownRecent.map((n) => (
-          <NoteRow key={n.id} note={n} onOpen={openExisting} />
-        ))}
-        {filtered.length === 0 && (
-          <p className="rounded-2xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground animate-fade-up">
-            Belum ada yang cocok. Buat catatan baru.
-          </p>
+            <SectionTitle
+              action={
+                <div className="flex shrink-0 items-center gap-1">
+                  {recent.length > 12 && (
+                    <button
+                      onClick={() => setExpandRecent((v) => !v)}
+                      className="press mr-1 text-[12.5px] font-semibold text-primary"
+                    >
+                      {expandRecent ? "Ringkas" : "Lihat semua"}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setView("list")}
+                    aria-label="Tampilan daftar"
+                    className={`press grid h-8 w-8 place-items-center rounded-lg ${
+                      view === "list" ? "bg-primary/10 text-primary" : "text-muted-foreground"
+                    }`}
+                  >
+                    <List className="h-[17px] w-[17px]" />
+                  </button>
+                  <button
+                    onClick={() => setView("grid")}
+                    aria-label="Tampilan grid"
+                    className={`press grid h-8 w-8 place-items-center rounded-lg ${
+                      view === "grid" ? "bg-primary/10 text-primary" : "text-muted-foreground"
+                    }`}
+                  >
+                    <LayoutGrid className="h-[17px] w-[17px]" />
+                  </button>
+                </div>
+              }
+            >
+              Catatan Terbaru
+            </SectionTitle>
+
+            {recent.length === 0 ? (
+              <p className="px-4 text-[12.5px] text-muted-foreground">
+                Semua catatanmu sedang disematkan.
+              </p>
+            ) : view === "grid" ? (
+              <div className="grid grid-cols-2 gap-3 px-4 stagger">
+                {shownRecent.map((n) => (
+                  <NoteTile key={n.id} note={n} onOpen={openExisting} />
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-2.5 px-4 stagger">
+                {shownRecent.map((n) => (
+                  <NoteRow key={n.id} note={n} onOpen={openExisting} />
+                ))}
+              </div>
+            )}
+          </>
         )}
-      </div>
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-[calc(6.75rem+env(safe-area-inset-bottom))] z-50 mx-auto flex max-w-[520px] justify-end px-5">
-        <button
-          onClick={() => setSheet(true)}
-          aria-label="Buat baru"
-          className="press-lg pointer-events-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/35 animate-bounce-in transition-transform duration-300 hover:rotate-90 hover:scale-105"
-        >
-          <Plus className="h-6 w-6" />
-        </button>
-      </div>
+        <div className="pointer-events-none sticky bottom-3 z-30 mt-4 flex justify-end px-5">
+          <button
+            onClick={() => setSheet(true)}
+            aria-label="Buat baru"
+            className="press-lg pointer-events-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-xl shadow-primary/35 transition-transform duration-300 hover:rotate-90 hover:scale-105"
+          >
+            <Plus className="h-6 w-6" />
+          </button>
+        </div>
+      </Scroll>
 
       <QuickCreateSheet open={sheet} onClose={() => setSheet(false)} onCreate={create} />
       {editing && (
