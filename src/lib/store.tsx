@@ -126,136 +126,60 @@ const KEY = "aster-journal-v1";
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 const now = () => new Date().toISOString();
-const daysAgo = (n: number) => new Date(Date.now() - n * 86400000).toISOString();
 
-function seed(): AsterState {
+/** System folders that always exist. No demo content is ever injected. */
+export const SYSTEM_FOLDERS: Folder[] = [
+  { id: "sys-archive", name: "Arsip", color: "#a8b4c8", system: true },
+  { id: "sys-trash", name: "Sampah", color: "#c8a8a8", system: true },
+];
+
+export const GUEST_PROFILE: Profile = {
+  name: "Pengguna Aster",
+  email: "",
+  bio: "",
+  darkMode: false,
+  reminders: false,
+  weeklyDigest: false,
+  biometric: false,
+};
+
+/** Fresh install state — completely empty, only system folders. */
+function emptyState(): AsterState {
   return {
-    folders: [
-      { id: "f-personal", name: "Pribadi", color: "#7aa7ff" },
-      { id: "f-work", name: "Pekerjaan", color: "#f0a868" },
-      { id: "f-ideas", name: "Ide", color: "#8fd8b0" },
-      { id: "f-journal", name: "Jurnal", color: "#d8a8e8" },
-      { id: "f-archive", name: "Arsip", color: "#a8b4c8", system: true },
-    ],
-    notes: [
-      {
-        id: uid(),
-        type: "journal",
-        title: "Jurnal Pagi",
-        body: "Udara pagi ini terasa ringan. Aku duduk di beranda, menyeduh teh, dan menyadari betapa jarangnya aku memberi waktu untuk diam. Hari ini aku ingin bergerak lebih pelan.",
-        items: [],
-        tags: ["pagi", "syukur"],
-        folderId: "f-journal",
-        pinned: true,
-        favorite: true,
-        image: null,
-        createdAt: daysAgo(0),
-        updatedAt: daysAgo(0),
-      },
-      {
-        id: uid(),
-        type: "checklist",
-        title: "Prinsip Desain",
-        body: "",
-        items: [
-          { id: uid(), text: "Kejelasan sebelum keindahan", done: true },
-          { id: uid(), text: "Konsistensi menciptakan kepercayaan", done: true },
-          { id: uid(), text: "Beri ruang untuk bernapas", done: false },
-          { id: uid(), text: "Gerak harus punya makna", done: false },
-        ],
-        tags: ["desain", "kerja"],
-        folderId: "f-work",
-        pinned: true,
-        favorite: false,
-        image: null,
-        createdAt: daysAgo(1),
-        updatedAt: daysAgo(1),
-      },
-      {
-        id: uid(),
-        type: "note",
-        title: "Ide Aplikasi Baru",
-        body: "Aplikasi yang membantu orang menuliskan satu kalimat setiap hari. Sederhana, tanpa tekanan, hanya satu kalimat.",
-        items: [],
-        tags: ["ide"],
-        folderId: "f-ideas",
-        pinned: false,
-        favorite: true,
-        image: null,
-        createdAt: daysAgo(2),
-        updatedAt: daysAgo(2),
-      },
-      {
-        id: uid(),
-        type: "checklist",
-        title: "Belanja Mingguan",
-        body: "",
-        items: [
-          { id: uid(), text: "Kopi bubuk", done: false },
-          { id: uid(), text: "Roti gandum", done: true },
-          { id: uid(), text: "Buah segar", done: false },
-        ],
-        tags: ["rumah"],
-        folderId: "f-personal",
-        pinned: false,
-        favorite: false,
-        image: null,
-        createdAt: daysAgo(3),
-        updatedAt: daysAgo(3),
-      },
-      {
-        id: uid(),
-        type: "note",
-        title: "Catatan Rapat",
-        body: "Tim sepakat memprioritaskan onboarding. Target rilis akhir bulan.",
-        items: [],
-        tags: ["kerja", "rapat"],
-        folderId: "f-work",
-        pinned: false,
-        favorite: false,
-        image: null,
-        createdAt: daysAgo(5),
-        updatedAt: daysAgo(4),
-      },
-    ],
-    reflections: [
-      {
-        id: uid(),
-        prompt: PROMPTS[0],
-        body: "Aku bersyukur untuk kopi hangat dan pesan singkat dari teman lama.",
-        mood: "good",
-        tags: ["syukur"],
-        createdAt: daysAgo(0),
-      },
-      {
-        id: uid(),
-        prompt: PROMPTS[3],
-        body: "Aku ingin melepas kebiasaan membandingkan progresku dengan orang lain.",
-        mood: "okay",
-        tags: ["tumbuh"],
-        createdAt: daysAgo(1),
-      },
-      {
-        id: uid(),
-        prompt: PROMPTS[6],
-        body: "Sebagai hari ketika aku memilih istirahat tanpa merasa bersalah.",
-        mood: "great",
-        tags: ["istirahat"],
-        createdAt: daysAgo(3),
-      },
-    ],
-    favoritePrompts: [PROMPTS[1]],
-    profile: {
-      name: "Emily Carter",
-      email: "emily.carter@email.com",
-      bio: "Menulis pelan-pelan, setiap hari.",
-      darkMode: false,
-      reminders: true,
-      weeklyDigest: false,
-      biometric: false,
-    },
+    folders: SYSTEM_FOLDERS.map((f) => ({ ...f })),
+    notes: [],
+    reflections: [],
+    favoritePrompts: [],
+    profile: { ...GUEST_PROFILE },
   };
 }
+
+/** Merge stored data safely: never drop real user data, only add missing defaults. */
+function migrate(raw: string): AsterState {
+  const base = emptyState();
+  let saved: Partial<AsterState> = {};
+  try {
+    saved = JSON.parse(raw) as Partial<AsterState>;
+  } catch {
+    return base;
+  }
+
+  const folders = Array.isArray(saved.folders) ? [...saved.folders] : [];
+  for (const sys of SYSTEM_FOLDERS) {
+    if (!folders.some((f) => f.id === sys.id || (f.system && f.name === sys.name))) {
+      folders.push({ ...sys });
+    }
+  }
+
+  return {
+    folders,
+    notes: Array.isArray(saved.notes) ? saved.notes : [],
+    reflections: Array.isArray(saved.reflections) ? saved.reflections : [],
+    favoritePrompts: Array.isArray(saved.favoritePrompts) ? saved.favoritePrompts : [],
+    profile: { ...base.profile, ...(saved.profile ?? {}), darkMode: false },
+  };
+}
+
 
 type Ctx = {
   state: AsterState;
