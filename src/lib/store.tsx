@@ -374,7 +374,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, profile: { ...s.profile, ...p } }));
   }, []);
 
-  const resetAll = useCallback(() => setState(seed()), []);
+  const resetAll = useCallback(() => setState(emptyState()), []);
 
   const value = useMemo<Ctx>(
     () => ({
