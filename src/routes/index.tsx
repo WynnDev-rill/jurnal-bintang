@@ -273,16 +273,27 @@ function Index() {
       </Scroll>
 
       <QuickCreateSheet open={sheet} onClose={() => setSheet(false)} onCreate={create} />
+      {viewing && !editing && (
+        <NoteDetail
+          note={viewing}
+          onClose={() => setViewingId(null)}
+          onEdit={() => {
+            setEditingNew(false);
+            setEditingId(viewing.id);
+          }}
+        />
+      )}
       {editing && (
         <NoteEditor
           note={editing}
           isNew={editingNew}
           onClose={() => {
-            setEditing(null);
+            setEditingId(null);
             setEditingNew(false);
           }}
         />
       )}
+
     </Screen>
   );
 }
