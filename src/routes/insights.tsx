@@ -167,9 +167,7 @@ function InsightsPage() {
           ))}
         </div>
 
-            </div>
-          ))}
-        </div>
+
 
         {!hasData && (
           <div className="px-4 pt-5">
