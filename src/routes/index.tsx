@@ -14,6 +14,8 @@ import {
 import { EmptyState, Screen, Scroll, SectionTitle } from "@/components/aster/Screen";
 import { TopBar } from "@/components/aster/TopBar";
 import { NoteRow, NoteTile } from "@/components/aster/NoteCard";
+import { NoteDetail } from "@/components/aster/NoteDetail";
+
 import { NoteEditor } from "@/components/aster/NoteEditor";
 import { QuickCreateSheet } from "@/components/aster/QuickCreateSheet";
 import { AsterFlower } from "@/components/aster/Logo";
