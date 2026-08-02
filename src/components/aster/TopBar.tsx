@@ -42,16 +42,10 @@ export function TopBar({
             <AsterMark className="h-6 w-6" />
           </span>
           <div className="min-w-0">
-            <div className="flex items-baseline gap-1.5">
-              <h1 className="truncate font-display text-[21px] leading-tight tracking-tight-display text-foreground">
-                {title}
-              </h1>
-              {showWatermark && (
-                <span className="shrink-0 font-display text-[10px] italic text-muted-foreground/70">
-                  by Wynn
-                </span>
-              )}
-            </div>
+            <h1 className="truncate font-display text-[21px] leading-tight tracking-tight-display text-foreground">
+              {title}
+            </h1>
+
             {subtitle && <p className="truncate text-[11.5px] text-muted-foreground">{subtitle}</p>}
           </div>
         </div>
