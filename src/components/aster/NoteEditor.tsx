@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Check, Image as ImageIcon, Plus, Tag, Trash2, X } from "lucide-react";
+import { Check, Image as ImageIcon, Pin, Plus, Star, Tag, Trash2, X } from "lucide-react";
 import { useStore, type Note, type NoteType } from "@/lib/store";
 
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
