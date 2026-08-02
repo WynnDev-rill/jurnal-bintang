@@ -32,7 +32,7 @@ export function NoteEditor({
   isNew?: boolean;
   onClose: () => void;
 }) {
-  const { updateNote, deleteNote } = useStore();
+  const { updateNote, deleteNote, togglePin, toggleFavorite } = useStore();
   const [title, setTitle] = useState(note.title);
   const [body, setBody] = useState(note.body);
   const [items, setItems] = useState(note.items);
