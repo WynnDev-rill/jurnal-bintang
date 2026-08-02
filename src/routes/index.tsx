@@ -93,7 +93,7 @@ function Index() {
 
   const openExisting = (note: Note) => {
     setEditingNew(false);
-    setEditing(note);
+    setViewingId(note.id);
   };
 
   const create = (type: NoteType) => {
@@ -104,8 +104,9 @@ function Index() {
     });
     setSheet(false);
     setEditingNew(true);
-    setEditing(n);
+    setEditingId(n.id);
   };
+
 
   return (
     <Screen>
