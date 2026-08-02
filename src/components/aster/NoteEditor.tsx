@@ -127,9 +127,31 @@ export function NoteEditor({
         >
           <X className="h-[18px] w-[18px]" />
         </button>
-        <p className="flex-1 text-center text-sm font-semibold">
+        <p className="min-w-0 flex-1 truncate text-center text-sm font-semibold">
           {isNew ? "Buat" : "Edit"} {typeLabel[note.type]}
         </p>
+        {!isNew && (
+          <>
+            <button
+              onClick={() => togglePin(note.id)}
+              aria-label={note.pinned ? "Lepas sematan" : "Sematkan"}
+              className={`press grid h-9 w-9 place-items-center rounded-full hover:bg-muted ${
+                note.pinned ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              <Pin className={`h-[18px] w-[18px] ${note.pinned ? "fill-current" : ""}`} />
+            </button>
+            <button
+              onClick={() => toggleFavorite(note.id)}
+              aria-label={note.favorite ? "Hapus dari favorit" : "Tandai favorit"}
+              className={`press grid h-9 w-9 place-items-center rounded-full hover:bg-muted ${
+                note.favorite ? "text-amber-500" : "text-muted-foreground"
+              }`}
+            >
+              <Star className={`h-[18px] w-[18px] ${note.favorite ? "fill-current" : ""}`} />
+            </button>
+          </>
+        )}
         <button
           onClick={removeNote}
           aria-label={`Hapus ${typeLabel[note.type]}`}
@@ -137,6 +159,7 @@ export function NoteEditor({
         >
           <Trash2 className="h-[18px] w-[18px]" />
         </button>
+
         <button
           onClick={save}
           aria-label="Simpan"
