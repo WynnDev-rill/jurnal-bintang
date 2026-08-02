@@ -7,19 +7,18 @@ export function TopBar({
   title = "Aster Journal",
   subtitle,
   right,
-  showWatermark = true,
   showDefaultActions = true,
   onSort,
 }: {
   title?: string;
   subtitle?: string;
   right?: React.ReactNode;
-  showWatermark?: boolean;
   showDefaultActions?: boolean;
   onSort?: () => void;
   /** kept for compatibility; the shell handles stickiness now */
   sticky?: boolean;
 }) {
+
   const testNotification = async () => {
     try {
       const result = await sendNotificationPreview();
