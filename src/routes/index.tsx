@@ -52,13 +52,18 @@ function Index() {
   const { state, addNote } = useStore();
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["key"]>("all");
-  const [editing, setEditing] = useState<Note | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [viewingId, setViewingId] = useState<string | null>(null);
   const [editingNew, setEditingNew] = useState(false);
   const [sheet, setSheet] = useState(false);
   const [expandPinned, setExpandPinned] = useState(false);
   const [expandRecent, setExpandRecent] = useState(false);
   const [sortAsc, setSortAsc] = useState(false);
   const [view, setView] = useState<"list" | "grid">("list");
+
+  const editing = state.notes.find((n) => n.id === editingId) ?? null;
+  const viewing = state.notes.find((n) => n.id === viewingId) ?? null;
+
 
   const filtered = useMemo(() => {
     const term = q.trim().toLocaleLowerCase("id-ID");
