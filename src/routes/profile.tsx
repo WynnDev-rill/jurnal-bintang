@@ -264,13 +264,14 @@ function ProfilePage() {
           <Row Icon={Sparkles} label="Apa yang Baru" hint="Tampilan terang baru & kalender aktivitas">
             <span className="w-0" />
           </Row>
-          <Row Icon={Info} label="Tentang Aster Journal" hint="Versi 1.0 · by Wynn">
+          <Row Icon={Info} label="Tentang Aster Journal" hint="Versi 1.0">
             <span className="w-0" />
           </Row>
         </div>
 
         <p className="py-6 text-center font-display text-[11.5px] italic text-muted-foreground">
-          Aster Journal — by Wynn
+          Aster Journal
+
         </p>
       </Scroll>
     </Screen>

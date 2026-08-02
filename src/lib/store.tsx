@@ -69,7 +69,7 @@ export const MOODS: {
   {
     key: "great",
     label: "Hebat",
-    emoji: "🌞",
+    emoji: "😄",
     tint: "bg-amber-100/70 dark:bg-amber-400/15",
     ring: "ring-amber-300 dark:ring-amber-400/60",
     text: "text-amber-600 dark:text-amber-300",

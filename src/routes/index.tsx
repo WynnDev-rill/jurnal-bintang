@@ -14,6 +14,8 @@ import {
 import { EmptyState, Screen, Scroll, SectionTitle } from "@/components/aster/Screen";
 import { TopBar } from "@/components/aster/TopBar";
 import { NoteRow, NoteTile } from "@/components/aster/NoteCard";
+import { NoteDetail } from "@/components/aster/NoteDetail";
+
 import { NoteEditor } from "@/components/aster/NoteEditor";
 import { QuickCreateSheet } from "@/components/aster/QuickCreateSheet";
 import { AsterFlower } from "@/components/aster/Logo";
@@ -52,13 +54,18 @@ function Index() {
   const { state, addNote } = useStore();
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState<(typeof FILTERS)[number]["key"]>("all");
-  const [editing, setEditing] = useState<Note | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [viewingId, setViewingId] = useState<string | null>(null);
   const [editingNew, setEditingNew] = useState(false);
   const [sheet, setSheet] = useState(false);
   const [expandPinned, setExpandPinned] = useState(false);
   const [expandRecent, setExpandRecent] = useState(false);
   const [sortAsc, setSortAsc] = useState(false);
   const [view, setView] = useState<"list" | "grid">("list");
+
+  const editing = state.notes.find((n) => n.id === editingId) ?? null;
+  const viewing = state.notes.find((n) => n.id === viewingId) ?? null;
+
 
   const filtered = useMemo(() => {
     const term = q.trim().toLocaleLowerCase("id-ID");
@@ -88,7 +95,7 @@ function Index() {
 
   const openExisting = (note: Note) => {
     setEditingNew(false);
-    setEditing(note);
+    setViewingId(note.id);
   };
 
   const create = (type: NoteType) => {
@@ -99,8 +106,9 @@ function Index() {
     });
     setSheet(false);
     setEditingNew(true);
-    setEditing(n);
+    setEditingId(n.id);
   };
+
 
   return (
     <Screen>
@@ -267,16 +275,27 @@ function Index() {
       </Scroll>
 
       <QuickCreateSheet open={sheet} onClose={() => setSheet(false)} onCreate={create} />
+      {viewing && !editing && (
+        <NoteDetail
+          note={viewing}
+          onClose={() => setViewingId(null)}
+          onEdit={() => {
+            setEditingNew(false);
+            setEditingId(viewing.id);
+          }}
+        />
+      )}
       {editing && (
         <NoteEditor
           note={editing}
           isNew={editingNew}
           onClose={() => {
-            setEditing(null);
+            setEditingId(null);
             setEditingNew(false);
           }}
         />
       )}
+
     </Screen>
   );
 }

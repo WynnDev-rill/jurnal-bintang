@@ -1,6 +1,16 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { BarChart3, CalendarDays, ChevronLeft, ChevronRight, Tag } from "lucide-react";
+import {
+  BarChart3,
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
+  Flame,
+  Heart,
+  NotebookPen,
+  Tag,
+} from "lucide-react";
+
 import { EmptyState, Screen, Scroll, SectionTitle } from "@/components/aster/Screen";
 import { TopBar } from "@/components/aster/TopBar";
 import { MOODS, formatDate, useStore } from "@/lib/store";
@@ -116,9 +126,30 @@ function InsightsPage() {
   );
 
   const cards = [
-    { label: "Catatan Dibuat", value: stats.notes, sub: "Total", emoji: "📝", tint: "tile-blue" },
-    { label: "Streak Jurnal", value: stats.streak, sub: "Hari menulis", emoji: "🔥", tint: "tile-amber" },
-    { label: "Refleksi", value: stats.refl, sub: "Tersimpan", emoji: "💜", tint: "tile-violet" },
+    {
+      label: "Catatan Dibuat",
+      value: stats.notes,
+      sub: "Total",
+      Icon: NotebookPen,
+      color: "text-sky-500",
+      tint: "tile-blue",
+    },
+    {
+      label: "Streak Jurnal",
+      value: stats.streak,
+      sub: "Hari menulis",
+      Icon: Flame,
+      color: "text-amber-500",
+      tint: "tile-amber",
+    },
+    {
+      label: "Refleksi",
+      value: stats.refl,
+      sub: "Tersimpan",
+      Icon: Heart,
+      color: "text-violet-500",
+      tint: "tile-violet",
+    },
   ];
 
   return (
@@ -140,13 +171,13 @@ function InsightsPage() {
               </p>
               <div className="mt-1.5 flex items-end justify-between">
                 <p className="text-[10px] leading-tight text-muted-foreground">{s.sub}</p>
-                <span className="emoji text-[15px]" aria-hidden="true">
-                  {s.emoji}
-                </span>
+                <s.Icon className={`h-[15px] w-[15px] shrink-0 ${s.color}`} aria-hidden="true" />
               </div>
             </div>
           ))}
         </div>
+
+
 
         {!hasData && (
           <div className="px-4 pt-5">
