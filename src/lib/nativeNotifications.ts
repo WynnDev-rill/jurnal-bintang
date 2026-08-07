@@ -26,7 +26,13 @@ async function ensureChannel() {
   });
 }
 
-export async function setDailyReminder(enabled: boolean) {
+function parseTime(value: string) {
+  const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(value);
+  if (!match) return { hour: 20, minute: 0 };
+  return { hour: Number(match[1]), minute: Number(match[2]) };
+}
+
+export async function setDailyReminder(enabled: boolean, time = "20:00") {
   if (!Capacitor.isNativePlatform()) return { supported: false, enabled: false };
   await LocalNotifications.cancel({ notifications: [{ id: DAILY_ID }] });
   if (!enabled) return { supported: true, enabled: false };
@@ -34,6 +40,7 @@ export async function setDailyReminder(enabled: boolean) {
   const granted = await ensurePermission();
   if (!granted) return { supported: true, enabled: false, denied: true };
   await ensureChannel();
+  const { hour, minute } = parseTime(time);
 
   await LocalNotifications.schedule({
     notifications: [
@@ -43,7 +50,7 @@ export async function setDailyReminder(enabled: boolean) {
         body: "Luangkan beberapa menit untuk mencatat harimu di Aster Journal.",
         channelId: CHANNEL_ID,
         smallIcon: "ic_launcher",
-        schedule: { on: { hour: 20, minute: 0 }, repeats: true, allowWhileIdle: true },
+        schedule: { on: { hour, minute }, repeats: true, allowWhileIdle: true },
       },
     ],
   });
@@ -85,7 +92,7 @@ export async function sendNotificationPreview() {
       {
         id: Math.floor(Date.now() % 100000),
         title: "Aster Journal",
-        body: "Notifikasi aktif. Pengingatmu memakai ikon Aster Journal.",
+        body: "Notifikasi aktif. Pengingatmu sudah siap.",
         channelId: CHANNEL_ID,
         smallIcon: "ic_launcher",
         schedule: { at: new Date(Date.now() + 1200) },
