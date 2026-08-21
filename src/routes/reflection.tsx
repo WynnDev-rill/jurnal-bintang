@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   BookOpen,
@@ -63,7 +63,7 @@ const QUICK_GUIDES = [
 ] as const;
 
 function ReflectionPage() {
-  const { state, addReflection, deleteReflection, togglePromptFavorite, setMoodToday } = useStore();
+  const { state, addReflection, clearReflectionDraft, deleteReflection, saveReflectionDraft, togglePromptFavorite, setMoodToday } = useStore();
   const [promptIdx, setPromptIdx] = useState(daySeed);
   const [seen, setSeen] = useState<number[]>(() => [daySeed()]);
   const [composer, setComposer] = useState(false);
@@ -82,6 +82,7 @@ function ReflectionPage() {
   const recent = allReflections ? saved : saved.slice(0, 4);
   const todayKey = new Date().toDateString();
   const todayMood = state.reflections.find((r) => new Date(r.createdAt).toDateString() === todayKey && r.mood)?.mood ?? null;
+  const draft = state.reflectionDraft;
 
   const filteredPrompts = useMemo(() => {
     const q = promptSearch.trim().toLocaleLowerCase("id-ID");
@@ -116,13 +117,27 @@ function ReflectionPage() {
   };
 
   const openComposer = (nextPrompt = prompt, nextBody = "", nextTags: readonly string[] = []) => {
-    setDraftPrompt(nextPrompt);
-    setBody(nextBody);
-    setTags([...nextTags]);
-    setMood(todayMood);
+    setDraftPrompt(draft?.prompt ?? nextPrompt);
+    setBody(draft?.body ?? nextBody);
+    setTags(draft?.tags ?? [...nextTags]);
+    setMood(draft?.mood ?? todayMood);
     setTagInput("");
     setComposer(true);
   };
+
+  const persistDraft = useCallback(() => {
+    if (!body.trim() && tags.length === 0 && !mood) {
+      clearReflectionDraft();
+      return;
+    }
+    saveReflectionDraft({ prompt: draftPrompt, body, mood, tags });
+  }, [body, clearReflectionDraft, draftPrompt, mood, saveReflectionDraft, tags]);
+
+  useEffect(() => {
+    if (!composer) return;
+    const timer = window.setTimeout(persistDraft, 350);
+    return () => window.clearTimeout(timer);
+  }, [composer, persistDraft]);
 
   const addTag = () => {
     const t = tagInput.trim().toLocaleLowerCase("id-ID");
@@ -134,6 +149,7 @@ function ReflectionPage() {
     const text = body.trim();
     if (!text) return;
     addReflection({ prompt: draftPrompt, body: text, mood, tags });
+    clearReflectionDraft();
     setBody("");
     setTags([]);
     setMood(null);
@@ -160,6 +176,16 @@ function ReflectionPage() {
             </div>
           </div>
         </div>
+
+        {draft && (
+          <div className="px-4 pt-3">
+            <button onClick={() => openComposer()} className="press soft-card flex min-h-16 w-full items-center gap-3 rounded-2xl p-3.5 text-left">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><Pencil className="h-[18px] w-[18px]" /></span>
+              <span className="min-w-0 flex-1"><span className="block text-[13.5px] font-semibold">Lanjutkan draf refleksi</span><span className="mt-0.5 block truncate text-[11.5px] text-muted-foreground">{draft.body.trim() || draft.prompt}</span></span>
+              <span className="text-[11.5px] font-semibold text-primary">Lanjutkan</span>
+            </button>
+          </div>
+        )}
 
         <SectionTitle>Mulai Cepat</SectionTitle>
         <div className="grid grid-cols-3 gap-2.5 px-4">
@@ -229,8 +255,8 @@ function ReflectionPage() {
       {composer && (
         <div className="fixed inset-0 z-50 mx-auto flex max-w-[520px] flex-col bg-background animate-slide-up">
           <header className="flex shrink-0 items-center gap-2 border-b border-border bg-card px-3 pb-3 pt-[calc(env(safe-area-inset-top)+12px)]">
-            <button onClick={() => setComposer(false)} aria-label="Tutup refleksi" className="press grid h-10 w-10 place-items-center rounded-full"><X className="h-[19px] w-[19px]" /></button>
-            <p className="flex-1 text-center text-sm font-semibold">Tulis Refleksi</p>
+            <button onClick={() => { persistDraft(); setComposer(false); }} aria-label="Tutup refleksi dan simpan draf" className="press grid h-10 w-10 place-items-center rounded-full"><X className="h-[19px] w-[19px]" /></button>
+            <div className="min-w-0 flex-1 text-center"><p className="text-sm font-semibold">Tulis Refleksi</p><p className="text-[10px] text-muted-foreground">Draf disimpan otomatis</p></div>
             <button onClick={saveReflection} disabled={!body.trim()} className="press min-h-10 rounded-full bg-primary px-4 text-[12.5px] font-semibold text-primary-foreground disabled:opacity-40">Simpan</button>
           </header>
           <div className="flex-1 overflow-y-auto px-4 pb-[calc(env(safe-area-inset-bottom)+32px)] pt-5">

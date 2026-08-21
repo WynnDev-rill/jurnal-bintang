@@ -80,7 +80,6 @@ function FoldersPage() {
   };
 
   const openNote = (note: Note) => {
-    setCollection(null);
     setViewingId(note.id);
   };
 
