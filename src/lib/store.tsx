@@ -38,6 +38,15 @@ export type Reflection = {
   createdAt: string;
 };
 
+/** A locally persisted reflection that has not yet been committed to history. */
+export type ReflectionDraft = {
+  prompt: string;
+  body: string;
+  mood: MoodKey | null;
+  tags: string[];
+  updatedAt: string;
+};
+
 export type Profile = {
   name: string;
   email: string;
@@ -54,6 +63,7 @@ export type AsterState = {
   notes: Note[];
   folders: Folder[];
   reflections: Reflection[];
+  reflectionDraft: ReflectionDraft | null;
   favoritePrompts: string[];
   profile: Profile;
 };
@@ -129,7 +139,8 @@ export const GUEST_PROFILE: Profile = {
   defaultView: "list",
 };
 
-const KEY = "aster-journal-v1";
+const KEY = "aster-journal-v2";
+const PREVIOUS_KEY = "aster-journal-v1";
 const uid = () => globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2, 10);
 const now = () => new Date().toISOString();
 const isMood = (value: unknown): value is MoodKey => ["great", "good", "okay", "meh", "hard"].includes(String(value));
@@ -139,6 +150,7 @@ function emptyState(): AsterState {
     folders: SYSTEM_FOLDERS.map((f) => ({ ...f })),
     notes: [],
     reflections: [],
+    reflectionDraft: null,
     favoritePrompts: [],
     profile: { ...GUEST_PROFILE },
   };
@@ -182,6 +194,17 @@ function normalizeReflection(value: unknown): Reflection | null {
   };
 }
 
+function normalizeReflectionDraft(value: unknown): ReflectionDraft | null {
+  if (!value || typeof value !== "object") return null;
+  const draft = value as Partial<ReflectionDraft>;
+  const body = typeof draft.body === "string" ? draft.body : "";
+  const tags = Array.isArray(draft.tags) ? draft.tags.filter((tag): tag is string => typeof tag === "string") : [];
+  const prompt = typeof draft.prompt === "string" ? draft.prompt : PROMPTS[0];
+  const mood = isMood(draft.mood) ? draft.mood : null;
+  if (!body.trim() && tags.length === 0 && !mood) return null;
+  return { prompt, body, tags, mood, updatedAt: typeof draft.updatedAt === "string" ? draft.updatedAt : now() };
+}
+
 function migrate(raw: string): AsterState {
   const base = emptyState();
   let saved: Partial<AsterState> = {};
@@ -211,6 +234,7 @@ function migrate(raw: string): AsterState {
     folders,
     notes: Array.isArray(saved.notes) ? saved.notes.map(normalizeNote).filter((n): n is Note => Boolean(n)) : [],
     reflections: Array.isArray(saved.reflections) ? saved.reflections.map(normalizeReflection).filter((r): r is Reflection => Boolean(r)) : [],
+    reflectionDraft: normalizeReflectionDraft(saved.reflectionDraft),
     favoritePrompts: Array.isArray(saved.favoritePrompts) ? saved.favoritePrompts.filter((p): p is string => typeof p === "string") : [],
     profile: { ...base.profile, ...profileInput, reminderTime, defaultView },
   };
@@ -219,6 +243,7 @@ function migrate(raw: string): AsterState {
 type Ctx = {
   state: AsterState;
   ready: boolean;
+  storageIssue: string | null;
   addNote: (n: Partial<Note>) => Note;
   updateNote: (id: string, patch: Partial<Note>) => void;
   deleteNote: (id: string) => void;
@@ -233,6 +258,8 @@ type Ctx = {
   deleteFolder: (id: string) => void;
   addReflection: (r: Partial<Reflection>) => void;
   deleteReflection: (id: string) => void;
+  saveReflectionDraft: (draft: Omit<ReflectionDraft, "updatedAt">) => void;
+  clearReflectionDraft: () => void;
   togglePromptFavorite: (p: string) => void;
   setMoodToday: (m: MoodKey) => void;
   updateProfile: (p: Partial<Profile>) => void;
@@ -246,13 +273,14 @@ const COLORS = ["#7aa7ff", "#f0a868", "#8fd8b0", "#d8a8e8", "#f2a5a5", "#9fd0e8"
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AsterState>(() => emptyState());
   const [ready, setReady] = useState(false);
+  const [storageIssue, setStorageIssue] = useState<string | null>(null);
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(KEY);
+      const raw = localStorage.getItem(KEY) ?? localStorage.getItem(PREVIOUS_KEY);
       if (raw) setState(migrate(raw));
     } catch {
-      // Local persistence is best-effort; UI remains usable with in-memory state.
+      setStorageIssue("Aster tidak dapat membuka penyimpanan perangkat. Jangan tutup aplikasi sebelum membuat cadangan.");
     }
     setReady(true);
   }, []);
@@ -261,8 +289,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     if (!ready) return;
     try {
       localStorage.setItem(KEY, JSON.stringify(state));
+      setStorageIssue(null);
     } catch {
-      // Quota errors should never destroy the currently open session.
+      setStorageIssue("Ruang penyimpanan perangkat penuh atau tidak tersedia. Perubahan terakhir belum aman setelah aplikasi ditutup.");
     }
   }, [state, ready]);
 
@@ -329,6 +358,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, reflections: s.reflections.filter((r) => r.id !== id) }));
   }, []);
 
+  const saveReflectionDraft = useCallback((draft: Omit<ReflectionDraft, "updatedAt">) => {
+    setState((s) => ({ ...s, reflectionDraft: { ...draft, updatedAt: now() } }));
+  }, []);
+
+  const clearReflectionDraft = useCallback(() => {
+    setState((s) => (s.reflectionDraft ? { ...s, reflectionDraft: null } : s));
+  }, []);
+
   const togglePromptFavorite = useCallback((p: string) => {
     setState((s) => ({ ...s, favoritePrompts: s.favoritePrompts.includes(p) ? s.favoritePrompts.filter((x) => x !== p) : [...s.favoritePrompts, p] }));
   }, []);
@@ -362,7 +399,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const resetAll = useCallback(() => setState(emptyState()), []);
 
-  const value = useMemo<Ctx>(() => ({ state, ready, addNote, updateNote, deleteNote, trashNote, archiveNote, restoreNote, togglePin, toggleFavorite, toggleItem, addFolder, renameFolder, deleteFolder, addReflection, deleteReflection, togglePromptFavorite, setMoodToday, updateProfile, importData, resetAll }), [state, ready, addNote, updateNote, deleteNote, trashNote, archiveNote, restoreNote, togglePin, toggleFavorite, toggleItem, addFolder, renameFolder, deleteFolder, addReflection, deleteReflection, togglePromptFavorite, setMoodToday, updateProfile, importData, resetAll]);
+  const value = useMemo<Ctx>(() => ({ state, ready, storageIssue, addNote, updateNote, deleteNote, trashNote, archiveNote, restoreNote, togglePin, toggleFavorite, toggleItem, addFolder, renameFolder, deleteFolder, addReflection, deleteReflection, saveReflectionDraft, clearReflectionDraft, togglePromptFavorite, setMoodToday, updateProfile, importData, resetAll }), [state, ready, storageIssue, addNote, updateNote, deleteNote, trashNote, archiveNote, restoreNote, togglePin, toggleFavorite, toggleItem, addFolder, renameFolder, deleteFolder, addReflection, deleteReflection, saveReflectionDraft, clearReflectionDraft, togglePromptFavorite, setMoodToday, updateProfile, importData, resetAll]);
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 }

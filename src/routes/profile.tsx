@@ -6,17 +6,14 @@ import {
   Database,
   Download,
   FileDown,
-  Fingerprint,
   HelpCircle,
   Import,
-  Info,
   LayoutGrid,
   List,
   Moon,
   Pencil,
   RotateCcw,
   Shield,
-  Sparkles,
   Star,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -58,7 +55,7 @@ function downloadText(filename: string, content: string, type: string) {
 }
 
 function ProfilePage() {
-  const { state, updateProfile, importData, resetAll } = useStore();
+  const { state, storageIssue, updateProfile, importData, resetAll } = useStore();
   const p = state.profile;
   const [edit, setEdit] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -108,7 +105,7 @@ function ProfilePage() {
   };
 
   const exportJson = () => {
-    const backup = { app: "Aster Journal", schema: 2, exportedAt: new Date().toISOString(), data: state };
+    const backup = { app: "Aster Journal", schema: 3, exportedAt: new Date().toISOString(), data: state };
     const stamp = new Date().toISOString().slice(0, 10);
     downloadText(`aster-journal-backup-${stamp}.json`, JSON.stringify(backup, null, 2), "application/json");
     toast.success("Cadangan JSON dibuat.");
@@ -138,6 +135,7 @@ function ProfilePage() {
 
   const handleImport = async (file: File) => {
     try {
+      if (file.size > 8 * 1024 * 1024) throw new Error("Berkas cadangan terlalu besar. Pilih JSON Aster Journal yang berukuran maksimal 8 MB.");
       const text = await file.text();
       const parsed = JSON.parse(text) as unknown;
       if (!window.confirm("Impor akan mengganti data Aster Journal yang ada di perangkat ini. Lanjutkan?")) return;
@@ -175,6 +173,8 @@ function ProfilePage() {
           </div>
         </div>
 
+        {storageIssue && <div role="alert" className="mx-4 mt-3 rounded-2xl border border-destructive/20 bg-destructive/8 p-3 text-[12px] leading-relaxed text-destructive">{storageIssue} Buat cadangan JSON sebelum menghapus data atau keluar dari aplikasi.</div>}
+
         <SectionTitle>Preferensi</SectionTitle>
         <div className="mx-4 soft-card divide-y divide-border overflow-hidden rounded-2xl">
           <Row Icon={Moon} label="Mode Gelap" hint="Pilihan tersimpan setelah aplikasi dibuka ulang"><Toggle label="Mode gelap" on={p.darkMode} onChange={() => updateProfile({ darkMode: !p.darkMode })} /></Row>
@@ -182,7 +182,6 @@ function ProfilePage() {
           <Row Icon={Bell} label="Jam Pengingat" hint="Atur waktu yang nyaman untuk menulis"><input type="time" value={p.reminderTime} onChange={(e) => changeReminderTime(e.target.value)} aria-label="Jam pengingat" className="min-h-10 rounded-lg border border-border bg-secondary/60 px-2 text-[12px] outline-none" /></Row>
           <Row Icon={Star} label="Ringkasan Mingguan" hint="Minggu pukul 19.00"><Toggle label="Ringkasan mingguan" on={p.weeklyDigest} onChange={toggleWeekly} disabled={busy} /></Row>
           <Row Icon={LayoutGrid} label="Tampilan Catatan" hint="Tampilan awal saat membuka Catatan"><div className="flex rounded-xl bg-muted p-1"><button onClick={() => updateProfile({ defaultView: "list" })} aria-pressed={p.defaultView === "list"} className={`press grid h-9 w-9 place-items-center rounded-lg ${p.defaultView === "list" ? "bg-card text-primary shadow-sm" : "text-muted-foreground"}`}><List className="h-4 w-4" /></button><button onClick={() => updateProfile({ defaultView: "grid" })} aria-pressed={p.defaultView === "grid"} className={`press grid h-9 w-9 place-items-center rounded-lg ${p.defaultView === "grid" ? "bg-card text-primary shadow-sm" : "text-muted-foreground"}`}><LayoutGrid className="h-4 w-4" /></button></div></Row>
-          <Row Icon={Fingerprint} label="Kunci Biometrik" hint="Belum diimplementasikan"><span className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">Belum tersedia</span></Row>
         </div>
 
         <SectionTitle>Data</SectionTitle>
@@ -202,12 +201,11 @@ function ProfilePage() {
           <button onClick={() => { if (window.confirm("Hapus semua catatan, refleksi, folder, dan pengaturan Aster Journal?")) resetAll(); }} className="press flex min-h-16 w-full items-center gap-3 px-4 py-3.5 text-left text-destructive"><span className="grid h-9 w-9 place-items-center rounded-xl bg-destructive/8"><RotateCcw className="h-[18px] w-[18px]" /></span><span className="flex-1 text-[14px] font-medium">Atur Ulang Semua Data</span></button>
         </div>
 
-        <SectionTitle>Tentang</SectionTitle>
-        <div className="mx-4 soft-card divide-y divide-border overflow-hidden rounded-2xl">
-          <Row Icon={Database} label="Penyimpanan" hint="Local-first · ekspor/impor manual"><span className="text-[11.5px] text-muted-foreground">{storageLabel}</span></Row>
-          <Row Icon={HelpCircle} label="Cara Aman" hint="Buat cadangan JSON secara berkala"><span className="w-0" /></Row>
-          <Row Icon={Sparkles} label="Apa yang Baru" hint="Prompt baru, Arsip/Sampah, impor, insight mingguan"><span className="w-0" /></Row>
-          <Row Icon={Info} label="Tentang Aster Journal" hint="Jurnal pribadi yang fokus dan lokal"><span className="w-0" /></Row>
+        <SectionTitle>Privasi & Cadangan</SectionTitle>
+        <div className="mx-4 soft-card space-y-3 rounded-2xl p-4">
+          <InfoLine Icon={Database} title="Disimpan di perangkat" description={`Data saat ini sekitar ${storageLabel}. Tidak ada sinkronisasi cloud otomatis.`} />
+          <InfoLine Icon={Download} title="Cadangkan sebelum ganti perangkat" description="Gunakan Cadangkan JSON agar catatan, draf refleksi, folder, dan pengaturan bisa dipulihkan." />
+          <InfoLine Icon={HelpCircle} title="Hapus dengan aman" description="Catatan masuk ke Sampah terlebih dahulu. Hapus permanen hanya dari koleksi Sampah." />
         </div>
         <p className="py-6 text-center font-display text-[11.5px] italic text-muted-foreground">Aster Journal</p>
       </Scroll>
@@ -225,4 +223,8 @@ function ActionRow({ Icon, label, hint, onClick }: { Icon: typeof Bell; label: s
 
 function Row({ Icon, label, hint, children }: { Icon: typeof Bell; label: string; hint: string; children: React.ReactNode }) {
   return <div className="flex min-h-16 items-center gap-3 px-4 py-3.5"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary"><Icon className="h-[17px] w-[17px]" /></span><span className="min-w-0 flex-1"><span className="block text-[14px] font-medium">{label}</span><span className="block text-[11.5px] leading-snug text-muted-foreground">{hint}</span></span>{children}</div>;
+}
+
+function InfoLine({ Icon, title, description }: { Icon: typeof Bell; title: string; description: string }) {
+  return <div className="flex items-start gap-3"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary"><Icon className="h-[17px] w-[17px]" /></span><span><span className="block text-[13px] font-semibold">{title}</span><span className="mt-0.5 block text-[11.5px] leading-relaxed text-muted-foreground">{description}</span></span></div>;
 }

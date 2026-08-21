@@ -39,7 +39,9 @@ function InsightsPage() {
 
   const journalDays = useMemo(() => {
     const set = new Set<string>();
-    activeNotes.filter((n) => n.type === "journal").forEach((n) => { set.add(dayKey(n.createdAt)); set.add(dayKey(n.updatedAt)); });
+    activeNotes
+      .filter((n) => Boolean(n.title.trim() || n.body.trim() || n.image || n.items.some((item) => item.text.trim())))
+      .forEach((n) => { set.add(dayKey(n.createdAt)); set.add(dayKey(n.updatedAt)); });
     writtenReflections.forEach((r) => set.add(dayKey(r.createdAt)));
     return set;
   }, [activeNotes, writtenReflections]);

@@ -36,6 +36,15 @@ A 2025 systematic review found gratitude-focused and “best possible self” wr
 13. Fix the reflection hero SVG transform bug by separating static SVG transforms from CSS-animated transforms and using a fill/crop behavior that does not leave large white side gutters.
 14. Keep touch areas comfortably mobile-sized and preserve Android safe-area behavior.
 
+## Reliability decisions from the final hardening pass
+
+1. Treat uninterrupted writing as the product's primary promise: notes and reflection drafts save automatically rather than relying on a final submit action.
+2. Persist only meaningful reflection drafts and make their recovery visible on the Reflection screen; do not silently overwrite a draft with a fresh prompt.
+3. Surface local-storage failures explicitly. A local-first app must not imply that a change is safe when the browser or WebView has rejected persistence.
+4. Constrain image attachments at the point of import. Base64 media inside localStorage is expensive, so a bounded compressed attachment is safer than accepting a file that cannot survive an app restart.
+5. Remove controls for unimplemented trust-sensitive features. A visible "biometric lock" placeholder weakens trust more than its absence.
+6. Keep collection context when reading or editing a note from a folder, archive, trash, or favorite view; back navigation should return the user to the source collection.
+
 ## Installed project-local skills
 
 - `.agents/skills/ui-ux-pro-max/SKILL.md` — concise Aster adapter based on the free MIT-licensed UI UX Pro Max project: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill

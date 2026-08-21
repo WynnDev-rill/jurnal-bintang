@@ -1,26 +1,39 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Archive, Check, Image as ImageIcon, Pin, Plus, RotateCcw, Star, Tag, Trash2, X } from "lucide-react";
 import { useStore, type Note, type NoteType } from "@/lib/store";
 
-const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
-const MAX_IMAGE_EDGE = 1600;
+const MAX_IMAGE_BYTES = 6 * 1024 * 1024;
+const MAX_IMAGE_EDGE = 1280;
+const MAX_STORED_IMAGE_BYTES = 700 * 1024;
 
 async function compressImage(file: File): Promise<string> {
-  if (file.size > MAX_IMAGE_BYTES) throw new Error("Gambar terlalu besar. Pilih gambar berukuran maksimal 8 MB.");
+  if (file.size > MAX_IMAGE_BYTES) throw new Error("Gambar terlalu besar. Pilih gambar berukuran maksimal 6 MB.");
   const source = await createImageBitmap(file);
-  const scale = Math.min(1, MAX_IMAGE_EDGE / Math.max(source.width, source.height));
   const canvas = document.createElement("canvas");
-  canvas.width = Math.max(1, Math.round(source.width * scale));
-  canvas.height = Math.max(1, Math.round(source.height * scale));
   const context = canvas.getContext("2d");
-  if (!context) throw new Error("Gambar tidak dapat diproses di perangkat ini.");
-  context.drawImage(source, 0, 0, canvas.width, canvas.height);
+  if (!context) {
+    source.close();
+    throw new Error("Gambar tidak dapat diproses di perangkat ini.");
+  }
+
+  for (const [scaleFactor, quality] of [[1, 0.76], [0.78, 0.68], [0.6, 0.6]] as const) {
+    const scale = Math.min(1, (MAX_IMAGE_EDGE * scaleFactor) / Math.max(source.width, source.height));
+    canvas.width = Math.max(1, Math.round(source.width * scale));
+    canvas.height = Math.max(1, Math.round(source.height * scale));
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(source, 0, 0, canvas.width, canvas.height);
+    const compressed = canvas.toDataURL("image/jpeg", quality);
+    if (Math.ceil(compressed.length * 0.75) <= MAX_STORED_IMAGE_BYTES) {
+      source.close();
+      return compressed;
+    }
+  }
   source.close();
-  return canvas.toDataURL("image/jpeg", 0.82);
+  throw new Error("Gambar terlalu rumit untuk penyimpanan lokal. Pilih gambar yang lebih sederhana atau kecil.");
 }
 
 export function NoteEditor({ note, isNew = false, onClose }: { note: Note; isNew?: boolean; onClose: () => void }) {
-  const { state, updateNote, deleteNote, trashNote, archiveNote, restoreNote, togglePin, toggleFavorite } = useStore();
+  const { state, storageIssue, updateNote, deleteNote, trashNote, archiveNote, restoreNote, togglePin, toggleFavorite } = useStore();
   const [title, setTitle] = useState(note.title);
   const [body, setBody] = useState(note.body);
   const [items, setItems] = useState(note.items);
@@ -41,36 +54,37 @@ export function NoteEditor({ note, isNew = false, onClose }: { note: Note; isNew
     [title, body, items, tags, image, folderId, note],
   );
 
-  const closeEditor = () => {
-    if (isNew) {
-      const hasContent = title.trim() || body.trim() || items.some((item) => item.text.trim()) || tags.length > 0 || image;
-      if (hasContent && !window.confirm("Buang catatan baru yang belum disimpan?")) return;
-      deleteNote(note.id);
-      onClose();
-      return;
-    }
-    if (dirty && !window.confirm("Perubahan belum disimpan. Tetap keluar?")) return;
-    onClose();
-  };
-
-  const save = () => {
+  const persistChanges = useCallback(() => {
     const cleanedItems = items.map((item) => ({ ...item, text: item.text.trim() })).filter((item) => item.text.length > 0);
     const cleanedTags = [...new Set(tags.map((tag) => tag.trim().toLowerCase()).filter(Boolean))];
     const hasContent = title.trim() || body.trim() || cleanedItems.length > 0 || image;
-    if (!hasContent) {
-      if (isNew) deleteNote(note.id);
-      onClose();
-      return;
-    }
+    if (!hasContent && isNew) return false;
     updateNote(note.id, {
-      title: title.trim() || "Tanpa Judul",
+      title: title.trim() || (hasContent ? "Tanpa Judul" : ""),
       body: body.trim(),
       items: cleanedItems,
       tags: cleanedTags,
       image,
       folderId,
     });
+    return true;
+  }, [body, folderId, image, isNew, items, note.id, tags, title, updateNote]);
+
+  useEffect(() => {
+    if (!dirty || processingImage) return;
+    const timer = window.setTimeout(persistChanges, 400);
+    return () => window.clearTimeout(timer);
+  }, [dirty, persistChanges, processingImage]);
+
+  const closeEditor = () => {
+    const hasContent = title.trim() || body.trim() || items.some((item) => item.text.trim()) || tags.length > 0 || image;
+    if (isNew && !hasContent) deleteNote(note.id);
+    else persistChanges();
     onClose();
+  };
+
+  const save = () => {
+    closeEditor();
   };
 
   const removeNote = () => {
@@ -106,7 +120,7 @@ export function NoteEditor({ note, isNew = false, onClose }: { note: Note; isNew
     <div className="fixed inset-0 z-50 mx-auto flex max-w-[520px] flex-col bg-background animate-slide-up">
       <header className="flex shrink-0 items-center gap-1 border-b border-border bg-card px-2 pb-3 pt-[calc(env(safe-area-inset-top)+12px)]">
         <button onClick={closeEditor} aria-label="Tutup editor" className="press grid h-10 w-10 place-items-center rounded-full hover:bg-muted"><X className="h-[18px] w-[18px]" /></button>
-        <p className="min-w-0 flex-1 truncate text-center text-sm font-semibold">{isNew ? "Buat" : "Edit"} {typeLabel[note.type]}</p>
+        <div className="min-w-0 flex-1 text-center"><p className="truncate text-sm font-semibold">{isNew ? "Buat" : "Edit"} {typeLabel[note.type]}</p><p className={`text-[10px] ${storageIssue ? "text-destructive" : "text-muted-foreground"}`}>{storageIssue ? "Belum tersimpan aman" : "Disimpan otomatis"}</p></div>
 
         {!isNew && inTrash ? (
           <button onClick={() => { restoreNote(note.id); onClose(); }} aria-label="Pulihkan dari Sampah" className="press grid h-10 w-10 place-items-center rounded-full text-primary hover:bg-primary/10"><RotateCcw className="h-[18px] w-[18px]" /></button>
@@ -119,7 +133,7 @@ export function NoteEditor({ note, isNew = false, onClose }: { note: Note; isNew
         ) : null}
 
         <button onClick={removeNote} aria-label={inTrash ? `Hapus permanen ${typeLabel[note.type]}` : `Pindahkan ${typeLabel[note.type]} ke Sampah`} className="press grid h-10 w-10 place-items-center rounded-full text-destructive hover:bg-destructive/10"><Trash2 className="h-[18px] w-[18px]" /></button>
-        <button onClick={save} aria-label="Simpan" disabled={processingImage} className="press grid h-10 w-10 place-items-center rounded-full bg-primary text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"><Check className="h-[18px] w-[18px]" /></button>
+        <button onClick={save} aria-label="Selesai" disabled={processingImage} className="press grid h-10 w-10 place-items-center rounded-full bg-primary text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"><Check className="h-[18px] w-[18px]" /></button>
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 pb-[calc(env(safe-area-inset-bottom)+40px)] pt-4">
