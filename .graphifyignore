@@ -1,0 +1,14 @@
+.agents/
+.codex/
+.gradle/
+.kotlin/
+.superpowers/
+.impeccable/
+legacy/
+graphify-out/
+**/build/
+**/__pycache__/
+**/local.properties
+**/*.jks
+**/*.keystore
+**/*.json

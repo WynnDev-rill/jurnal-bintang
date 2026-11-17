@@ -24,7 +24,7 @@ data class Note(
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = createdAt,
 ) {
-    fun hasContent(): Boolean = TODO("meaningful content")
+    fun hasContent(): Boolean = title.isNotBlank() || body.isNotBlank() || items.any { it.text.isNotBlank() } || image != null || mood != null
     val displayTitle: String get() = title.ifBlank { prompt.ifBlank { "Tanpa judul" } }
 }
 
@@ -33,9 +33,19 @@ data class CheckItem(val id: String = UUID.randomUUID().toString(), val text: St
 data class Folder(@PrimaryKey val id: String = UUID.randomUUID().toString(), val name: String)
 
 data class Prompt(val id: String, val category: String, val question: String, val followUps: List<String>)
-object Prompts {
-    val all: List<Prompt> = emptyList()
-    fun daily(date: LocalDate = LocalDate.now()): Prompt = TODO("daily prompt")
+fun wordCount(text: String): Int = text.trim().split(Regex("\\s+")).count { it.isNotBlank() }
+fun filterNotes(notes: List<Note>, query: String, collection: String, kind: String, oldest: Boolean): List<Note> {
+    val term = query.trim().lowercase(java.util.Locale.ROOT)
+    return notes.filter { n ->
+        val inCollection = when(collection) {
+            "trash" -> n.trashed
+            "archive" -> n.archived && !n.trashed
+            "favorites" -> n.favorite && !n.archived && !n.trashed
+            "all" -> !n.archived && !n.trashed
+            else -> n.folderId == collection && !n.archived && !n.trashed
+        }
+        inCollection && (kind == "all" || n.kind == kind || (kind == "favorite" && n.favorite)) &&
+            (term.isEmpty() || listOf(n.title,n.body,n.prompt,n.tags.joinToString(" "),n.items.joinToString(" ") { it.text })
+                .any { it.lowercase(java.util.Locale.ROOT).contains(term) })
+    }.sortedWith(compareByDescending<Note> { it.pinned }.thenBy { if(oldest) it.updatedAt else -it.updatedAt })
 }
-fun wordCount(text: String): Int = TODO("unicode words")
-fun filterNotes(notes: List<Note>, query: String, collection: String, kind: String, oldest: Boolean): List<Note> = TODO("filter")

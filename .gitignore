@@ -45,3 +45,7 @@ local.properties
 .impeccable/cache/
 .impeccable/bin/
 graphify-out/.graphify-cache/
+graphify-out/cache/
+graphify-out/.graphify_analysis.json
+graphify-out/.graphify_build.json
+graphify-out/.graphify_root

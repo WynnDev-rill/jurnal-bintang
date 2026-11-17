@@ -1,0 +1,206 @@
+{
+  ".github/workflows/android-release.yml": {
+    "mtime": 1794878834.3783822,
+    "seen": 1794880492.3456962,
+    "ast_hash": "5cfebad627ea4fc4acfb76fce4d02e85",
+    "semantic_hash": "5cfebad627ea4fc4acfb76fce4d02e85"
+  },
+  "app/build.gradle.kts": {
+    "mtime": 1794879098.9477353,
+    "seen": 1794880492.3457022,
+    "ast_hash": "f8a8f705f3da5d52c2682bae3453ab38",
+    "semantic_hash": "f8a8f705f3da5d52c2682bae3453ab38"
+  },
+  "app/src/androidTest/java/com/wynn/jurnalbintang/DatabaseTest.kt": {
+    "mtime": 1794879442.2909153,
+    "seen": 1794880492.3457055,
+    "ast_hash": "f8b08c5b26cdf208971788dead250961",
+    "semantic_hash": "f8b08c5b26cdf208971788dead250961"
+  },
+  "app/src/androidTest/java/com/wynn/jurnalbintang/WritingFlowTest.kt": {
+    "mtime": 1794879499.6072328,
+    "seen": 1794880492.345707,
+    "ast_hash": "96fa7ba9f636e2c74121b6740c582c82",
+    "semantic_hash": "96fa7ba9f636e2c74121b6740c582c82"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/AsterApplication.kt": {
+    "mtime": 1794879797.7234564,
+    "seen": 1794880492.3457084,
+    "ast_hash": "0731aa36603c4b6d7cbc43cd57ae226b",
+    "semantic_hash": "0731aa36603c4b6d7cbc43cd57ae226b"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/MainActivity.kt": {
+    "mtime": 1794880394.7519717,
+    "seen": 1794880492.3457096,
+    "ast_hash": "c86f48ce77c362641bf3635ec243e01a",
+    "semantic_hash": "c86f48ce77c362641bf3635ec243e01a"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/data/AsterDatabase.kt": {
+    "mtime": 1794879797.7074573,
+    "seen": 1794880492.3457105,
+    "ast_hash": "d3767fb4040e963659cd39ef1dc08d57",
+    "semantic_hash": "d3767fb4040e963659cd39ef1dc08d57"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/data/BackupCodec.kt": {
+    "mtime": 1794879734.8187838,
+    "seen": 1794880492.3457117,
+    "ast_hash": "39c0cb81bcb8082ad3b4c5f0bfbea253",
+    "semantic_hash": "39c0cb81bcb8082ad3b4c5f0bfbea253"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/data/DraftSession.kt": {
+    "mtime": 1794880331.4113395,
+    "seen": 1794880492.3457124,
+    "ast_hash": "7ae40bff72a71ad8f9a49ce644fd25fb",
+    "semantic_hash": "7ae40bff72a71ad8f9a49ce644fd25fb"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/data/Note.kt": {
+    "mtime": 1794879671.5921104,
+    "seen": 1794880492.3457136,
+    "ast_hash": "42731343266137a4cf9884285e9939f8",
+    "semantic_hash": "42731343266137a4cf9884285e9939f8"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/data/Preferences.kt": {
+    "mtime": 1794879797.7154567,
+    "seen": 1794880492.345715,
+    "ast_hash": "b697b884e3063a06ebe289a657b13d46",
+    "semantic_hash": "b697b884e3063a06ebe289a657b13d46"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/data/Prompts.kt": {
+    "mtime": 1794879671.6027641,
+    "seen": 1794880492.3457165,
+    "ast_hash": "813d0ce10cf9d71ef938858a8f0d3dfe",
+    "semantic_hash": "813d0ce10cf9d71ef938858a8f0d3dfe"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/platform/Documents.kt": {
+    "mtime": 1794879977.441958,
+    "seen": 1794880492.3457174,
+    "ast_hash": "d825659d74440ae94b785411cc66af69",
+    "semantic_hash": "d825659d74440ae94b785411cc66af69"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/platform/Photos.kt": {
+    "mtime": 1794879977.5255368,
+    "seen": 1794880492.3457189,
+    "ast_hash": "95c9f4b39ccc4dd39c80253b9136a1c8",
+    "semantic_hash": "95c9f4b39ccc4dd39c80253b9136a1c8"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/platform/Reminders.kt": {
+    "mtime": 1794879797.7394555,
+    "seen": 1794880492.3457198,
+    "ast_hash": "fa5076a1c8814c37fa2db50f3460b5dd",
+    "semantic_hash": "fa5076a1c8814c37fa2db50f3460b5dd"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/AppViewModel.kt": {
+    "mtime": 1794879977.526051,
+    "seen": 1794880492.3457208,
+    "ast_hash": "282482e4d9b3c9b6b93374591705ed37",
+    "semantic_hash": "282482e4d9b3c9b6b93374591705ed37"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/AsterApp.kt": {
+    "mtime": 1794880438.4200914,
+    "seen": 1794880492.345722,
+    "ast_hash": "082d5b1e55b9dae4f1d99686956650c5",
+    "semantic_hash": "082d5b1e55b9dae4f1d99686956650c5"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/CollectionsScreen.kt": {
+    "mtime": 1794880229.5925972,
+    "seen": 1794880492.345723,
+    "ast_hash": "98b1eab32eb3d62c02a481af59796496",
+    "semantic_hash": "98b1eab32eb3d62c02a481af59796496"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/Components.kt": {
+    "mtime": 1794880438.4206483,
+    "seen": 1794880492.3457236,
+    "ast_hash": "e436be5fc77408fb2a4050a5498a429e",
+    "semantic_hash": "e436be5fc77408fb2a4050a5498a429e"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/EditorScreen.kt": {
+    "mtime": 1794880438.4204953,
+    "seen": 1794880492.3457246,
+    "ast_hash": "ed472899ef6afa202f51d12c8e11a416",
+    "semantic_hash": "ed472899ef6afa202f51d12c8e11a416"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/EditorViewModel.kt": {
+    "mtime": 1794880438.4203122,
+    "seen": 1794880492.3457255,
+    "ast_hash": "269a636a09722bcf7ad8945014f2d64c",
+    "semantic_hash": "269a636a09722bcf7ad8945014f2d64c"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/LibraryScreen.kt": {
+    "mtime": 1794880127.9419978,
+    "seen": 1794880492.3457265,
+    "ast_hash": "70a070d367491d0b2a3cb9999c088c48",
+    "semantic_hash": "70a070d367491d0b2a3cb9999c088c48"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/ReflectionScreen.kt": {
+    "mtime": 1794880438.4207423,
+    "seen": 1794880492.3457284,
+    "ast_hash": "c59fd41e5422f08d86b64c20406af16e",
+    "semantic_hash": "c59fd41e5422f08d86b64c20406af16e"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/SettingsScreen.kt": {
+    "mtime": 1794880331.4791205,
+    "seen": 1794880492.3457294,
+    "ast_hash": "ee176e28e72e9bb63d58603a78c92399",
+    "semantic_hash": "ee176e28e72e9bb63d58603a78c92399"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/ui/Theme.kt": {
+    "mtime": 1794879577.6105278,
+    "seen": 1794880492.34573,
+    "ast_hash": "3f04c977c8ca526836a3d83c8ff6817e",
+    "semantic_hash": "3f04c977c8ca526836a3d83c8ff6817e"
+  },
+  "app/src/test/java/com/wynn/jurnalbintang/BackupCodecTest.kt": {
+    "mtime": 1794879141.55011,
+    "seen": 1794880492.345731,
+    "ast_hash": "29be89d1387826d06860dcfa508d3fac",
+    "semantic_hash": "29be89d1387826d06860dcfa508d3fac"
+  },
+  "app/src/test/java/com/wynn/jurnalbintang/DraftSessionTest.kt": {
+    "mtime": 1794879863.3133543,
+    "seen": 1794880492.3457322,
+    "ast_hash": "3d9e0d06a82749eeb1c15cb53f3d8c97",
+    "semantic_hash": "3d9e0d06a82749eeb1c15cb53f3d8c97"
+  },
+  "app/src/test/java/com/wynn/jurnalbintang/ImportMergeTest.kt": {
+    "mtime": 1794879442.2939062,
+    "seen": 1794880492.3457332,
+    "ast_hash": "d45eaea90eea582597d6180e04698e34",
+    "semantic_hash": "d45eaea90eea582597d6180e04698e34"
+  },
+  "app/src/test/java/com/wynn/jurnalbintang/NoteRulesTest.kt": {
+    "mtime": 1794879098.9660785,
+    "seen": 1794880492.345734,
+    "ast_hash": "e2f887a7f325a1ec8a3be97d8b605207",
+    "semantic_hash": "e2f887a7f325a1ec8a3be97d8b605207"
+  },
+  "build.gradle.kts": {
+    "mtime": 1794879098.9435565,
+    "seen": 1794880492.3457346,
+    "ast_hash": "a87afc91816f56d9a4e6a7a577b16f11",
+    "semantic_hash": "a87afc91816f56d9a4e6a7a577b16f11"
+  },
+  "gradlew": {
+    "mtime": 1794879347.9352217,
+    "seen": 1794880492.345736,
+    "ast_hash": "1b55ea5b0e5fc1eb95371fb67272795f",
+    "semantic_hash": "1b55ea5b0e5fc1eb95371fb67272795f"
+  },
+  "settings.gradle.kts": {
+    "mtime": 1794879098.9415529,
+    "seen": 1794880492.345737,
+    "ast_hash": "d3dfe40f1205344db52d7567752f6177",
+    "semantic_hash": "d3dfe40f1205344db52d7567752f6177"
+  },
+  "tools/graph-refresh.sh": {
+    "mtime": 1794879366.5740242,
+    "seen": 1794880492.3457377,
+    "ast_hash": "d06fc31354d25a077797496b25e5f3ec",
+    "semantic_hash": "d06fc31354d25a077797496b25e5f3ec"
+  },
+  "tools/verify-skills.py": {
+    "mtime": 1794879366.8262274,
+    "seen": 1794880492.3457384,
+    "ast_hash": "9475acdfa6d009b857807532617fcc01",
+    "semantic_hash": "9475acdfa6d009b857807532617fcc01"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "ponytail": {
+    "repository": "https://github.com/DietrichGebert/ponytail",
+    "commit": "96608e078b2d5ea607c5c3b8b5a54d1c1fba6846",
+    "path": ".agents/skills/ponytail",
+    "skillSha256": "9badd22a32e19cb884e46dfa8d3aae82bb81dfa5484105b8b4f0262df823a509"
+  },
+  "ui-ux-pro-max": {
+    "repository": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+    "commit": "e59ff376a41f7ca47b7541ad5c116495cbade3ee",
+    "path": ".agents/skills/ui-ux-pro-max",
+    "skillSha256": "af9cf89efd1eac29495fb44f25b3fae8b96bf9ddbaaa2a47c6e835d9aa568a6f"
+  },
+  "impeccable": {
+    "repository": "https://github.com/pbakaus/impeccable",
+    "commit": "d41d9860b0094dcb68030657da63461212835aaa",
+    "path": ".agents/skills/impeccable",
+    "skillSha256": "12d15997482e6d0734c5f2dcc4f62cea7bcba19953940214cffa5c6a7758aa93"
+  },
+  "graphify": {
+    "repository": "https://github.com/Graphify-Labs/graphify",
+    "commit": "480b61ed91cbc08177dc2c60caa9ffd6c9b95749",
+    "path": ".codex/skills/graphify",
+    "skillSha256": "7511352c4cf6da3647462516de41e99a4be53d9ea106fd2e6fadf0bafb9740b0"
+  }
+}

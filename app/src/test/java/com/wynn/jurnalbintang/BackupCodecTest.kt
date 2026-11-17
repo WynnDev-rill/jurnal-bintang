@@ -36,4 +36,22 @@ class BackupCodecTest {
         val text = """{"app":"Aster Journal","schema":4,"data":{"notes":[{"id":"a","image":"https://remote.invalid/tracking.png"}],"folders":[]}}"""
         try { BackupCodec.decode(text); fail() } catch (_: IllegalArgumentException) { }
     }
+    @Test fun importedFolderCannotMasqueradeAsSystemCollection() {
+        val text="""{"app":"Aster Journal","schema":4,"data":{"notes":[{"id":"n","folderId":"trash","body":"tetap aktif"}],"folders":[{"id":"trash","name":"Pribadi"}]}}"""
+        val b=BackupCodec.decode(text)
+        assertNotEquals("trash",b.folders.single().id)
+        assertEquals(b.folders.single().id,b.notes.single().folderId)
+        assertEquals(b.notes,filterNotes(b.notes,"",b.folders.single().id,"all",false))
+    }
+    @Test fun rejectsHugeDecodedPngJpegAndWebpBeforeDatabaseImport() {
+        val png=ByteArray(33);byteArrayOf(0x89.toByte(),0x50,0x4e,0x47,13,10,26,10).copyInto(png)
+        java.nio.ByteBuffer.wrap(png).putInt(16,10000).putInt(20,10000)
+        val jpeg=byteArrayOf(0xff.toByte(),0xd8.toByte(),0xff.toByte(),0xc0.toByte(),0,17,8,0x27,0x10,0x27,0x10,3,1,0x11,0,2,0x11,0,3,0x11,0)
+        val webp=ByteArray(30);"RIFF".toByteArray().copyInto(webp);"WEBPVP8X".toByteArray().copyInto(webp,8)
+        val dimension=9999;webp[24]=dimension.toByte();webp[25]=(dimension shr 8).toByte();webp[27]=dimension.toByte();webp[28]=(dimension shr 8).toByte()
+        for((format,bytes) in listOf("png" to png,"jpeg" to jpeg,"webp" to webp)) {
+            val image="data:image/$format;base64,"+java.util.Base64.getEncoder().encodeToString(bytes)
+            try { BackupCodec.validateImage(image);fail("accepted huge decoded $format") } catch(_: IllegalArgumentException) { }
+        }
+    }
 }
