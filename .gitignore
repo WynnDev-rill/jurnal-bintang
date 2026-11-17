@@ -30,3 +30,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Native Android / local AI tooling
+.gradle/
+.kotlin/
+**/build/
+local.properties
+*.jks
+*.keystore
+*.apk
+*.aab
+.superpowers/
+**/__pycache__/
+.impeccable/cache/
+.impeccable/bin/
+graphify-out/.graphify-cache/

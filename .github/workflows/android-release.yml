@@ -1,206 +1,65 @@
-name: Build Aster Journal APK
-
+name: Native Android verification and APK
 on:
   workflow_dispatch:
   push:
-    branches: [main]
-
+    branches: [main, 'feat/**']
+  pull_request:
 permissions:
   contents: read
-
 concurrency:
-  group: aster-journal-android-${{ github.ref }}
+  group: android-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
-  build-apk:
+  verify:
     runs-on: ubuntu-latest
     timeout-minutes: 35
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
-
-      - name: Install dependencies
-        run: |
-          npm install --legacy-peer-deps
-          npm install --no-save --legacy-peer-deps @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
-
-      - name: Install Pillow
-        run: python3 -m pip install --upgrade pillow
-
-      - name: Prepare web shell
-        run: |
-          mkdir -p dist
-          cat > dist/index.html <<'HTML'
-          <!doctype html>
-          <html lang="id">
-            <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width,initial-scale=1">
-              <title>Aster Journal</title>
-            </head>
-            <body><p>Membuka Aster Journal…</p></body>
-          </html>
-          HTML
-
-      - name: Create Android project
-        run: |
-          rm -rf android
-          npx cap add android
-          chmod +x android/gradlew
-
-      - name: Configure app, version and launcher icon
-        env:
-          VERSION_CODE: ${{ github.run_number }}
-        run: |
-          python3 <<'PY'
-          from pathlib import Path
-          import os
-          import re
-
-          gradle = Path('android/app/build.gradle')
-          text = gradle.read_text()
-          code = 2000 + int(os.environ['VERSION_CODE'])
-          text = re.sub(r'versionCode\s+\d+', f'versionCode {code}', text)
-          text = re.sub(r'versionName\s+"[^"]+"', f'versionName "1.0.{code}"', text)
-          gradle.write_text(text)
-
-          manifest = Path('android/app/src/main/AndroidManifest.xml')
-          text = manifest.read_text()
-          text = re.sub(r'android:icon="[^"]+"', 'android:icon="@mipmap/ic_launcher"', text)
-          if 'android:roundIcon=' in text:
-              text = re.sub(r'android:roundIcon="[^"]+"', 'android:roundIcon="@mipmap/ic_launcher_round"', text)
-          else:
-              text = text.replace('<application', '<application android:roundIcon="@mipmap/ic_launcher_round"', 1)
-          manifest.write_text(text)
-          PY
-
-          RES=android/app/src/main/res
-          mkdir -p "$RES/values" "$RES/mipmap-mdpi" "$RES/mipmap-hdpi" "$RES/mipmap-xhdpi" "$RES/mipmap-xxhdpi" "$RES/mipmap-xxxhdpi"
-          rm -f "$RES/mipmap-anydpi-v26/ic_launcher.xml" "$RES/mipmap-anydpi-v26/ic_launcher_round.xml" "$RES/mipmap-anydpi/ic_launcher.xml" "$RES/mipmap-anydpi/ic_launcher_round.xml"
-          rm -f "$RES/drawable/ic_launcher_foreground.xml" "$RES/drawable/ic_launcher_legacy.xml"
-
-          cat > "$RES/values/strings.xml" <<'XML'
-          <?xml version="1.0" encoding="utf-8"?>
-          <resources>
-            <string name="app_name">Aster Journal</string>
-            <string name="title_activity_main">Aster Journal</string>
-            <string name="package_name">com.wynn.jurnalbintang</string>
-            <string name="custom_url_scheme">com.wynn.jurnalbintang</string>
-          </resources>
-          XML
-
-          python3 <<'PY'
-          from collections import deque
-          from pathlib import Path
-          from PIL import Image
-
-          source_path = Path('aster-journal-icon-source.jpg')
-          if not source_path.exists():
-              raise SystemExit('aster-journal-icon-source.jpg tidak ditemukan di root repository.')
-
-          img = Image.open(source_path).convert('RGBA')
-          side = min(img.width, img.height)
-          left = (img.width - side) // 2
-          top = (img.height - side) // 2
-          img = img.crop((left, top, left + side, top + side))
-
-          pixels = img.load()
-          width, height = img.size
-
-          def near_white(pixel):
-              r, g, b, a = pixel
-              return a > 0 and r >= 246 and g >= 246 and b >= 246
-
-          queue = deque()
-          visited = set()
-          for x in range(width):
-              queue.append((x, 0))
-              queue.append((x, height - 1))
-          for y in range(height):
-              queue.append((0, y))
-              queue.append((width - 1, y))
-
-          while queue:
-              x, y = queue.popleft()
-              if not (0 <= x < width and 0 <= y < height):
-                  continue
-              if (x, y) in visited:
-                  continue
-              visited.add((x, y))
-              if not near_white(pixels[x, y]):
-                  continue
-              pixels[x, y] = (255, 255, 255, 0)
-              queue.extend(((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)))
-
-          bbox = img.getbbox()
-          if bbox:
-              img = img.crop(bbox)
-
-          canvas = Image.new('RGBA', (1024, 1024), (0, 0, 0, 0))
-          padding = 72
-          target = 1024 - padding * 2
-          img.thumbnail((target, target), Image.Resampling.LANCZOS)
-          offset_x = (1024 - img.width) // 2
-          offset_y = (1024 - img.height) // 2
-          canvas.alpha_composite(img, (offset_x, offset_y))
-
-          densities = {
-              'mipmap-mdpi': 48,
-              'mipmap-hdpi': 72,
-              'mipmap-xhdpi': 96,
-              'mipmap-xxhdpi': 144,
-              'mipmap-xxxhdpi': 192,
-          }
-          res_root = Path('android/app/src/main/res')
-          for folder, size in densities.items():
-              out = canvas.resize((size, size), Image.Resampling.LANCZOS)
-              out.save(res_root / folder / 'ic_launcher.png', format='PNG', optimize=True)
-              out.save(res_root / folder / 'ic_launcher_round.png', format='PNG', optimize=True)
-          PY
-
-      - name: Decode stable signing key
-        run: |
-          echo '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' | base64 -d > /tmp/aster-journal-release.jks
-
-      - name: Build release APK
-        working-directory: android
-        run: ./gradlew assembleRelease --no-daemon
-
-      - name: Sign and verify APK
-        env:
-          STORE_PASS: WynnAsterJournal2026
-          KEY_ALIAS: asterjournal
-        run: |
-          UNSIGNED=$(find android/app/build/outputs/apk/release \( -name '*unsigned.apk' -o -name 'app-release.apk' \) | head -n 1)
-          test -n "$UNSIGNED"
-          BUILD_TOOLS=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)
-          "$BUILD_TOOLS/zipalign" -f -p 4 "$UNSIGNED" Aster-Journal-aligned.apk
-          "$BUILD_TOOLS/apksigner" sign \
-            --ks /tmp/aster-journal-release.jks \
-            --ks-key-alias "$KEY_ALIAS" \
-            --ks-pass "pass:$STORE_PASS" \
-            --key-pass "pass:$STORE_PASS" \
-            --out Aster-Journal.apk \
-            Aster-Journal-aligned.apk
-          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs Aster-Journal.apk
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - run: ./gradlew testDebugUnitTest lintDebug assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
         with:
-          name: Aster-Journal-APK
-          path: Aster-Journal.apk
+          name: Aster-Journal-native-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
-          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification-reports
+          path: |
+            app/build/reports/
+            app/schemas/
+  device-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          arch: x86_64
+          target: default
+          disable-animations: true
+          script: ./gradlew connectedDebugAndroidTest --no-daemon
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: device-test-reports
+          path: app/build/reports/androidTests/
