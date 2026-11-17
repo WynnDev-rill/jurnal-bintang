@@ -18,12 +18,14 @@ minSdk 26; compile/targetSdk 36; package com.wynn.jurnalbintang; no Internet per
 - Denied notification/photo/document permissions or IO failures: no crash, no false success.
 
 ## Tasks
-- [ ] Audit/research/skills: preserve baseline, inspect supplied visuals and four comparable apps, install pinned skill resources, verify commands and local Kotlin graph.
-- [ ] Native build/data: Gradle wrapper, SDK 36, Room schema, converters and DAO; tests for filters/word counts/prompts/backup and Room persistence/transactions.
-- [ ] Writing: build library/editor/checklist/photo flow with serialized autosave and recovery. Test create/edit/back/reopen and draft recreation.
-- [ ] Reflection/organization: prompt categories/daily prompt/mood, folder CRUD, favorites/archive/trash, useful empty states and Android Back.
-- [ ] Settings/ownership: theme preferences, privacy screen flag, inexact local reminder, JSON/legacy import and Markdown/JSON export with SAF and error recovery.
-- [ ] Acceptance: run unit tests/lint/build/instrumentation, inspect real Android light/dark/editor/font-scale/tablet captures, fix findings, verify APK certificate/permissions and graph query/update. Save evidence, SHA256, build/install instructions and CI; make safe local commits.
+- [x] Audit/research/skills: preserve baseline, inspect supplied visuals and four comparable apps, install pinned skill resources, verify commands and local Kotlin graph.
+- [x] Native build/data: Gradle wrapper, SDK 36, Room schema, converters and DAO; tests for filters/word counts/prompts/backup and Room persistence/transactions.
+- [x] Writing: build library/editor/checklist/photo flow with serialized autosave and recovery. Test create/edit/back/reopen and draft recreation.
+- [x] Reflection/organization: prompt categories/daily prompt/mood, folder CRUD, favorites/archive/trash, useful empty states and Android Back.
+- [x] Settings/ownership: theme preferences, privacy screen flag, inexact local reminder, JSON/legacy import and Markdown/JSON export with SAF and error recovery.
+- [x] Acceptance: run unit tests/lint/build/instrumentation, inspect real Android light/dark/editor/font-scale/tablet captures, fix findings, verify APK certificate/permissions and graph query/update. Save evidence, SHA256, build/install instructions and CI; make safe local commits.
 
 ## Commands
 `./gradlew testDebugUnitTest lintDebug assembleDebug`; `./gradlew connectedDebugAndroidTest`; `tools/graph-refresh.sh`; `python3 tools/verify-skills.py`; `adb install -r app/build/outputs/apk/debug/app-debug.apk` on compatible test installation. Expected: green checks and explicit evidence for any unavailable physical tests.
+
+Completed within available environment. Final CI44016168317 passes; independent native review disposition `ship`. Physical POCO F6 and full TalkBack/performance acceptance are explicitly pending in DEVICE_CHECKLIST.md, not reported as tested.

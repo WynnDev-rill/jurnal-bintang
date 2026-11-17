@@ -1,0 +1,8 @@
+ponytail: pinned skill verified
+ui-ux-pro-max: pinned skill verified
+impeccable: pinned skill verified
+graphify: pinned skill verified
+UI/UX Pro Max: Compose database search executed
+Impeccable: 4.9.2
+graphify 0.9.111
+Skill smoke checks passed; visual review remains an Android device task.

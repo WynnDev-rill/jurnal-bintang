@@ -1,0 +1,66 @@
+Applications Memory Usage (in Kilobytes):
+Uptime: 337747 Realtime: 337747
+
+** MEMINFO in pid 2922 [com.wynn.jurnalbintang] **
+                   Pss  Private  Private     Swap      Rss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty    Total     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------   ------
+  Native Heap     9780     9716        0        0    13548    23668    17506     1963
+  Dalvik Heap     6412     6248        0        0    14180    10775     5388     5387
+ Dalvik Other    15866    11988        0        0    20444                           
+        Stack     1624     1624        0        0     1632                           
+       Ashmem       13        0        0        0      608                           
+    Other dev       11        0        8        0      316                           
+     .so mmap     2676      380      128        0    40000                           
+    .jar mmap     2656        0       92        0    43408                           
+    .apk mmap      141        0        0        0     1340                           
+    .ttf mmap       46        0        0        0      320                           
+    .dex mmap       13        0        0        0      856                           
+    .oat mmap       36        0        0        0     1928                           
+    .art mmap     9088     8608        0        0    31884                           
+   Other mmap     2238       36       32        0     6024                           
+      Unknown    31980    31972        0        0    32908                           
+        TOTAL    82580    70572      260        0   209396    34443    22894     7350
+ 
+ App Summary
+                       Pss(KB)                        Rss(KB)
+                        ------                         ------
+           Java Heap:    14856                          46064
+         Native Heap:     9716                          13548
+                Code:      804                          95792
+               Stack:     1624                           1632
+            Graphics:        0                              0
+       Private Other:    43832
+              System:    11748
+             Unknown:                                   52360
+ 
+           TOTAL PSS:    82580            TOTAL RSS:   209396      TOTAL SWAP (KB):        0
+ 
+ Objects
+               Views:        8         ViewRootImpl:        1
+         AppContexts:        6           Activities:        1
+              Assets:       11        AssetManagers:        0
+       Local Binders:       14        Proxy Binders:       53
+       Parcel memory:        5         Parcel count:       22
+    Death Recipients:        0             WebViews:        0
+ 
+ Native Allocations
+                         Count                       Total(kB)
+                        ------                         ------
+   Bitmap (malloced):        8                             34
+    Other (malloced):      667                             62
+ Other (nonmalloced):       84                             61
+ 
+ SQL
+         MEMORY_USED:      207
+  PAGECACHE_OVERFLOW:       79          MALLOC_SIZE:       46
+ 
+ DATABASES
+      pgsz     dbsz   Lookaside(b) cache hits cache misses cache size  Dbname
+PER CONNECTION STATS
+         4       32             12     6    58     1  /data/user/0/com.wynn.jurnalbintang/databases/aster-native.db
+         4        8                    0     0     0    (attached) temp
+         4       32             46     4    22     1  /data/user/0/com.wynn.jurnalbintang/databases/aster-native.db (1)
+POOL STATS
+     cache hits  cache misses    cache size  Dbname
+             10            84            94  /data/user/0/com.wynn.jurnalbintang/databases/aster-native.db

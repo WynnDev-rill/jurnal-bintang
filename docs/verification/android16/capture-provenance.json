@@ -1,0 +1,62 @@
+{
+  "platform": "Android16 Pixel7 emulator; expanded capture wm1600x1200 density240",
+  "productionSourceTree": "924d1f3ed4ab5e4c9a23d793ca8de361b4091d7f",
+  "appSourceIdenticalBetweenRuns": true,
+  "note": "Two actual IME captures come from the post-fix run55940cc; that run failed later in screenshot-fixture configuration recreation. The final02f71d2 run passed all8tests, but its keyboard captures lacked a rendered keyboard, so those two images were rejected and not used as IME evidence. Production/build sources are identical; only the capture fixture and graph differ. Other seven captures and test XML come from the final green run. No images edited or synthesized.",
+  "captures": [
+    {
+      "file": "01-library-light.png",
+      "run": 44016168317,
+      "source": "02f71d2a783cd378a1edc809e2073e189ea78d23",
+      "sha256": "7ac6693ade611e3820fd5aec2995bf72239af405292b6c8948ac66fedb816f13"
+    },
+    {
+      "file": "02-editor-input.png",
+      "run": 44015238230,
+      "source": "55940cc455eaad97aec0a4e9978b4eafde8c43c4",
+      "sha256": "6ed8db3a9b0b1cf17ce0a29420eb658d81a0d1543307b6f2020dbc5616abc49b"
+    },
+    {
+      "file": "03-reflection-light.png",
+      "run": 44016168317,
+      "source": "02f71d2a783cd378a1edc809e2073e189ea78d23",
+      "sha256": "6e75ba1fb71ed2c781673fc3886bff9e66d7d031dc6b8d4af105bbd16c2ccaf1"
+    },
+    {
+      "file": "04-reflection-dark.png",
+      "run": 44016168317,
+      "source": "02f71d2a783cd378a1edc809e2073e189ea78d23",
+      "sha256": "a4a00ea0cd86fcacf83f589d7cfae276fd9296528126c46ad8397ecd51924a7c"
+    },
+    {
+      "file": "05-collections-dark.png",
+      "run": 44016168317,
+      "source": "02f71d2a783cd378a1edc809e2073e189ea78d23",
+      "sha256": "fc8d1d23f908edd4f4d0f3b85823a4a72f55323852c8ba78135c0a6d0374b4fa"
+    },
+    {
+      "file": "05b-settings-dark.png",
+      "run": 44016168317,
+      "source": "02f71d2a783cd378a1edc809e2073e189ea78d23",
+      "sha256": "8edf9962e1d2e13686ee2ebe5a2b5e5e9b6b58eabd779dae4326bf860be4f681"
+    },
+    {
+      "file": "05c-empty-search.png",
+      "run": 44015238230,
+      "source": "55940cc455eaad97aec0a4e9978b4eafde8c43c4",
+      "sha256": "1f96df1427c41df0a79edeea088c8fa7430b092bb89d3b174bc6534ee0b1fc66"
+    },
+    {
+      "file": "06-library-large-text.png",
+      "run": 44016168317,
+      "source": "02f71d2a783cd378a1edc809e2073e189ea78d23",
+      "sha256": "c2311ad54bf37e79ceec79e4cdd96de91a4fd6a17c1a3ef1e5f23b3aae0e89b0"
+    },
+    {
+      "file": "07-expanded-navigation.png",
+      "run": 44016168317,
+      "source": "02f71d2a783cd378a1edc809e2073e189ea78d23",
+      "sha256": "039527da2c6a4ecb3abdb0851b1bef0ffd4a09c8ee744fe8341454b419821d1b"
+    }
+  ]
+}

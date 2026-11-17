@@ -1,0 +1,7 @@
+Starting: Intent { cmp=com.wynn.jurnalbintang/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.wynn.jurnalbintang/.MainActivity
+TotalTime: 2264
+WaitTime: 2266
+Complete

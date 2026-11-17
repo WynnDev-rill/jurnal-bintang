@@ -1,1 +1,0 @@
-b379ad05ee03b2b5a674db94a631eddebc6473c48555286f1f41f53c10561097  artifacts/Aster-Journal-native-debug.apk

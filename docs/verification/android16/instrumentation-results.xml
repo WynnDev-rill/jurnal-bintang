@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.wynn.jurnalbintang.DatabaseTest" tests="8" failures="0" errors="0" skipped="0" time="49.622" timestamp="2026-11-17T04:24:04" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 16" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="conflictingImportDoesNotOverwriteAndIsIdempotent" classname="com.wynn.jurnalbintang.DatabaseTest" time="0.011" />
+  <testcase name="persistedWritingSurvivesReopenAndFolderRemovalKeepsContent" classname="com.wynn.jurnalbintang.DatabaseTest" time="0.002" />
+  <testcase name="folderFavoriteArchiveTrashAndRestoreKeepOriginalWriting" classname="com.wynn.jurnalbintang.OrganizationFlowTest" time="13.904" />
+  <testcase name="cameraOrientationIsAppliedBeforeMetadataIsStripped" classname="com.wynn.jurnalbintang.PhotoTest" time="0.156" />
+  <testcase name="captureNativeLightDarkEditorKeyboardAndExpandedLayouts" classname="com.wynn.jurnalbintang.VisualAcceptanceTest" time="19.986" />
+  <testcase name="reflectionPromptCreatesPersistentGuidedWriting" classname="com.wynn.jurnalbintang.WritingFlowTest" time="4.761" />
+  <testcase name="checklistCanBeCompletedAndReopened" classname="com.wynn.jurnalbintang.WritingFlowTest" time="4.493" />
+  <testcase name="noteAutosavesOnImmediateBackAndReopens" classname="com.wynn.jurnalbintang.WritingFlowTest" time="4.723" />
+</testsuite>
