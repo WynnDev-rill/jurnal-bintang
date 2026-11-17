@@ -3,7 +3,7 @@
 A calm, local-first notebook and guided journal, built in **Kotlin + Jetpack Compose + Material 3**. The shipping APK contains native Android UI and local Room storage, with no WebView, account, server, analytics, or Internet permission.
 
 ## Download
-[Download Aster Journal 3.0.0 — debug APK](https://github.com/WynnDev-rill/jurnal-bintang/releases/download/native-android-3.0.0-debug/Aster-Journal-3.0.0-debug.apk). This is a debug prerelease; back up the previous installation first. See the [final verification report](docs/verification/FINAL_REPORT.md) for source/CI evidence and physical-device limits.
+[Download Aster Journal 3.0.0 — debug APK](https://raw.githubusercontent.com/WynnDev-rill/jurnal-bintang/fd0274d28f9a4547271db56921a41ed5dec82703/artifacts/Aster-Journal-3.0.0-debug.apk). This is a debug prerelease; back up the previous installation first. See the [final verification report](docs/verification/FINAL_REPORT.md) for source/CI evidence and physical-device limits.
 
 ## Daily use
 - Text notes, checklists and reflection entries with serialized autosave and honest pending/error states.

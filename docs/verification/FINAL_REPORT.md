@@ -6,7 +6,7 @@ Implementasi berada di branch `feat/native-android-redesign`. Aplikasi yang diki
 - Versi 3.0.0 / versionCode 30000, package `com.wynn.jurnalbintang`.
 - Android 8+ (minSdk 26), compile/target Android 16 (API 36).
 - APK universal termasuk ARM64 untuk POCO F6; status **debug**, bukan release dengan private signing key produksi.
-- Unduhan: [APK debug langsung](https://github.com/WynnDev-rill/jurnal-bintang/releases/download/native-android-3.0.0-debug/Aster-Journal-3.0.0-debug.apk), diterbitkan sebagai prerelease berlabel debug. `artifacts/SHA256SUMS` mencatat hash APK yang dikirim; signature dan badging tersimpan di `android16/`.
+- Unduhan: [APK debug langsung](https://raw.githubusercontent.com/WynnDev-rill/jurnal-bintang/fd0274d28f9a4547271db56921a41ed5dec82703/artifacts/Aster-Journal-3.0.0-debug.apk), tersedia melalui commit unduhan tetap, dengan catatan prerelease berlabel debug. `artifacts/SHA256SUMS` mencatat hash APK yang dikirim; signature dan badging tersimpan di `android16/`.
 
 ## Pengalaman yang diimplementasikan
 Catatan teks, checklist, autosave terurut dengan status berhasil/gagal yang jujur dan flush sebelum kembali; 30 prompt refleksi dalam enam tema, masing-masing dua pertanyaan pendalaman, mood opsional; pencarian, folder/tag, pin/favorit, arsip/sampah/pemulihan; foto opsional dengan batas ukuran dan koreksi orientasi; backup JSON, impor aman termasuk format web lama, ekspor Markdown dan native sharing. Setelan menyediakan tema sistem/light/dark, privasi screenshot/recents dan pengingat lokal opsional.
