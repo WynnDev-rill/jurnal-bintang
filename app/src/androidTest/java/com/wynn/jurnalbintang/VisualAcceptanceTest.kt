@@ -50,6 +50,13 @@ class VisualAcceptanceTest {
     private fun awaitLibrary() {
         rule.waitUntil(20_000) { rule.onAllNodesWithContentDescription("Buat catatan").fetchSemanticsNodes().isNotEmpty() }
     }
+    private fun awaitIme() {
+        rule.waitUntil(15_000) {
+            var visible=false
+            rule.runOnUiThread { visible=androidx.core.view.ViewCompat.getRootWindowInsets(rule.activity.window.decorView)?.isVisible(androidx.core.view.WindowInsetsCompat.Type.ime())==true }
+            visible
+        }
+    }
     @Test fun captureNativeLightDarkEditorKeyboardAndExpandedLayouts() {
         val app=rule.activity.application as AsterApplication
         val before=runBlocking { app.preferences.settings.first() }
@@ -68,11 +75,7 @@ class VisualAcceptanceTest {
             rule.onNodeWithTag("editor-body").performClick()
             shell("settings put secure show_ime_with_hard_keyboard 1")
             rule.runOnIdle { androidx.core.view.WindowCompat.getInsetsController(rule.activity.window,rule.activity.window.decorView).show(androidx.core.view.WindowInsetsCompat.Type.ime()) }
-            rule.waitUntil(15_000) {
-                var visible=false
-                rule.runOnUiThread { visible=androidx.core.view.ViewCompat.getRootWindowInsets(rule.activity.window.decorView)?.isVisible(androidx.core.view.WindowInsetsCompat.Type.ime())==true }
-                visible
-            }
+            awaitIme()
             capture("02-editor-input")
             rule.onNodeWithContentDescription("Kembali").performClick()
             awaitLibrary()
@@ -89,7 +92,14 @@ class VisualAcceptanceTest {
             capture("05b-settings-dark")
             rule.onNodeWithContentDescription("Navigasi Catatan").performClick()
             rule.onNodeWithText("Cari catatan").performTextInput("zzqanoentry")
-            rule.onNodeWithText("Belum ketemu.").performScrollTo()
+            awaitIme()
+            rule.onNodeWithText("Coba kata lain, atau ubah filter tulisan.").performScrollTo().assertIsDisplayed()
+            rule.onNodeWithContentDescription("Buat catatan").assertIsDisplayed()
+            var keyboardTop=0
+            rule.runOnUiThread {
+                keyboardTop=rule.activity.window.decorView.height-(androidx.core.view.ViewCompat.getRootWindowInsets(rule.activity.window.decorView)?.getInsets(androidx.core.view.WindowInsetsCompat.Type.ime())?.bottom ?: 0)
+            }
+            check(rule.onNodeWithContentDescription("Buat catatan").fetchSemanticsNode().boundsInWindow.bottom<=keyboardTop+1) { "Create action is covered by the keyboard" }
             capture("05c-empty-search")
             rule.onNodeWithContentDescription("Bersihkan pencarian").performScrollTo().performClick()
             rule.runOnIdle { androidx.core.view.WindowCompat.getInsetsController(rule.activity.window,rule.activity.window.decorView).hide(androidx.core.view.WindowInsetsCompat.Type.ime()) }

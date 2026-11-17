@@ -22,7 +22,7 @@ import com.wynn.jurnalbintang.data.*
     var createSheet by rememberSaveable { mutableStateOf(false) }
     val notes=remember(state.notes,query,filter,collection,state.settings.oldest) { filterNotes(state.notes,query,collection,filter,state.settings.oldest) }
     val name=when(collection) { "all"->"Catatanmu";"archive"->"Arsip";"trash"->"Sampah";"favorites"->"Favorit";else->state.folders.find { it.id==collection }?.name ?: "Folder" }
-    Box(Modifier.fillMaxSize()) {
+    Box(Modifier.fillMaxSize().imePadding()) {
         LazyColumn(modifier=Modifier.fillMaxSize().testTag("note-list"),contentPadding=PaddingValues(bottom=104.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
             item {
                 if(collection=="all") BrandHeader(onSettings) else BackHeader(name,onBack)

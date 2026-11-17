@@ -213,7 +213,7 @@ Headlines establish page and reflection hierarchy. Titles establish sections and
 
 Use the shared spacing rhythm in frontmatter. Brand headers use page-width horizontal padding and small vertical padding; their mark-to-wordmark gap uses the detail step. Note cards use card padding with detail gaps and smaller inline gaps. Empty states use section vertical padding, small horizontal padding, and small content gaps. Recovery notices use medium padding. Back headers use gap horizontal padding and compact vertical padding.
 
-Preserve the existing screen contract: page padding 24dp, compact editor controls 16dp, section rhythm 24/32dp, and common gaps 8/12/16dp. Compact layouts use bottom navigation; expanded layouts use a navigation rail. Scaffold owns safe drawing insets and the editor applies IME insets. Keep primary actions visible when the keyboard or large text changes available space.
+Preserve the existing screen contract: page padding 24dp, compact editor controls 16dp, section rhythm 24/32dp, and common gaps 8/12/16dp. Compact layouts use bottom navigation; expanded layouts use a navigation rail. Scaffold owns safe drawing insets; the library list and create action consume IME insets together, and the editor applies its own IME insets. Keep primary actions visible when the keyboard or large text changes available space.
 
 ## Elevation & Depth
 
