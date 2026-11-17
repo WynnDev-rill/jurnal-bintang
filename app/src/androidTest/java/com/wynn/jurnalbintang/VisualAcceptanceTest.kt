@@ -57,6 +57,18 @@ class VisualAcceptanceTest {
             visible
         }
     }
+    private fun awaitConfiguration(fontScale: Float,minWidthDp: Int=0) {
+        // Android recreates the Activity for these shell changes itself. Calling
+        // scenario.recreate() concurrently races an already-destroyed instance.
+        instrumentation.uiAutomation.waitForIdle(1_000,10_000)
+        rule.waitUntil(20_000) {
+            runCatching {
+                val config=rule.activity.resources.configuration
+                kotlin.math.abs(config.fontScale-fontScale)<0.01f && config.screenWidthDp>=minWidthDp
+            }.getOrDefault(false)
+        }
+        rule.waitForIdle()
+    }
     @Test fun captureNativeLightDarkEditorKeyboardAndExpandedLayouts() {
         val app=rule.activity.application as AsterApplication
         val before=runBlocking { app.preferences.settings.first() }
@@ -94,6 +106,8 @@ class VisualAcceptanceTest {
             rule.onNodeWithText("Cari catatan").performTextInput("zzqanoentry")
             awaitIme()
             rule.onNodeWithText("Coba kata lain, atau ubah filter tulisan.").performScrollTo().assertIsDisplayed()
+            rule.onNodeWithTag("note-list").performTouchInput { swipeUp() }
+            rule.onNodeWithText("Coba kata lain, atau ubah filter tulisan.").assertIsDisplayed()
             rule.onNodeWithContentDescription("Buat catatan").assertIsDisplayed()
             var keyboardTop=0
             rule.runOnUiThread {
@@ -104,7 +118,7 @@ class VisualAcceptanceTest {
             rule.onNodeWithContentDescription("Bersihkan pencarian").performScrollTo().performClick()
             rule.runOnIdle { androidx.core.view.WindowCompat.getInsetsController(rule.activity.window,rule.activity.window.decorView).hide(androidx.core.view.WindowInsetsCompat.Type.ime()) }
             shell("settings put system font_scale 1.5")
-            rule.activityRule.scenario.recreate()
+            awaitConfiguration(1.5f)
             rule.waitUntil(20_000) { rule.onAllNodesWithContentDescription("Navigasi Catatan").fetchSemanticsNodes().isNotEmpty() }
             rule.onNodeWithContentDescription("Navigasi Catatan").performClick()
             capture("06-library-large-text")
@@ -112,7 +126,7 @@ class VisualAcceptanceTest {
             shell("wm size 1600x1200")
             shell("wm density 240")
             instrumentation.uiAutomation.waitForIdle(2_000,15_000)
-            rule.activityRule.scenario.recreate()
+            awaitConfiguration(1f,minWidthDp=900)
             rule.waitUntil(20_000) { rule.onAllNodesWithContentDescription("Navigasi Catatan").fetchSemanticsNodes().isNotEmpty() }
             capture("07-expanded-navigation")
         } finally {
