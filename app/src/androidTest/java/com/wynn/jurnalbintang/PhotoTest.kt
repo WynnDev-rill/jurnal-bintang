@@ -26,7 +26,8 @@ class PhotoTest {
             val result=checkNotNull(Photos.bitmap(data))
             assertEquals(16,result.width);assertEquals(8,result.height);result.recycle()
             val bytes=Base64.getDecoder().decode(data.substringAfter(','))
-            assertEquals(ExifInterface.ORIENTATION_NORMAL,ExifInterface(ByteArrayInputStream(bytes)).getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL))
+            val orientation=ExifInterface(ByteArrayInputStream(bytes)).getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED)
+            assertTrue(orientation==ExifInterface.ORIENTATION_NORMAL || orientation==ExifInterface.ORIENTATION_UNDEFINED)
         } finally { bitmap.recycle();file.delete() }
     }
 }

@@ -1,6 +1,9 @@
 package com.wynn.jurnalbintang
 
 import android.graphics.Bitmap
+import android.content.ContentValues
+import android.provider.MediaStore
+import android.os.Build
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -25,8 +28,21 @@ class VisualAcceptanceTest {
     private fun capture(name: String) {
         rule.waitForIdle()
         val bitmap=checkNotNull(instrumentation.uiAutomation.takeScreenshot()) { "Device screenshot unavailable" }
-        val folder=File(rule.activity.getExternalFilesDir(null),"screenshots").apply { mkdirs() }
-        File(folder,"$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }
+        if(Build.VERSION.SDK_INT>=29) {
+            val resolver=rule.activity.contentResolver
+            val values=ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME,"$name.png")
+                put(MediaStore.Images.Media.MIME_TYPE,"image/png")
+                put(MediaStore.Images.Media.RELATIVE_PATH,"Pictures/AsterJournalAcceptance")
+                put(MediaStore.Images.Media.IS_PENDING,1)
+            }
+            val uri=checkNotNull(resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values))
+            checkNotNull(resolver.openOutputStream(uri)).use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }
+            resolver.update(uri,ContentValues().apply { put(MediaStore.Images.Media.IS_PENDING,0) },null,null)
+        } else {
+            val folder=File(rule.activity.getExternalFilesDir(null),"screenshots").apply { mkdirs() }
+            File(folder,"$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG,100,it) }
+        }
         bitmap.recycle()
     }
     private fun awaitLibrary() {

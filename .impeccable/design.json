@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T02:51:33.535836Z",
+  "title": "Design System: Aster Journal",
+  "extensions": {
+    "colorMeta": {
+      "light-primary": {
+        "role": "primary",
+        "displayName": "Light Primary"
+      },
+      "light-primary-container": {
+        "role": "primary",
+        "displayName": "Light Primary Container"
+      },
+      "light-on-primary-container": {
+        "role": "primary",
+        "displayName": "Light On Primary Container"
+      },
+      "light-secondary": {
+        "role": "secondary",
+        "displayName": "Light Secondary"
+      },
+      "light-secondary-container": {
+        "role": "secondary",
+        "displayName": "Light Secondary Container"
+      },
+      "light-on-secondary-container": {
+        "role": "secondary",
+        "displayName": "Light On Secondary Container"
+      },
+      "light-background": {
+        "role": "neutral",
+        "displayName": "Light Background"
+      },
+      "light-on-background": {
+        "role": "neutral",
+        "displayName": "Light On Background"
+      },
+      "light-on-surface": {
+        "role": "neutral",
+        "displayName": "Light On Surface"
+      },
+      "light-surface-variant": {
+        "role": "neutral",
+        "displayName": "Light Surface Variant"
+      },
+      "light-on-surface-variant": {
+        "role": "neutral",
+        "displayName": "Light On Surface Variant"
+      },
+      "light-surface-container": {
+        "role": "neutral",
+        "displayName": "Light Surface Container"
+      },
+      "light-surface-container-low": {
+        "role": "neutral",
+        "displayName": "Light Surface Container Low"
+      },
+      "light-surface-container-high": {
+        "role": "neutral",
+        "displayName": "Light Surface Container High"
+      },
+      "light-outline": {
+        "role": "neutral",
+        "displayName": "Light Outline"
+      },
+      "light-outline-variant": {
+        "role": "neutral",
+        "displayName": "Light Outline Variant"
+      },
+      "light-error": {
+        "role": "neutral",
+        "displayName": "Light Error"
+      },
+      "light-error-container": {
+        "role": "neutral",
+        "displayName": "Light Error Container"
+      },
+      "light-on-error-container": {
+        "role": "neutral",
+        "displayName": "Light On Error Container"
+      },
+      "light-on-primary": {
+        "role": "primary",
+        "displayName": "Light On Primary"
+      },
+      "light-surface": {
+        "role": "neutral",
+        "displayName": "Light Surface"
+      },
+      "dark-primary": {
+        "role": "primary",
+        "displayName": "Dark Primary"
+      },
+      "dark-on-primary": {
+        "role": "primary",
+        "displayName": "Dark On Primary"
+      },
+      "dark-primary-container": {
+        "role": "primary",
+        "displayName": "Dark Primary Container"
+      },
+      "dark-on-primary-container": {
+        "role": "primary",
+        "displayName": "Dark On Primary Container"
+      },
+      "dark-secondary": {
+        "role": "secondary",
+        "displayName": "Dark Secondary"
+      },
+      "dark-secondary-container": {
+        "role": "secondary",
+        "displayName": "Dark Secondary Container"
+      },
+      "dark-on-secondary-container": {
+        "role": "secondary",
+        "displayName": "Dark On Secondary Container"
+      },
+      "dark-background": {
+        "role": "neutral",
+        "displayName": "Dark Background"
+      },
+      "dark-on-background": {
+        "role": "neutral",
+        "displayName": "Dark On Background"
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "Dark Surface"
+      },
+      "dark-on-surface": {
+        "role": "neutral",
+        "displayName": "Dark On Surface"
+      },
+      "dark-surface-variant": {
+        "role": "neutral",
+        "displayName": "Dark Surface Variant"
+      },
+      "dark-on-surface-variant": {
+        "role": "neutral",
+        "displayName": "Dark On Surface Variant"
+      },
+      "dark-surface-container": {
+        "role": "neutral",
+        "displayName": "Dark Surface Container"
+      },
+      "dark-surface-container-low": {
+        "role": "neutral",
+        "displayName": "Dark Surface Container Low"
+      },
+      "dark-surface-container-high": {
+        "role": "neutral",
+        "displayName": "Dark Surface Container High"
+      },
+      "dark-outline": {
+        "role": "neutral",
+        "displayName": "Dark Outline"
+      },
+      "dark-outline-variant": {
+        "role": "neutral",
+        "displayName": "Dark Outline Variant"
+      },
+      "dark-error": {
+        "role": "neutral",
+        "displayName": "Dark Error"
+      },
+      "dark-error-container": {
+        "role": "neutral",
+        "displayName": "Dark Error Container"
+      },
+      "dark-on-error-container": {
+        "role": "neutral",
+        "displayName": "Dark On Error Container"
+      }
+    },
+    "typographyMeta": {
+      "headlineLarge": {
+        "displayName": "Headline Large",
+        "purpose": "Editorial heading."
+      },
+      "headlineMedium": {
+        "displayName": "Headline Medium",
+        "purpose": "Editorial heading."
+      },
+      "headlineSmall": {
+        "displayName": "Headline Small",
+        "purpose": "Editorial heading."
+      },
+      "titleLarge": {
+        "displayName": "Title Large",
+        "purpose": "Native title Large."
+      },
+      "titleMedium": {
+        "displayName": "Title Medium",
+        "purpose": "Native title Medium."
+      },
+      "titleSmall": {
+        "displayName": "Title Small",
+        "purpose": "Native title Small."
+      },
+      "bodyLarge": {
+        "displayName": "Body Large",
+        "purpose": "Native body Large."
+      },
+      "bodyMedium": {
+        "displayName": "Body Medium",
+        "purpose": "Native body Medium."
+      },
+      "bodySmall": {
+        "displayName": "Body Small",
+        "purpose": "Native body Small."
+      },
+      "labelLarge": {
+        "displayName": "Label Large",
+        "purpose": "Native label Large."
+      },
+      "labelMedium": {
+        "displayName": "Label Medium",
+        "purpose": "Native label Medium."
+      },
+      "labelSmall": {
+        "displayName": "Label Small",
+        "purpose": "Native label Small."
+      }
+    },
+    "native": {
+      "platform": "android",
+      "stack": [
+        "Kotlin",
+        "Jetpack Compose",
+        "Material 3"
+      ],
+      "dimensionUnit": "dp",
+      "textUnit": "sp",
+      "sources": [
+        "app/src/main/java/com/wynn/jurnalbintang/ui/Theme.kt",
+        "app/src/main/java/com/wynn/jurnalbintang/ui/Components.kt"
+      ],
+      "colorSchemes": {
+        "light": {
+          "primary": "{colors.light-primary}",
+          "primaryContainer": "{colors.light-primary-container}",
+          "onPrimaryContainer": "{colors.light-on-primary-container}",
+          "secondary": "{colors.light-secondary}",
+          "secondaryContainer": "{colors.light-secondary-container}",
+          "onSecondaryContainer": "{colors.light-on-secondary-container}",
+          "background": "{colors.light-background}",
+          "onBackground": "{colors.light-on-background}",
+          "onSurface": "{colors.light-on-surface}",
+          "surfaceVariant": "{colors.light-surface-variant}",
+          "onSurfaceVariant": "{colors.light-on-surface-variant}",
+          "surfaceContainer": "{colors.light-surface-container}",
+          "surfaceContainerLow": "{colors.light-surface-container-low}",
+          "surfaceContainerHigh": "{colors.light-surface-container-high}",
+          "outline": "{colors.light-outline}",
+          "outlineVariant": "{colors.light-outline-variant}",
+          "error": "{colors.light-error}",
+          "errorContainer": "{colors.light-error-container}",
+          "onErrorContainer": "{colors.light-on-error-container}",
+          "onPrimary": "{colors.light-on-primary}",
+          "surface": "{colors.light-surface}"
+        },
+        "dark": {
+          "primary": "{colors.dark-primary}",
+          "onPrimary": "{colors.dark-on-primary}",
+          "primaryContainer": "{colors.dark-primary-container}",
+          "onPrimaryContainer": "{colors.dark-on-primary-container}",
+          "secondary": "{colors.dark-secondary}",
+          "secondaryContainer": "{colors.dark-secondary-container}",
+          "onSecondaryContainer": "{colors.dark-on-secondary-container}",
+          "background": "{colors.dark-background}",
+          "onBackground": "{colors.dark-on-background}",
+          "surface": "{colors.dark-surface}",
+          "onSurface": "{colors.dark-on-surface}",
+          "surfaceVariant": "{colors.dark-surface-variant}",
+          "onSurfaceVariant": "{colors.dark-on-surface-variant}",
+          "surfaceContainer": "{colors.dark-surface-container}",
+          "surfaceContainerLow": "{colors.dark-surface-container-low}",
+          "surfaceContainerHigh": "{colors.dark-surface-container-high}",
+          "outline": "{colors.dark-outline}",
+          "outlineVariant": "{colors.dark-outline-variant}",
+          "error": "{colors.dark-error}",
+          "errorContainer": "{colors.dark-error-container}",
+          "onErrorContainer": "{colors.dark-on-error-container}"
+        }
+      },
+      "components": [
+        {
+          "name": "NoteCard",
+          "kind": "card",
+          "refersTo": [
+            "note-card",
+            "note-card-dark"
+          ],
+          "source": "Components.kt:86",
+          "implementation": "Card(shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) { Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) { /* existing note content */ } }"
+        },
+        {
+          "name": "ErrorNotice",
+          "kind": "custom",
+          "refersTo": [
+            "error-notice",
+            "error-notice-dark"
+          ],
+          "source": "Components.kt:71",
+          "semantics": "LiveRegionMode.Polite; Coba lagi retry action"
+        },
+        {
+          "name": "EmptyState",
+          "kind": "custom",
+          "refersTo": [
+            "empty-state-icon",
+            "empty-state-icon-dark"
+          ],
+          "source": "Components.kt:63",
+          "layout": "Centered column with 32dp vertical / 12dp horizontal padding; 12dp gaps; optional action."
+        },
+        {
+          "name": "MoodPicker",
+          "kind": "chip",
+          "refersTo": [
+            "mood-chip"
+          ],
+          "source": "Components.kt:113",
+          "interaction": "Material FilterChip; optional, toggleable mood; wraps in FlowRow."
+        },
+        {
+          "name": "BrandHeader",
+          "kind": "custom",
+          "refersTo": [
+            "brand-header",
+            "aster-mark",
+            "aster-mark-dark"
+          ],
+          "source": "Components.kt:41",
+          "layout": "32dp Aster mark, 10dp gap, headlineSmall wordmark; optional Material IconButton."
+        }
+      ],
+      "previewPolicy": "Native component metadata describes Compose source. No HTML/CSS approximation is provided; verify visual output with Android screenshots.",
+      "elevation": "Standard Material 3 component defaults and semantic surface tones; no custom shadow tokens.",
+      "motion": "Respect Android animation scale. AsterApp.kt defines 180ms fade enter/exit and pop transitions with tween(180); other Material components keep platform defaults."
+    }
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "A Quiet Writing Desk",
+    "overview": "A quiet writing desk: cool white pages, ink typography, a clear blue action, and an airy rhythm. Serif headings make reflection feel personal; native Material controls keep everyday tasks familiar. This is an original synthesis, not a reproduction of supplied artwork.\n\nThe designed dark scheme uses deep ink surfaces and a lighter blue accent. The system expresses its character through semantic Material color roles, bundled fonts, and restrained component spacing. Kotlin/Compose source is the visual authority; this document records the implemented theme and shared components.",
+    "keyCharacteristics": [
+      "White/blue identity with a designed dark scheme.",
+      "Editorial headlines paired with legible sans-serif controls.",
+      "Native Material 3 interactions and accessible touch targets.",
+      "Honest empty and recovery states without fabricated journal history."
+    ],
+    "rules": [
+      {
+        "name": "The Semantic Color Rule",
+        "body": "Read colors from MaterialTheme.colorScheme so light and dark roles travel together; do not hardcode a light color into a component.",
+        "section": "colors"
+      },
+      {
+        "name": "The Editorial Hierarchy Rule",
+        "body": "Use DM Serif Display for headline roles and Plus Jakarta Sans for titles, body, and controls; preserve Android font scaling.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tonal Depth Rule",
+        "body": "Use the Material surface hierarchy and standard component elevation; do not introduce arbitrary decorative shadows.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use the bundled fonts, Material icons, and existing eight-ray Aster mark.",
+      "Do keep interactive targets at least 48dp, provide meaningful Compose semantics, and express state beyond color.",
+      "Do preserve Indonesian copy, system Back, source collection, Android insets, text selection, and standard ripple feedback.",
+      "Do inspect actual Android empty, populated, editor, and recovery states in both themes, compact and expanded layouts, with the IME and 1.3–2.0 font scale."
+    ],
+    "donts": [
+      "Don't add reference screenshots to the APK or make decorative photos a dependency.",
+      "Don't invent sample personal entries or imply cloud sync, encryption, biometric protection, AI processing, or clinical benefits.",
+      "Don't treat browser mockups as native visual verification or emulator results as physical POCO F6 performance evidence.",
+      "Don't let decoration, animation, or premature saved feedback outrank legibility and persisted writing."
+    ]
+  }
+}

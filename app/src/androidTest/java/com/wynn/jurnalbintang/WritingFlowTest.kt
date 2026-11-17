@@ -28,7 +28,7 @@ class WritingFlowTest {
     }
     @Test fun reflectionPromptCreatesPersistentGuidedWriting() {
         rule.onNodeWithContentDescription("Navigasi Refleksi").performClick()
-        rule.onNodeWithText("Mulai menulis").performClick()
+        rule.onNodeWithText("Mulai menulis").performScrollTo().performClick()
         rule.waitUntil(20_000) { rule.onAllNodesWithTag("editor-body").fetchSemanticsNodes().isNotEmpty() }
         rule.onNodeWithTag("editor-body").performTextInput("Aku bersyukur punya waktu untuk diriku.")
         rule.onNodeWithText("Baik", useUnmergedTree=true).performScrollTo().performClick()
