@@ -36,4 +36,20 @@ class WritingFlowTest {
         rule.waitUntil(20_000) { rule.onAllNodesWithText("Mulai menulis").fetchSemanticsNodes().isNotEmpty() }
         rule.onNode(hasScrollAction() and hasAnyDescendant(hasText("Mulai menulis"))).performScrollToNode(hasText("Tulisan refleksimu"))
     }
+    @Test fun checklistCanBeCompletedAndReopened() {
+        val title="Checklist UI ${System.nanoTime()}"
+        rule.onNodeWithContentDescription("Buat catatan").performClick()
+        rule.onNodeWithText("Beri ruang untuk rencana kecil").performClick()
+        rule.waitUntil(20_000) { rule.onAllNodesWithTag("editor-title").fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithTag("editor-title").performTextInput(title)
+        rule.onNodeWithText("Tambah item").performScrollTo().performClick()
+        rule.onNodeWithContentDescription("Isi item checklist").performTextInput("Jalan pagi")
+        rule.onNodeWithContentDescription("Selesai: Jalan pagi").performClick()
+        rule.onNodeWithContentDescription("Kembali").performClick()
+        rule.waitUntil(20_000) { rule.onAllNodesWithTag("note-list").fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithTag("note-list").performScrollToNode(hasText(title))
+        rule.onNodeWithText(title).performClick()
+        rule.waitUntil(20_000) { rule.onAllNodesWithContentDescription("Selesai: Jalan pagi").fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithContentDescription("Selesai: Jalan pagi").assertIsOn()
+    }
 }

@@ -27,6 +27,8 @@ class VisualAcceptanceTest {
     }
     private fun capture(name: String) {
         rule.waitForIdle()
+        // Compose can be idle before SystemUI/IME has finished its own layout.
+        instrumentation.uiAutomation.waitForIdle(1_000,10_000)
         val bitmap=checkNotNull(instrumentation.uiAutomation.takeScreenshot()) { "Device screenshot unavailable" }
         if(Build.VERSION.SDK_INT>=29) {
             val resolver=rule.activity.contentResolver
@@ -64,7 +66,13 @@ class VisualAcceptanceTest {
             rule.onNodeWithText("Hal-hal yang ingin kusimpan").performClick()
             rule.waitUntil(10_000) { rule.onAllNodesWithTag("editor-body").fetchSemanticsNodes().isNotEmpty() }
             rule.onNodeWithTag("editor-body").performClick()
-            rule.waitForIdle()
+            shell("settings put secure show_ime_with_hard_keyboard 1")
+            rule.runOnIdle { androidx.core.view.WindowCompat.getInsetsController(rule.activity.window,rule.activity.window.decorView).show(androidx.core.view.WindowInsetsCompat.Type.ime()) }
+            rule.waitUntil(15_000) {
+                var visible=false
+                rule.runOnUiThread { visible=androidx.core.view.ViewCompat.getRootWindowInsets(rule.activity.window.decorView)?.isVisible(androidx.core.view.WindowInsetsCompat.Type.ime())==true }
+                visible
+            }
             capture("02-editor-input")
             rule.onNodeWithContentDescription("Kembali").performClick()
             awaitLibrary()
@@ -77,6 +85,14 @@ class VisualAcceptanceTest {
             capture("04-reflection-dark")
             rule.onNodeWithContentDescription("Navigasi Koleksi").performClick()
             capture("05-collections-dark")
+            rule.onNodeWithContentDescription("Navigasi Setelan").performClick()
+            capture("05b-settings-dark")
+            rule.onNodeWithContentDescription("Navigasi Catatan").performClick()
+            rule.onNodeWithText("Cari catatan").performTextInput("zzqanoentry")
+            rule.onNodeWithText("Belum ketemu.").performScrollTo()
+            capture("05c-empty-search")
+            rule.onNodeWithContentDescription("Bersihkan pencarian").performScrollTo().performClick()
+            rule.runOnIdle { androidx.core.view.WindowCompat.getInsetsController(rule.activity.window,rule.activity.window.decorView).hide(androidx.core.view.WindowInsetsCompat.Type.ime()) }
             shell("settings put system font_scale 1.5")
             rule.activityRule.scenario.recreate()
             rule.waitUntil(20_000) { rule.onAllNodesWithContentDescription("Navigasi Catatan").fetchSemanticsNodes().isNotEmpty() }
@@ -85,6 +101,7 @@ class VisualAcceptanceTest {
             shell("settings put system font_scale 1.0")
             shell("wm size 1600x1200")
             shell("wm density 240")
+            instrumentation.uiAutomation.waitForIdle(2_000,15_000)
             rule.activityRule.scenario.recreate()
             rule.waitUntil(20_000) { rule.onAllNodesWithContentDescription("Navigasi Catatan").fetchSemanticsNodes().isNotEmpty() }
             capture("07-expanded-navigation")

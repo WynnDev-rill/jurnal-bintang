@@ -1,0 +1,16 @@
+Aster Journal third-party notices
+
+DM Serif Display
+Copyright 2014-2018 Adobe, with Reserved Font Name 'Source'.
+Copyright 2019 Google LLC.
+SIL Open Font License 1.1: see DMSerifDisplay-OFL.txt.
+
+Plus Jakarta Sans
+Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans).
+The bundled regular/semibold instances were generated from the upstream variable font.
+SIL Open Font License 1.1: see PlusJakartaSans-OFL.txt.
+
+AndroidX and Material Components / selected Material icon sources
+Copyright The Android Open Source Project and respective contributors.
+Apache License 2.0: see Apache-2.0.txt.
+Source attribution and selected-icon hashes are retained in the repository under docs/licenses.
