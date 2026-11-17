@@ -54,4 +54,8 @@ class BackupCodecTest {
             try { BackupCodec.validateImage(image);fail("accepted huge decoded $format") } catch(_: IllegalArgumentException) { }
         }
     }
+    @Test fun rejectsRowTooLargeForReliableRoomReads() {
+        val n=Note(items=(1..500).map { CheckItem(text="界".repeat(2000)) })
+        try { BackupCodec.encode(Backup(listOf(n),emptyList()));fail("accepted oversized database row") } catch(_: IllegalArgumentException) { }
+    }
 }

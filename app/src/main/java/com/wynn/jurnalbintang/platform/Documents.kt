@@ -19,8 +19,15 @@ fun readBounded(input: InputStream,max: Int): ByteArray {
     return output.toByteArray()
 }
 object Documents {
-    fun read(context: Context,uri: Uri): Backup = context.contentResolver.openInputStream(uri)?.use { BackupCodec.decode(String(readBounded(it,BackupCodec.MAX_BYTES),Charsets.UTF_8)) }
-        ?: throw IllegalArgumentException("Berkas tidak dapat dibuka. Pilih cadangan lain.")
+    fun read(context: Context,uri: Uri): Backup {
+        val backup=context.contentResolver.openInputStream(uri)?.use { BackupCodec.decode(String(readBounded(it,BackupCodec.MAX_BYTES),Charsets.UTF_8)) }
+            ?: throw IllegalArgumentException("Berkas tidak dapat dibuka. Pilih cadangan lain.")
+        for(note in backup.notes) note.image?.let { data ->
+            val image=Photos.bitmap(data) ?: throw IllegalArgumentException("Gambar dalam cadangan rusak atau terlalu besar. Data saat ini tidak diubah.")
+            image.recycle()
+        }
+        return backup
+    }
     fun write(context: Context,uri: Uri,text: String) {
         val stream=context.contentResolver.openOutputStream(uri,"wt") ?: throw IllegalArgumentException("Tujuan penyimpanan tidak dapat dibuka.")
         stream.use { it.write(text.toByteArray(Charsets.UTF_8));it.flush() }

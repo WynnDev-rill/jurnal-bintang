@@ -29,7 +29,7 @@ class EditorViewModel(private val repository: JournalRepository,handle: SavedSta
             try {
                 val saved=repository.dao.get(id)
                 val initial=saved ?: Note(id=id,kind=kind,prompt=Prompts.all.find { it.id==promptId }?.question ?: "",folderId=folder?.takeIf { id -> repository.dao.allFolders().any { it.id==id } })
-                val session=DraftSession(initial,saved!=null,viewModelScope) { repository.dao.save(it) }
+                val session=DraftSession(initial,saved!=null,viewModelScope) { note -> withContext(Dispatchers.IO) { BackupCodec.validateNote(note);repository.dao.save(note) } }
                 _session.value=session
                 if(saved==null && initial.hasContent()) session.edit { it }
             } catch(e: CancellationException) { throw e }

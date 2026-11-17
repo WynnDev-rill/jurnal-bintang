@@ -10,9 +10,14 @@ import java.util.Base64
 data class Backup(val notes: List<Note>, val folders: List<Folder>)
 object BackupCodec {
     const val MAX_BYTES = 16 * 1024 * 1024
+    const val MAX_NOTE_BYTES = 1_500_000
     const val MAX_BODY = 200_000
     const val MAX_IMAGE_BYTES = 600 * 1024
+    fun validateNote(note: Note) {
+        require(noteJson(note).toString().toByteArray().size <= MAX_NOTE_BYTES) { "Catatan ini terlalu besar untuk disimpan dengan aman. Kurangi gambar atau pindahkan sebagian isi ke catatan baru." }
+    }
     fun encode(backup: Backup): String {
+        backup.notes.forEach(::validateNote)
         val data = JSONObject().put("notes", JSONArray(backup.notes.map(::noteJson)))
             .put("folders", JSONArray(backup.folders.map { JSONObject().put("id",it.id).put("name",it.name) }))
         return JSONObject().put("app","Aster Journal").put("schema",4)
@@ -53,6 +58,7 @@ object BackupCodec {
                     if(draft.hasContent()) ns += draft
                 }
             }
+            ns.forEach(::validateNote)
             require(ns.map { it.id }.distinct().size == ns.size) { "ID catatan berulang di cadangan." }
             require(fs.map { it.id }.distinct().size == fs.size) { "ID folder berulang di cadangan." }
             val reserved=setOf("all","archive","trash","favorites","new")

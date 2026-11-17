@@ -28,8 +28,8 @@ class DraftSession(initial: Note,stored: Boolean,scope: CoroutineScope,private v
             _state.update { it.copy(stored=stored,saving=it.revision!=persisted,error=null) }
             true
         } catch(e: CancellationException) { throw e }
-        catch(_: Exception) {
-            _state.update { it.copy(saving=false,error="Perubahan terakhir belum tersimpan. Periksa ruang perangkat, lalu coba lagi. Teks tetap ada selama editor ini terbuka.") }
+        catch(e: Exception) {
+            _state.update { it.copy(saving=false,error=if(e is IllegalArgumentException) e.message else "Perubahan terakhir belum tersimpan. Periksa ruang perangkat, lalu coba lagi. Teks tetap ada selama editor ini terbuka.") }
             false
         }
     }

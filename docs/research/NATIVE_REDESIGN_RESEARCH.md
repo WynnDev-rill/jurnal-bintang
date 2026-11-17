@@ -27,7 +27,7 @@ This is a source-backed product comparison, not hands-on testing or a claim of o
 | [Fossify Notes](https://github.com/FossifyOrg/Notes) | GPL-3.0; native note app, architecture/product reference | Evaluate as mature alternative, no copied source: whole-app import brings license/product mismatch |
 | [Joplin](https://github.com/laurent22/joplin) | AGPL-3.0, React Native | Evaluate patterns; unsuitable for explicit Kotlin/Compose requirement, no copied code |
 | [DM Serif Display](https://github.com/google/fonts/tree/main/ofl/dmserifdisplay), [Plus Jakarta Sans](https://github.com/google/fonts/tree/main/ofl/plusjakartasans) | SIL OFL 1.1; bundled local fonts | Adopt with license files; no network font loading |
-| Existing Aster icon | Already committed repository asset; original provenance beyond baseline unspecified | Reuse; do not claim new ownership/license |
+| Existing Aster icon | Already committed repository asset; original provenance beyond baseline unspecified | The clean PNG was discovered empty during APK QA; use an adaptive vector from the existing eight-ray AsterMark geometry; do not claim new ownership of baseline artwork |
 | Third-party rich text editor, remote AI, cloud sync, custom crypto | Additional complexity, data/trust surface and daily-use cost | Omit; native text/checklist/reflection editor meets present goals |
 
 ## Skill integration and conflict resolution

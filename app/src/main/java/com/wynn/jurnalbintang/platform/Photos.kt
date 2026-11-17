@@ -31,7 +31,11 @@ object Photos {
     }
     fun bitmap(data: String): Bitmap? = runCatching {
         val bytes=Base64.getDecoder().decode(data.substringAfter(','))
-        val (width,height)=checkedImageSize(bytes)
+        checkedImageSize(bytes)
+        val bounds=BitmapFactory.Options().apply { inJustDecodeBounds=true }
+        BitmapFactory.decodeByteArray(bytes,0,bytes.size,bounds)
+        val width=bounds.outWidth;val height=bounds.outHeight
+        require(width in 1..4096 && height in 1..4096 && width.toLong()*height<=8_388_608L)
         var sample=1
         while(width/sample>1600 || height/sample>1600) sample*=2
         BitmapFactory.decodeByteArray(bytes,0,bytes.size,BitmapFactory.Options().apply { inSampleSize=sample })

@@ -25,7 +25,7 @@ Library: brand app bar, editorial heading and honest count, search, horizontally
 Scaffold owns safe drawing insets; editor applies IME insets. Bottom navigation at compact sizes; navigation rail at expanded sizes. Standard Material dialogs, chips, sheets, switches, date/time conventions, text selection and ripple. NavController maintains predictable Back and source collection. UI state survives recreation; content survives process restart via Room. Material motion respects system animation duration scale; no perpetual animation. Crossfades use 180–220ms.
 
 ## Asset policy
-Use bundled licensed fonts, Material icons, and the pre-existing app icon. No reference screenshots in APK. No decorative photo dependency. Photo Picker handles user images without broad storage permissions.
+Use bundled licensed fonts, Material icons, and the existing eight-ray Aster mark as an adaptive vector icon. No reference screenshots in APK. No decorative photo dependency. Photo Picker handles user images without broad storage permissions.
 
 ## Review contract
 Check real empty/populated/editor/error states, light/dark, compact/expanded, 1.3–2.0 font scale, IME and Android Back. Screenshots must come from Android; web mockups cannot verify native UI. Performance evidence from software emulation does not establish physical POCO F6 performance.

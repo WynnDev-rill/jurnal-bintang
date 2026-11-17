@@ -28,7 +28,7 @@ class WritingFlowTest {
         rule.onNodeWithContentDescription("Navigasi Refleksi").performClick()
         rule.onNodeWithText("Mulai menulis").performClick()
         rule.onNodeWithTag("editor-body").performTextInput("Aku bersyukur punya waktu untuk diriku.")
-        rule.onNodeWithText("Baik", useUnmergedTree=true).performClick()
+        rule.onNodeWithText("Baik", useUnmergedTree=true).performScrollTo().performClick()
         rule.onNodeWithContentDescription("Kembali").performClick()
         rule.onNodeWithText("Tulisan refleksimu").assertExists()
     }

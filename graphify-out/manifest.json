@@ -1,15 +1,15 @@
 {
   ".github/workflows/android-release.yml": {
-    "mtime": 1794878834.3783822,
-    "seen": 1794880492.3456962,
-    "ast_hash": "5cfebad627ea4fc4acfb76fce4d02e85",
-    "semantic_hash": "5cfebad627ea4fc4acfb76fce4d02e85"
+    "mtime": 1794882736.7175171,
+    "seen": 1794882803.249317,
+    "ast_hash": "7e08594fed11855ae2f10795204f31c0",
+    "semantic_hash": "7e08594fed11855ae2f10795204f31c0"
   },
   "app/build.gradle.kts": {
-    "mtime": 1794879098.9477353,
-    "seen": 1794880492.3457022,
-    "ast_hash": "f8a8f705f3da5d52c2682bae3453ab38",
-    "semantic_hash": "f8a8f705f3da5d52c2682bae3453ab38"
+    "mtime": 1794881423.8032103,
+    "seen": 1794882803.2493236,
+    "ast_hash": "b1173e84399e59db2d7520814b7126e8",
+    "semantic_hash": "b1173e84399e59db2d7520814b7126e8"
   },
   "app/src/androidTest/java/com/wynn/jurnalbintang/DatabaseTest.kt": {
     "mtime": 1794879442.2909153,
@@ -18,10 +18,10 @@
     "semantic_hash": "f8b08c5b26cdf208971788dead250961"
   },
   "app/src/androidTest/java/com/wynn/jurnalbintang/WritingFlowTest.kt": {
-    "mtime": 1794879499.6072328,
-    "seen": 1794880492.345707,
-    "ast_hash": "96fa7ba9f636e2c74121b6740c582c82",
-    "semantic_hash": "96fa7ba9f636e2c74121b6740c582c82"
+    "mtime": 1794882736.716885,
+    "seen": 1794882803.2494261,
+    "ast_hash": "42ba2e41c6abd9936f05753d88c28d33",
+    "semantic_hash": "42ba2e41c6abd9936f05753d88c28d33"
   },
   "app/src/main/java/com/wynn/jurnalbintang/AsterApplication.kt": {
     "mtime": 1794879797.7234564,
@@ -42,16 +42,16 @@
     "semantic_hash": "d3767fb4040e963659cd39ef1dc08d57"
   },
   "app/src/main/java/com/wynn/jurnalbintang/data/BackupCodec.kt": {
-    "mtime": 1794879734.8187838,
-    "seen": 1794880492.3457117,
-    "ast_hash": "39c0cb81bcb8082ad3b4c5f0bfbea253",
-    "semantic_hash": "39c0cb81bcb8082ad3b4c5f0bfbea253"
+    "mtime": 1794882464.058922,
+    "seen": 1794882803.2495928,
+    "ast_hash": "e86e3898655c5bc5c895acfd0aeb18a0",
+    "semantic_hash": "e86e3898655c5bc5c895acfd0aeb18a0"
   },
   "app/src/main/java/com/wynn/jurnalbintang/data/DraftSession.kt": {
-    "mtime": 1794880331.4113395,
-    "seen": 1794880492.3457124,
-    "ast_hash": "7ae40bff72a71ad8f9a49ce644fd25fb",
-    "semantic_hash": "7ae40bff72a71ad8f9a49ce644fd25fb"
+    "mtime": 1794882464.0597568,
+    "seen": 1794882803.2495942,
+    "ast_hash": "3d115d3696f7c0833c336ebc5d6def0a",
+    "semantic_hash": "3d115d3696f7c0833c336ebc5d6def0a"
   },
   "app/src/main/java/com/wynn/jurnalbintang/data/Note.kt": {
     "mtime": 1794879671.5921104,
@@ -72,16 +72,16 @@
     "semantic_hash": "813d0ce10cf9d71ef938858a8f0d3dfe"
   },
   "app/src/main/java/com/wynn/jurnalbintang/platform/Documents.kt": {
-    "mtime": 1794879977.441958,
-    "seen": 1794880492.3457174,
-    "ast_hash": "d825659d74440ae94b785411cc66af69",
-    "semantic_hash": "d825659d74440ae94b785411cc66af69"
+    "mtime": 1794882464.0603528,
+    "seen": 1794882803.249715,
+    "ast_hash": "6c73bb3f6fa13f9380bd36c55fcf204c",
+    "semantic_hash": "6c73bb3f6fa13f9380bd36c55fcf204c"
   },
   "app/src/main/java/com/wynn/jurnalbintang/platform/Photos.kt": {
-    "mtime": 1794879977.5255368,
-    "seen": 1794880492.3457189,
-    "ast_hash": "95c9f4b39ccc4dd39c80253b9136a1c8",
-    "semantic_hash": "95c9f4b39ccc4dd39c80253b9136a1c8"
+    "mtime": 1794882464.0599554,
+    "seen": 1794882803.2497165,
+    "ast_hash": "947b0e6da8aceee4fa19d2658117893f",
+    "semantic_hash": "947b0e6da8aceee4fa19d2658117893f"
   },
   "app/src/main/java/com/wynn/jurnalbintang/platform/Reminders.kt": {
     "mtime": 1794879797.7394555,
@@ -96,10 +96,10 @@
     "semantic_hash": "282482e4d9b3c9b6b93374591705ed37"
   },
   "app/src/main/java/com/wynn/jurnalbintang/ui/AsterApp.kt": {
-    "mtime": 1794880438.4200914,
-    "seen": 1794880492.345722,
-    "ast_hash": "082d5b1e55b9dae4f1d99686956650c5",
-    "semantic_hash": "082d5b1e55b9dae4f1d99686956650c5"
+    "mtime": 1794880825.1451886,
+    "seen": 1794882803.249798,
+    "ast_hash": "07ab6e270357d939cefdd74f87eeb30e",
+    "semantic_hash": "07ab6e270357d939cefdd74f87eeb30e"
   },
   "app/src/main/java/com/wynn/jurnalbintang/ui/CollectionsScreen.kt": {
     "mtime": 1794880229.5925972,
@@ -120,10 +120,10 @@
     "semantic_hash": "ed472899ef6afa202f51d12c8e11a416"
   },
   "app/src/main/java/com/wynn/jurnalbintang/ui/EditorViewModel.kt": {
-    "mtime": 1794880438.4203122,
-    "seen": 1794880492.3457255,
-    "ast_hash": "269a636a09722bcf7ad8945014f2d64c",
-    "semantic_hash": "269a636a09722bcf7ad8945014f2d64c"
+    "mtime": 1794882464.0595188,
+    "seen": 1794882803.2499187,
+    "ast_hash": "3d511be9370d8b136d9a4d8e55d498e1",
+    "semantic_hash": "3d511be9370d8b136d9a4d8e55d498e1"
   },
   "app/src/main/java/com/wynn/jurnalbintang/ui/LibraryScreen.kt": {
     "mtime": 1794880127.9419978,
@@ -150,10 +150,10 @@
     "semantic_hash": "3f04c977c8ca526836a3d83c8ff6817e"
   },
   "app/src/test/java/com/wynn/jurnalbintang/BackupCodecTest.kt": {
-    "mtime": 1794879141.55011,
-    "seen": 1794880492.345731,
-    "ast_hash": "29be89d1387826d06860dcfa508d3fac",
-    "semantic_hash": "29be89d1387826d06860dcfa508d3fac"
+    "mtime": 1794882283.1441224,
+    "seen": 1794882803.2501202,
+    "ast_hash": "3581ebb46385dcc5731e7de02847efa8",
+    "semantic_hash": "3581ebb46385dcc5731e7de02847efa8"
   },
   "app/src/test/java/com/wynn/jurnalbintang/DraftSessionTest.kt": {
     "mtime": 1794879863.3133543,
@@ -162,10 +162,10 @@
     "semantic_hash": "3d9e0d06a82749eeb1c15cb53f3d8c97"
   },
   "app/src/test/java/com/wynn/jurnalbintang/ImportMergeTest.kt": {
-    "mtime": 1794879442.2939062,
-    "seen": 1794880492.3457332,
-    "ast_hash": "d45eaea90eea582597d6180e04698e34",
-    "semantic_hash": "d45eaea90eea582597d6180e04698e34"
+    "mtime": 1794881393.3098478,
+    "seen": 1794882803.2501647,
+    "ast_hash": "21fac07eaab8f744a02d258cb023838d",
+    "semantic_hash": "21fac07eaab8f744a02d258cb023838d"
   },
   "app/src/test/java/com/wynn/jurnalbintang/NoteRulesTest.kt": {
     "mtime": 1794879098.9660785,
@@ -192,15 +192,231 @@
     "semantic_hash": "d3dfe40f1205344db52d7567752f6177"
   },
   "tools/graph-refresh.sh": {
-    "mtime": 1794879366.5740242,
-    "seen": 1794880492.3457377,
-    "ast_hash": "d06fc31354d25a077797496b25e5f3ec",
-    "semantic_hash": "d06fc31354d25a077797496b25e5f3ec"
+    "mtime": 1794881849.8446712,
+    "seen": 1794882803.2503068,
+    "ast_hash": "8a7fdd8d6eca2626323fba110cf87076",
+    "semantic_hash": "8a7fdd8d6eca2626323fba110cf87076"
   },
   "tools/verify-skills.py": {
     "mtime": 1794879366.8262274,
     "seen": 1794880492.3457384,
     "ast_hash": "9475acdfa6d009b857807532617fcc01",
     "semantic_hash": "9475acdfa6d009b857807532617fcc01"
+  },
+  "app/src/androidTest/java/com/wynn/jurnalbintang/VisualAcceptanceTest.kt": {
+    "mtime": 1794882736.650048,
+    "seen": 1794882803.2494242,
+    "ast_hash": "108de9c00ddeca3ebb78081459b2404a",
+    "semantic_hash": "108de9c00ddeca3ebb78081459b2404a"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/Archive.kt": {
+    "mtime": 1794880825.269706,
+    "seen": 1794882803.2494276,
+    "ast_hash": "7df77021485516bf62ca2e5e8cde2261",
+    "semantic_hash": "7df77021485516bf62ca2e5e8cde2261"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/Article.kt": {
+    "mtime": 1794880825.2706285,
+    "seen": 1794882803.249429,
+    "ast_hash": "ed255147e13e9d6281eaf266bdf5935b",
+    "semantic_hash": "ed255147e13e9d6281eaf266bdf5935b"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/AutoAwesome.kt": {
+    "mtime": 1794880825.2712648,
+    "seen": 1794882803.24943,
+    "ast_hash": "d066af3bc936438e9daaa6c2b4220575",
+    "semantic_hash": "d066af3bc936438e9daaa6c2b4220575"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/CalendarToday.kt": {
+    "mtime": 1794880825.2718735,
+    "seen": 1794882803.2494311,
+    "ast_hash": "57b9de4a83ecf8fc1f8bf4f0870ca4f7",
+    "semantic_hash": "57b9de4a83ecf8fc1f8bf4f0870ca4f7"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/CheckBox.kt": {
+    "mtime": 1794880825.2724903,
+    "seen": 1794882803.2494318,
+    "ast_hash": "d273f96ca256abecd87f35986bf9445c",
+    "semantic_hash": "d273f96ca256abecd87f35986bf9445c"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/CheckBoxOutlineBlank.kt": {
+    "mtime": 1794880825.2730894,
+    "seen": 1794882803.249433,
+    "ast_hash": "1ef03c860f666d2d7280527247672c16",
+    "semantic_hash": "1ef03c860f666d2d7280527247672c16"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/CheckCircleOutline.kt": {
+    "mtime": 1794880825.2736683,
+    "seen": 1794882803.249434,
+    "ast_hash": "0281ad0c5bcfa36534b82898bb0a0a1f",
+    "semantic_hash": "0281ad0c5bcfa36534b82898bb0a0a1f"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/Checklist.kt": {
+    "mtime": 1794880825.274219,
+    "seen": 1794882803.2494352,
+    "ast_hash": "fb4387523a29c6e48ca83c8601cca456",
+    "semantic_hash": "fb4387523a29c6e48ca83c8601cca456"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/ChevronRight.kt": {
+    "mtime": 1794880825.274839,
+    "seen": 1794882803.2494383,
+    "ast_hash": "7bc7e96a56f34c019f3bcbfe69341bef",
+    "semantic_hash": "7bc7e96a56f34c019f3bcbfe69341bef"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/CreateNewFolder.kt": {
+    "mtime": 1794880825.2758713,
+    "seen": 1794882803.2494392,
+    "ast_hash": "5e70f59f245bbe98b01fe22bafe67ba3",
+    "semantic_hash": "5e70f59f245bbe98b01fe22bafe67ba3"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/DeleteOutline.kt": {
+    "mtime": 1794880825.2769532,
+    "seen": 1794882803.2494402,
+    "ast_hash": "90f3741786b2215b8b8d46e9df65829b",
+    "semantic_hash": "90f3741786b2215b8b8d46e9df65829b"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/Description.kt": {
+    "mtime": 1794880825.277526,
+    "seen": 1794882803.2494414,
+    "ast_hash": "ae510bd1ca7e4613db38812be2981b6f",
+    "semantic_hash": "ae510bd1ca7e4613db38812be2981b6f"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/EditNote.kt": {
+    "mtime": 1794880825.2780797,
+    "seen": 1794882803.2494423,
+    "ast_hash": "b69105ed9be97ca1875494045c75fe5f",
+    "semantic_hash": "b69105ed9be97ca1875494045c75fe5f"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/ErrorOutline.kt": {
+    "mtime": 1794880825.278597,
+    "seen": 1794882803.249443,
+    "ast_hash": "c78bd95d0880a28e2e373f9595832eeb",
+    "semantic_hash": "c78bd95d0880a28e2e373f9595832eeb"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/ExpandLess.kt": {
+    "mtime": 1794880825.279178,
+    "seen": 1794882803.2494438,
+    "ast_hash": "a0da8632734d8e9ecadccbc63e0225af",
+    "semantic_hash": "a0da8632734d8e9ecadccbc63e0225af"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/ExpandMore.kt": {
+    "mtime": 1794880825.2798297,
+    "seen": 1794882803.249445,
+    "ast_hash": "4f2fad496b80df859264d0e98e577b08",
+    "semantic_hash": "4f2fad496b80df859264d0e98e577b08"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/FolderOpen.kt": {
+    "mtime": 1794880825.28048,
+    "seen": 1794882803.2494457,
+    "ast_hash": "0095e5f5e19b42743d7c46d1703c7574",
+    "semantic_hash": "0095e5f5e19b42743d7c46d1703c7574"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/Image.kt": {
+    "mtime": 1794880825.2810752,
+    "seen": 1794882803.2494466,
+    "ast_hash": "d6a55cf03a418c550d0249003c483b98",
+    "semantic_hash": "d6a55cf03a418c550d0249003c483b98"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/MoreHoriz.kt": {
+    "mtime": 1794880825.2819576,
+    "seen": 1794882803.2494476,
+    "ast_hash": "61ffb2d912ae8db840435933dde7ae49",
+    "semantic_hash": "61ffb2d912ae8db840435933dde7ae49"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/North.kt": {
+    "mtime": 1794880825.2826395,
+    "seen": 1794882803.2494485,
+    "ast_hash": "e07c0b0e26017400c52b75ad03356092",
+    "semantic_hash": "e07c0b0e26017400c52b75ad03356092"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/PushPin.kt": {
+    "mtime": 1794880825.2834826,
+    "seen": 1794882803.2494495,
+    "ast_hash": "e563c1a2c9ff17bb4c8e7129980297f7",
+    "semantic_hash": "e563c1a2c9ff17bb4c8e7129980297f7"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/Restore.kt": {
+    "mtime": 1794880825.2848394,
+    "seen": 1794882803.2494502,
+    "ast_hash": "6492f8bb6792b228c243f67ca7e2e59f",
+    "semantic_hash": "6492f8bb6792b228c243f67ca7e2e59f"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/SaveAlt.kt": {
+    "mtime": 1794880825.285626,
+    "seen": 1794882803.249451,
+    "ast_hash": "2bb5a5108e4e6e6570346ee90ffa8b00",
+    "semantic_hash": "2bb5a5108e4e6e6570346ee90ffa8b00"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/SentimentDissatisfied.kt": {
+    "mtime": 1794880825.2868247,
+    "seen": 1794882803.2494524,
+    "ast_hash": "25bef1de8d2762b98a8315e2665f90f1",
+    "semantic_hash": "25bef1de8d2762b98a8315e2665f90f1"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/SentimentNeutral.kt": {
+    "mtime": 1794880825.2874553,
+    "seen": 1794882803.2494533,
+    "ast_hash": "fb8221da177d33cafa381f586b35089c",
+    "semantic_hash": "fb8221da177d33cafa381f586b35089c"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/SentimentSatisfied.kt": {
+    "mtime": 1794880825.288197,
+    "seen": 1794882803.2494543,
+    "ast_hash": "a8e0133c9cc8d0cf76ef14d765e3a1fc",
+    "semantic_hash": "a8e0133c9cc8d0cf76ef14d765e3a1fc"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/SentimentVeryDissatisfied.kt": {
+    "mtime": 1794880825.2887914,
+    "seen": 1794882803.2494552,
+    "ast_hash": "e49676bda8c0a8993c205909db3e6b08",
+    "semantic_hash": "e49676bda8c0a8993c205909db3e6b08"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/SentimentVerySatisfied.kt": {
+    "mtime": 1794880825.289449,
+    "seen": 1794882803.2494562,
+    "ast_hash": "27fcb9b330c1be1691220b52d6bec543",
+    "semantic_hash": "27fcb9b330c1be1691220b52d6bec543"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/South.kt": {
+    "mtime": 1794880825.290764,
+    "seen": 1794882803.249457,
+    "ast_hash": "8e6b2600ef70278e5d347288232b45b5",
+    "semantic_hash": "8e6b2600ef70278e5d347288232b45b5"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/StarOutline.kt": {
+    "mtime": 1794880825.291838,
+    "seen": 1794882803.2494578,
+    "ast_hash": "14d7c51ca0d8012229d5fcd8f2c43103",
+    "semantic_hash": "14d7c51ca0d8012229d5fcd8f2c43103"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/Sync.kt": {
+    "mtime": 1794880825.2925563,
+    "seen": 1794882803.249459,
+    "ast_hash": "78ff885f0ea94d56a14f86798d4aa5cf",
+    "semantic_hash": "78ff885f0ea94d56a14f86798d4aa5cf"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/Tune.kt": {
+    "mtime": 1794880825.2930892,
+    "seen": 1794882803.2494597,
+    "ast_hash": "97bef2bbf9facb5a1542d22663dbc280",
+    "semantic_hash": "97bef2bbf9facb5a1542d22663dbc280"
+  },
+  "app/src/main/java/androidx/compose/material/icons/outlined/UploadFile.kt": {
+    "mtime": 1794880825.2938094,
+    "seen": 1794882803.2494607,
+    "ast_hash": "fe9671b87cc516bbe6bba321e8a491b7",
+    "semantic_hash": "fe9671b87cc516bbe6bba321e8a491b7"
+  },
+  "app/src/main/java/com/wynn/jurnalbintang/data/ImageSafety.kt": {
+    "mtime": 1794881726.4015558,
+    "seen": 1794882803.2495954,
+    "ast_hash": "e8d8ef88a5b99cc44f36dfa4ef6753e1",
+    "semantic_hash": "e8d8ef88a5b99cc44f36dfa4ef6753e1"
+  },
+  "tools/localize-graph.py": {
+    "mtime": 1794881849.615038,
+    "seen": 1794882803.2503085,
+    "ast_hash": "529fc926577b46a910697dc861515b48",
+    "semantic_hash": "529fc926577b46a910697dc861515b48"
   }
 }

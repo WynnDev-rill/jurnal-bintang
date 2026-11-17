@@ -57,9 +57,17 @@ jobs:
           arch: x86_64
           target: default
           disable-animations: true
-          script: ./gradlew connectedDebugAndroidTest --no-daemon
+          script: |
+            set +e
+            ./gradlew connectedDebugAndroidTest --no-daemon
+            aster_test_status=$?
+            adb pull /sdcard/Android/data/com.wynn.jurnalbintang/files/screenshots device-screenshots
+            exit "$aster_test_status"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: device-test-reports
-          path: app/build/reports/androidTests/
+          path: |
+            app/build/reports/androidTests/
+            app/build/outputs/androidTest-results/
+            device-screenshots/
