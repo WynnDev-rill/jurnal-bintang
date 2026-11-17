@@ -25,7 +25,7 @@ class DatabaseTest {
         assertNull(db.dao().get("n")!!.folderId)
         assertEquals("Baris terakhir",db.dao().get("n")!!.body)
         assertTrue(db.dao().get("n")!!.archived)
-        db.close();context.deleteDatabase(name)
+        db.close();context.deleteDatabase(name);Unit
     }
     @Test fun conflictingImportDoesNotOverwriteAndIsIdempotent() = runBlocking {
         val db=Room.inMemoryDatabaseBuilder(ApplicationProvider.getApplicationContext(),AsterDatabase::class.java).build()

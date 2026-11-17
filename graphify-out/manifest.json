@@ -1,9 +1,9 @@
 {
   ".github/workflows/android-release.yml": {
-    "mtime": 1794882736.7175171,
-    "seen": 1794882803.249317,
-    "ast_hash": "7e08594fed11855ae2f10795204f31c0",
-    "semantic_hash": "7e08594fed11855ae2f10795204f31c0"
+    "mtime": 1794883463.2162392,
+    "seen": 1794883585.3914373,
+    "ast_hash": "116e4607473f856f58e4a7466021bb45",
+    "semantic_hash": "116e4607473f856f58e4a7466021bb45"
   },
   "app/build.gradle.kts": {
     "mtime": 1794881423.8032103,
@@ -12,16 +12,16 @@
     "semantic_hash": "b1173e84399e59db2d7520814b7126e8"
   },
   "app/src/androidTest/java/com/wynn/jurnalbintang/DatabaseTest.kt": {
-    "mtime": 1794879442.2909153,
-    "seen": 1794880492.3457055,
-    "ast_hash": "f8b08c5b26cdf208971788dead250961",
-    "semantic_hash": "f8b08c5b26cdf208971788dead250961"
+    "mtime": 1794883463.2169554,
+    "seen": 1794883585.3915408,
+    "ast_hash": "b7f9258cc904bfe0dce99ccd608e6daf",
+    "semantic_hash": "b7f9258cc904bfe0dce99ccd608e6daf"
   },
   "app/src/androidTest/java/com/wynn/jurnalbintang/WritingFlowTest.kt": {
-    "mtime": 1794882736.716885,
-    "seen": 1794882803.2494261,
-    "ast_hash": "42ba2e41c6abd9936f05753d88c28d33",
-    "semantic_hash": "42ba2e41c6abd9936f05753d88c28d33"
+    "mtime": 1794883463.2177534,
+    "seen": 1794883585.3916378,
+    "ast_hash": "9b2b31566cb68717b3ea570a99732ef6",
+    "semantic_hash": "9b2b31566cb68717b3ea570a99732ef6"
   },
   "app/src/main/java/com/wynn/jurnalbintang/AsterApplication.kt": {
     "mtime": 1794879797.7234564,
@@ -78,10 +78,10 @@
     "semantic_hash": "6c73bb3f6fa13f9380bd36c55fcf204c"
   },
   "app/src/main/java/com/wynn/jurnalbintang/platform/Photos.kt": {
-    "mtime": 1794882464.0599554,
-    "seen": 1794882803.2497165,
-    "ast_hash": "947b0e6da8aceee4fa19d2658117893f",
-    "semantic_hash": "947b0e6da8aceee4fa19d2658117893f"
+    "mtime": 1794883028.069032,
+    "seen": 1794883585.3950746,
+    "ast_hash": "81660af6da8370e89b21d4fa9153a5b2",
+    "semantic_hash": "81660af6da8370e89b21d4fa9153a5b2"
   },
   "app/src/main/java/com/wynn/jurnalbintang/platform/Reminders.kt": {
     "mtime": 1794879797.7394555,
@@ -126,10 +126,10 @@
     "semantic_hash": "3d511be9370d8b136d9a4d8e55d498e1"
   },
   "app/src/main/java/com/wynn/jurnalbintang/ui/LibraryScreen.kt": {
-    "mtime": 1794880127.9419978,
-    "seen": 1794880492.3457265,
-    "ast_hash": "70a070d367491d0b2a3cb9999c088c48",
-    "semantic_hash": "70a070d367491d0b2a3cb9999c088c48"
+    "mtime": 1794883463.217449,
+    "seen": 1794883585.398149,
+    "ast_hash": "c238d95374c6ed7985f6279e2643a7bd",
+    "semantic_hash": "c238d95374c6ed7985f6279e2643a7bd"
   },
   "app/src/main/java/com/wynn/jurnalbintang/ui/ReflectionScreen.kt": {
     "mtime": 1794880438.4207423,
@@ -418,5 +418,23 @@
     "seen": 1794882803.2503085,
     "ast_hash": "529fc926577b46a910697dc861515b48",
     "semantic_hash": "529fc926577b46a910697dc861515b48"
+  },
+  ".github/scripts/device-acceptance.sh": {
+    "mtime": 1794883463.1497066,
+    "seen": 1794883585.3914278,
+    "ast_hash": "877ffde857f08ef6350b84985804bb6d",
+    "semantic_hash": "877ffde857f08ef6350b84985804bb6d"
+  },
+  "app/src/androidTest/java/com/wynn/jurnalbintang/OrganizationFlowTest.kt": {
+    "mtime": 1794883368.0994728,
+    "seen": 1794883585.391544,
+    "ast_hash": "fdc93f9d64640cccc5e30902f47462eb",
+    "semantic_hash": "fdc93f9d64640cccc5e30902f47462eb"
+  },
+  "app/src/androidTest/java/com/wynn/jurnalbintang/PhotoTest.kt": {
+    "mtime": 1794883028.0750346,
+    "seen": 1794883585.391547,
+    "ast_hash": "49c2bf78c1421d4dc338c411f1e3bc74",
+    "semantic_hash": "49c2bf78c1421d4dc338c411f1e3bc74"
   }
 }
